@@ -5,12 +5,12 @@ require 'confirmable_variant'
     class UnifiedGeneFusion < ConfirmableVariant
       include Mongoid::Document
 
-      field :driverReadCount, type: Integer
-      field :partnerReadCount, type: Integer
-      field :driverGene
-      field :partnerGene
+      field :driver_read_count, type: Integer
+      field :partner_read_count, type: Integer
+      field :driver_gene
+      field :partner_gene
       field :annotation
 
-      embedded_in :variantReport, inverse_of: :unifiedGeneFusions
+      embedded_in :variant_report, inverse_of: :unified_gene_fusions
       
     end

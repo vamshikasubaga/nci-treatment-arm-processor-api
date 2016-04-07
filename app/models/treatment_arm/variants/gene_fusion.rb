@@ -4,8 +4,8 @@ require 'confirmable_variant'
 class GeneFusion < ConfirmableVariant
   include Mongoid::Document
 
-  field :fusionIdentity
+  field :fusion_identity
 
-  embedded_in :variantReport, inverse_of: :geneFusions
+  embedded_in :variant_report, inverse_of: :gene_fusions
 
 end

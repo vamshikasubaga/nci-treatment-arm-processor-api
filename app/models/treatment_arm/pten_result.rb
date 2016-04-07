@@ -9,7 +9,7 @@ class PtenResult
   # enum :ptenVariant, [:PRESENT, :NEGATIVE, :EMPTY]
   field :description
 
-  embedded_in :treatmentarm, inverse_of: :ptenResults
+  embedded_in :treatmentarm, inverse_of: :pten_results
 
   def get_pten_variant_status
     ptenVariant.status

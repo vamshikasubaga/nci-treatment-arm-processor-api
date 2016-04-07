@@ -2,8 +2,8 @@ module Variant
   extend ActiveSupport::Concern
 
   included do
-    field :publicMedIds, type: Array
-    field :geneName
+    field :public_med_ids, type: Array
+    field :gene_name
     field :chromosome
     field :position
     field :identifier
@@ -15,17 +15,17 @@ module Variant
     field :transcript
     field :hgvs
     field :location
-    field :readDepth, type: Integer
+    field :read_depth, type: Integer
     field :rare, type: Boolean
-    field :alleleFrequency, type: Float
-    field :flowAlternativeAlleleObservationCount
-    field :flowReferenceAlleleObservations
-    field :referenceAlleleObservations, type: Integer
-    field :alternativeAlleleObservationCount, type: Integer
-    field :variantClass
-    field :levelOfEvidence, type: Integer
+    field :allele_frequency, type: Float
+    field :flow_alternative_allele_observation_count
+    field :flow_reference_allele_observations
+    field :reference_allele_observations, type: Integer
+    field :alternative_allele_observation_count, type: Integer
+    field :variant_class
+    field :level_of_evidence, type: Integer
     field :inclusion, type: Boolean, default: true
-    field :armSpecific, type: Boolean, default: false
+    field :arm_specific, type: Boolean, default: false
   end
 
 end

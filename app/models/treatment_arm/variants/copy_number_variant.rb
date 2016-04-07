@@ -4,12 +4,12 @@ class CopyNumberVariant < ConfirmableVariant
   include Mongoid::Document
 
 
-  field :refCopyNumber, type: Float
-  field :rawCopyNumber, type: Float
-  field :copyNumber, type: Float
-  field :confidenceInterval95percent, type: Float
-  field :confidenceInterval5percent, type: Float
+  field :ref_copy_number, type: Float
+  field :raw_copy_number, type: Float
+  field :copy_number, type: Float
+  field :confidence_interval_95_percent, type: Float
+  field :confidence_interval_5_percent, type: Float
 
-  embedded_in :variantReport, inverse_of: :copyNumberVariants
+  embedded_in :variant_report, inverse_of: :copy_number_variants
 
 end

@@ -5,13 +5,13 @@ class NonHotspotRule
     include Mongoid::Attributes::Dynamic
 
     field :description
-    field :oncomine_Variant_Class
-    field :gene_Name
+    field :oncomine_variant_class
+    field :gene_name
     field :exon
     field :function
-    field :level_Of_Evidence
-    field :literature_Reference
-    field :special_Rules
-    field :protein_Match
+    field :level_of_evidence
+    field :literature_reference
+    field :special_rules
+    field :protein_match
 
 end

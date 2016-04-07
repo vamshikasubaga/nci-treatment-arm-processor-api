@@ -4,12 +4,12 @@ require 'mongoid'
     include Mongoid::Document
 
     field :_id
-    field :medraCode
-    field :ctepCategory
-    field :ctepSubCategory
-    field :ctepTerm
-    field :shortName
+    field :medra_code
+    field :ctep_category
+    field :ctep_sub_category
+    field :ctep_term
+    field :short_name
 
-    embedded_in :treatmentarm, :inverse_of => :exclusionDiseases
+    embedded_in :treatmentarm, :inverse_of => :exclusion_diseases
 
   end

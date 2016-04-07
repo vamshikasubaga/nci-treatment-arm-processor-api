@@ -7,8 +7,8 @@ class NonHotspotRule
   field :oncominevariantclass
   field :exon
   field :function
-  field :proteinMatch
+  field :protein_match
 
-  embedded_in :variantReport, inverse_of: :nonHotspotRules
+  embedded_in :variant_report, inverse_of: :non_hotspot_rules
       
 end
