@@ -4,6 +4,7 @@ require 'resque'
 require 'rails'
 require "#{File.dirname(__FILE__)}/lib/basic_treatment_arm_job"
 require "#{File.dirname(__FILE__)}/lib/basic_treatment_arm_patient_job"
+require "#{File.dirname(__FILE__)}/lib/patient_job"
 require "#{File.dirname(__FILE__)}/lib/treatment_job"
 
 class TreatmentArmModelConverter
@@ -22,9 +23,11 @@ class TreatmentArmModelConverter
       Resque.enqueue(TreatmentJob, treatment_arm)
       Resque.enqueue(BasicTreatmentArmJob, treatment_arm)
     end
-    # patients.each do | patient |
-      # Resque.enqueue(BasicTreatmentArmPatientJob, patient)
-    # end
+    patients.each do | patient |
+      patient.deep_transform_keys!(&:underscore)
+      patient.delete("_class")
+      Resque.enqueue(PatientJob, patient)
+    end
   end
 
 

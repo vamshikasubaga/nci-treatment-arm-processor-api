@@ -6,7 +6,7 @@ class BasicTreatmentArmPatientJob
   def self.perform(ecog_patient_assignment)
     begin
       patient = ecog_patient_assignment.symbolize_keys
-      patient[:patientAssignment].each do | patient_assignment |
+      patient[:patient_assignment].each do | patient_assignment |
 
       end
     rescue => error
