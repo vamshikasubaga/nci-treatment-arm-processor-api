@@ -3,6 +3,8 @@ require 'mongoid'
 class BasicPatient
   include Mongoid::Document
 
+  store_in collection: "patient"
+
   field :patient_sequence_number
   field :patient_triggers
   field :current_step_number

@@ -30,15 +30,6 @@ class TreatmentArmModelConverter
     end
   end
 
-
-  def convert_hash_keys(treatment_arm)
-    data = ActiveSupport::JSON.decode(treatment_arm)
-    data = {:_json => data} unless data.is_a?(Hash)
-
-    # Transform camelCase param keys to snake_case:
-    data.deep_transform_keys!(&:underscore)
-  end
-
   self.new.runner
 
 
