@@ -21,18 +21,18 @@ class BasicTreatmentArmJob
   end
 
   def self.insert(treatment_arm)
-    sorted_status_log = !treatment_arm[:statusLog].blank? ? treatment_arm[:statusLog].sort_hash_descending  : {}
+    sorted_status_log = !treatment_arm[:status_log].blank? ? treatment_arm[:status_log].sort_hash_descending  : {}
     basic_treatment_arm = { :_id => treatment_arm[:_id],
-                            :treatmentArmName => treatment_arm[:name],
-                            :currentPatients => treatment_arm[:numPatientsAssigned],
-                            :formerPatients => 0,
-                            :notEnrolledPatients => 0,
-                            :pendingPatients => 0,
-                            :treatmentArmStatus => treatment_arm[:treatmentArmStatus],
-                            :dateCreated => !treatment_arm[:dateCreated].blank? ? (treatment_arm[:dateCreated]).to_time.to_i : nil,
-                            :dateOpened => sorted_status_log.key("OPEN"),
-                            :dateClosed => sorted_status_log.key("CLOSED"),
-                            :dateSuspended => sorted_status_log.key("SUSPENDED")
+                            :treatment_arm_name => treatment_arm[:name],
+                            :current_patients => treatment_arm[:num_patients_assigned],
+                            :former_patients => 0,
+                            :not_enrolled_patients => 0,
+                            :pending_patients => 0,
+                            :treatment_arm_status => treatment_arm[:treatment_arm_status],
+                            :date_created => !treatment_arm[:date_created].blank? ? (treatment_arm[:date_created]).to_time.to_i : nil,
+                            :date_opened => sorted_status_log.key("OPEN"),
+                            :date_closed => sorted_status_log.key("CLOSED"),
+                            :date_suspended => sorted_status_log.key("SUSPENDED")
     }
     ba = BasicTreatmentArm.new(basic_treatment_arm)
     p ba.save

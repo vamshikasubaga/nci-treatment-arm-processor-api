@@ -20,7 +20,7 @@ class TreatmentArmModelConverter
       treatment_arm.deep_transform_keys!(&:underscore)
       treatment_arm.delete("_class")
       Resque.enqueue(TreatmentJob, treatment_arm)
-      # Resque.enqueue(BasicTreatmentArmJob, treatment_arm)
+      Resque.enqueue(BasicTreatmentArmJob, treatment_arm)
     end
     # patients.each do | patient |
       # Resque.enqueue(BasicTreatmentArmPatientJob, patient)
