@@ -1,9 +1,7 @@
 require 'mongoid'
 
-class BasicPatient
+class Patient
   include Mongoid::Document
-
-  store_in collection: "patient"
 
   field :patient_sequence_number
   field :patient_triggers
@@ -13,5 +11,7 @@ class BasicPatient
   field :concordance
   field :registration_date
   field :patient_rejoin_triggers
+
+  embedded_in :treatmentarm, :inverse_of => :patients
 
 end
