@@ -7,11 +7,10 @@ class Patient
   field :patient_triggers
   field :current_step_number
   field :current_patient_status
-  field :patient_assignments
+  embeds_many :patient_assignments, class_name: "PatientAssignment", inverse_of: :patient
   field :concordance
   field :registration_date
-  field :patient_rejoin_triggers
 
-  embedded_in :treatmentarm, :inverse_of => :patients
+  embedded_in :treatmentarm, :inverse_of => :patient
 
 end

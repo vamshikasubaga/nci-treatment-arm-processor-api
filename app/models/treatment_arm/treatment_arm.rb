@@ -3,9 +3,7 @@ require 'mongoid'
   class TreatmentArm
     include Mongoid::Document
 
-    store_in collection: "treatmentArm"
-
-    field :_id, type: String
+    field :treatment_arm_id, type: String
     field :name
     field :version
     field :description
@@ -20,6 +18,8 @@ require 'mongoid'
     embeds_many :exclusion_criterias, class_name: "ExclusionCriteria", inverse_of: :treatmentarm
     embeds_many :pten_results, class_name: "PtenResult", inverse_of: :treatmentarm
 
+    embeds_one :patient, class_name: "Patient"
+
     field :num_patients_assigned, type: Integer, default: 0
     field :max_patients_allowed, type: Integer
 
@@ -29,6 +29,7 @@ require 'mongoid'
     field :status_log, type: Hash
 
     field :date_created, type: DateTime, default: Time.now
+
 
   end
 

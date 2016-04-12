@@ -6,7 +6,7 @@ class BasicTreatmentArmJob
   def self.perform(treatment_arm)
     begin
       treatment_arm = treatment_arm.symbolize_keys
-      if BasicTreatmentArm.where(:_id => treatment_arm[:id]).exists?
+      if BasicTreatmentArm.where(:_id => treatment_arm[:treatment_arm_id]).exists?
         update(treatment_arm)
       else
         insert(treatment_arm)
@@ -22,7 +22,7 @@ class BasicTreatmentArmJob
 
   def self.insert(treatment_arm)
     sorted_status_log = !treatment_arm[:status_log].blank? ? treatment_arm[:status_log].sort_hash_descending  : {}
-    basic_treatment_arm = { :_id => treatment_arm[:_id],
+    basic_treatment_arm = { :_id => treatment_arm[:treatment_arm_id],
                             :treatment_arm_name => treatment_arm[:name],
                             :current_patients => treatment_arm[:num_patients_assigned],
                             :former_patients => 0,
