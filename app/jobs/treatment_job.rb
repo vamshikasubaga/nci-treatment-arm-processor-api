@@ -7,7 +7,6 @@ class TreatmentJob
         if TreatmentArm.where(:treatment_arm_id => treatment_arm[:treatment_arm_id]).exists?
           update(treatment_arm)
         else
-          p "insert"
           insert(treatment_arm)
         end
       rescue => error
@@ -16,11 +15,9 @@ class TreatmentJob
     end
 
     def self.update(treatment_arm)
-      p treatment_arm[:version]
       if TreatmentArm.where(:treatment_arm_id => treatment_arm[:treatment_arm_id]).and(:version => treatment_arm[:version]).exists?
-        p "dup"
+        p "Treatment_arm (#{treatment_arm[:treatment_arm_id]}) version (#{treatment_arm[:version]}) already exists"
       else
-        p "update insert"
         insert(treatment_arm)
       end
     end

@@ -5,12 +5,25 @@ class PatientJob
   def self.perform(patient)
     begin
       patient = patient.symbolize_keys
+      if pre_check_existence(patient[:patient_sequence_number], patient[:treatment_arm_id],
+                          patient[:treatment_arm_version], patient[:current_patient_status])
+        raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
+      end
       case patient[:current_patient_status]
         when "ON_TREATMENT_ARM"
-          p "patient on arm"
+          # p "Recieved patient at state ON_TREATMENT_ARM : #{patient[:patient_sequence_number]}"
           on_treatment_arm_patient(patient)
+        when "NOT_ELIGIBLE"
+          # p "Recieved patient at state NOT_ELIGIBLE : #{patient[:patient_sequence_number]}"
+          on_treatment_arm_patient(patient)
+        when "PENDING_APPROVAL"
+          p "Recieved patient at state PENDING_APPROVAL : #{patient[:patient_sequence_number]}"
+          on_treatment_arm_patient(patient)
+        when "OFF_TRIAL", "OFF_TRIAL_NOT_CONSENTED", "OFF_TRIAL_DECEASED"
+          # p "Recieved patient at state OFF_TRIAL_* : #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
+          # on_treatment_arm_patient(patient)
         else
-          p "No case statment"
+          # p "Recieved patient with no current state : #{patient[:patient_sequence_number]}"
       end
     rescue => error
       p error
@@ -19,15 +32,12 @@ class PatientJob
 
 
   def self.on_treatment_arm_patient(patient)
-    if TreatmentArm.where(:treatment_arm_id => patient[:current_treatment_arm]["_id"], :version => patient[:current_treatment_arm]["version"], :patient.in => ["", nil]).exists?
-      ta = TreatmentArm.where(:treatment_arm_id => patient[:current_treatment_arm]["_id"], :version => patient[:current_treatment_arm]["version"]).first
-      ta.patient = mold_patient_data(patient)
-      ta.save
-    elsif TreatmentArm.where(:treatment_arm_id => patient[:current_treatment_arm]["_id"], :version => patient[:current_treatment_arm]["version"], :patient.nin => ["", nil]).exists?
-      ta = TreatmentArm.where(:treatment_arm_id => patient[:current_treatment_arm]["_id"], :version => patient[:current_treatment_arm]["version"]).first
-      patient_on_arm = ta.clone
-      patient_on_arm.patient = mold_patient_data(patient)
-      patient_on_arm.save 
+    if TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.in => ["", nil]).exists?
+      ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
+      insert(ta, patient)
+    elsif TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.nin => ["", nil]).exists?
+      ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
+      update(ta, patient)
     else
       p "requeue patient"
       Resque.enqueue(PatientJob, patient)
@@ -35,19 +45,29 @@ class PatientJob
   end
 
 
-  def self.update(patient)
-
+  def self.pre_check_existence(patient_sequence_number, treatment_arm_id, version, status)
+    TreatmentArm.where(:treatment_arm_id => treatment_arm_id,
+                          :version => version,
+                          :'patient.patient_sequence_number' => patient_sequence_number,
+                          :'patient.current_patient_status' => status).exists?
   end
 
-  def self.insert(new_patient)
-    ba = Patient.new(new_patient)
-    ba.save
+  def self.update(treatment_arm, patient)
+    patient_on_arm = treatment_arm.clone
+    patient_on_arm.patient = mold_patient_data(patient)
+    patient_on_arm.save
+  end
+
+  def self.insert(treatment_arm, patient)
+    treatment_arm.patient = mold_patient_data(patient)
+    treatment_arm.save
   end
 
   def self.mold_patient_data(patient)
     new_patient = Patient.new
     new_patient.patient_sequence_number = patient[:patient_sequence_number]
-    new_patient.patient_triggers = patient[:patient_triggers]
+    new_patient.variant_report = patient[:biopsy]
+    new_patient.diseases = patient[:diseases]
     new_patient.current_step_number = patient[:current_step_number]
     new_patient.current_patient_status = patient[:current_patient_status]
     patient[:patient_assignments].each do | patient_assignment |
