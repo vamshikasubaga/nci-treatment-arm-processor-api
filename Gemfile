@@ -22,7 +22,6 @@ gem 'mongoid', git: 'https://github.com/estolfo/mongoid.git', branch: 'MONGOID-4
 gem 'bson_ext'
 
 gem 'resque'
-# gem 'resque-scheduler'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

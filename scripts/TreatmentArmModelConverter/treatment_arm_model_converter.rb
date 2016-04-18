@@ -5,7 +5,6 @@ require 'rails'
 require "#{File.dirname(__FILE__)}/lib/basic_treatment_arm_job"
 require "#{File.dirname(__FILE__)}/lib/basic_treatment_arm_patient_job"
 require "#{File.dirname(__FILE__)}/lib/patient_job"
-require "#{File.dirname(__FILE__)}/lib/patient_trigger_job"
 require "#{File.dirname(__FILE__)}/lib/treatment_job"
 
 class TreatmentArmModelConverter
@@ -64,7 +63,6 @@ class TreatmentArmModelConverter
           Resque.enqueue(PatientJob, patient_data)
         end
       end
-      # Resque.enqueue(PatientJob, patient)
     end
   end
 

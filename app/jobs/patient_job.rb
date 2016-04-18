@@ -11,19 +11,19 @@ class PatientJob
       end
       case patient[:current_patient_status]
         when "ON_TREATMENT_ARM"
-          # p "Recieved patient at state ON_TREATMENT_ARM : #{patient[:patient_sequence_number]}"
-          on_treatment_arm_patient(patient)
+          p "Recieved patient at state ON_TREATMENT_ARM : #{patient[:patient_sequence_number]}"
+          store_patient_on_arm(patient)
         when "NOT_ELIGIBLE"
-          # p "Recieved patient at state NOT_ELIGIBLE : #{patient[:patient_sequence_number]}"
-          on_treatment_arm_patient(patient)
+          p "Recieved patient at state NOT_ELIGIBLE : #{patient[:patient_sequence_number]}"
+          store_patient_on_arm(patient)
         when "PENDING_APPROVAL"
           p "Recieved patient at state PENDING_APPROVAL : #{patient[:patient_sequence_number]}"
-          on_treatment_arm_patient(patient)
+          store_patient_on_arm(patient)
         when "OFF_TRIAL", "OFF_TRIAL_NOT_CONSENTED", "OFF_TRIAL_DECEASED"
-          # p "Recieved patient at state OFF_TRIAL_* : #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
-          # on_treatment_arm_patient(patient)
+          p "Recieved patient at state OFF_TRIAL_* : #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
+          store_patient_on_arm(patient)
         else
-          # p "Recieved patient with no current state : #{patient[:patient_sequence_number]}"
+          p "Recieved patient with no current state : #{patient[:patient_sequence_number]}"
       end
     rescue => error
       p error
@@ -31,7 +31,7 @@ class PatientJob
   end
 
 
-  def self.on_treatment_arm_patient(patient)
+  def self.store_patient_on_arm(patient)
     if TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.in => ["", nil]).exists?
       ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
       insert(ta, patient)
