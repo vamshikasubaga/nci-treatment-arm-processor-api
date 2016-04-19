@@ -99,7 +99,6 @@ class TreatmentArmModelConverter
       treatment_arm.store("treatment_arm_id", treatment_arm["_id"])
       treatment_arm.delete("_id")
       Resque.enqueue(TreatmentJob, treatment_arm)
-      Resque.enqueue(BasicTreatmentArmJob, treatment_arm)
     end
   end
 
