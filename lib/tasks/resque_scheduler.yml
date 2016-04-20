@@ -1,7 +1,0 @@
-basic_treatment_arm_job:
-  every:
-    - "10s"
-    - :first_in: '15s'
-  class: "BasicTreatmentArmJob"
-  queue: treatment_arm
-  description: "This job will check treatment_arm every 1 seconds after 15 seconds after start"

@@ -1,10 +1,18 @@
-require 'date'
-require 'basic_treatment_arm'
+require 'bundler/setup'
+require 'active_job'
+require 'sneakers'
 
-class BasicTreatmentArmJob
+Sneakers.configure(:heartbeat => 20,
+                   :amqp => 'amqp://guest:guest@localhost:5672',
+                   :vhost => '/')
+ActiveJob::Base.queue_adapter = :sneakers
 
-  def self.perform
+class BasicTreatmentArmJob < ActiveJob::Base
+  queue_as :default
+
+  def perform
     begin
+      p TreatmentArm.where(:patient.nin => ["", nil]).count
       treatment_arm_list = TreatmentArm.distinct(:treatment_arm_id)
       all_treatment_arms_accounted(treatment_arm_list)
       treatment_arm_list.each do | treatment_arm_id |
@@ -15,7 +23,7 @@ class BasicTreatmentArmJob
     end
   end
 
-  def self.all_treatment_arms_accounted(treatment_arm_list)
+  def all_treatment_arms_accounted(treatment_arm_list)
     treatment_arm_list.each do | treatment_arm_id |
       if !BasicTreatmentArm.where(:_id => treatment_arm_id).exists?
         basic_insert(treatment_arm_id)
@@ -23,17 +31,17 @@ class BasicTreatmentArmJob
     end
   end
 
-  def self.get_latest_treatment_arm(treatment_arm_id)
+  def get_latest_treatment_arm(treatment_arm_id)
     TreatmentArm.where(:treatment_arm_id => treatment_arm_id).sort({version:-1}).first
   end
 
-  def self.basic_insert(treatment_arm_id)
+  def basic_insert(treatment_arm_id)
     basic_treatment_arm = {:_id => treatment_arm_id}
     BasicTreatmentArm.new(basic_treatment_arm).save
     p "Saving treatment_arm_id #{treatment_arm_id} as a basic_treatment_arm object"
   end
 
-  def self.update(treatment_arm)
+  def update(treatment_arm)
     basic_treatment_arm = BasicTreatmentArm.where(:_id => treatment_arm[:treatment_arm_id]).first
     sorted_status_log = !treatment_arm[:status_log].blank? ? treatment_arm[:status_log].sort_hash_descending  : {}
     basic_treatment_arm.treatment_arm_name = treatment_arm[:name]
@@ -51,3 +59,5 @@ class BasicTreatmentArmJob
   end
 
 end
+
+BasicTreatmentArmJob.perform_later()

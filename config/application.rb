@@ -21,6 +21,7 @@ module NciTreatmentArmProcessorApi
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    config.autoload_paths += Dir[Rails.root.join('app', 'workers')]
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '*')]
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'treatment_arm', '{*/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'treatment_arm', 'variants', '{*/}')]
@@ -28,6 +29,6 @@ module NciTreatmentArmProcessorApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-    config.active_job.queue_adapter = :resque
+    config.active_job.queue_adapter = :sneakers
   end
 end

@@ -1,13 +1,18 @@
-class PatientJob
 
-  @queue = :patient
+class PatientWorker
+  include Sneakers::Worker
 
-  def self.perform(patient)
+  from_queue :patient,
+             :durable => true,
+             :block => true
+
+  def work(patient)
     begin
-      patient = patient.symbolize_keys
+      patient = JSON.parse(patient).symbolize_keys
       if pre_check_existence(patient[:patient_sequence_number], patient[:treatment_arm_id],
                           patient[:treatment_arm_version], patient[:current_patient_status])
         raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
+        reject!
       end
       case patient[:current_patient_status]
         when "ON_TREATMENT_ARM"
@@ -31,7 +36,7 @@ class PatientJob
   end
 
 
-  def self.store_patient_on_arm(patient)
+  def store_patient_on_arm(patient)
     if TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.in => ["", nil]).exists?
       ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
       insert(ta, patient)
@@ -39,31 +44,32 @@ class PatientJob
       ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
       update(ta, patient)
     else
-      p "requeue patient"
-      Resque.enqueue(PatientJob, patient)
+      raise ArgumentError, "Patient was found for treatment arm #{patient[:treatment_arm_id]} but treatment arm does not exists...requeue patient"
     end
   end
 
 
-  def self.pre_check_existence(patient_sequence_number, treatment_arm_id, version, status)
+  def pre_check_existence(patient_sequence_number, treatment_arm_id, version, status)
     TreatmentArm.where(:treatment_arm_id => treatment_arm_id,
                           :version => version,
                           :'patient.patient_sequence_number' => patient_sequence_number,
                           :'patient.current_patient_status' => status).exists?
   end
 
-  def self.update(treatment_arm, patient)
+  def update(treatment_arm, patient)
     patient_on_arm = treatment_arm.clone
     patient_on_arm.patient = mold_patient_data(patient)
     patient_on_arm.save
+    ack!
   end
 
-  def self.insert(treatment_arm, patient)
+  def insert(treatment_arm, patient)
     treatment_arm.patient = mold_patient_data(patient)
     treatment_arm.save
+    ack!
   end
 
-  def self.mold_patient_data(patient)
+  def mold_patient_data(patient)
     new_patient = Patient.new
     new_patient.patient_sequence_number = patient[:patient_sequence_number]
     new_patient.variant_report = patient[:biopsy]
@@ -78,7 +84,7 @@ class PatientJob
     return new_patient
   end
 
-  def self.mold_patient_assignment_data(patient_assignment)
+  def mold_patient_assignment_data(patient_assignment)
     patient_assignment = patient_assignment.symbolize_keys
     new_patient_assignment = PatientAssignment.new
     new_patient_assignment.date_assigned = patient_assignment[:date_assigned]

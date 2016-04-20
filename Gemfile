@@ -21,8 +21,10 @@ gem 'puma'
 gem 'mongoid', git: 'https://github.com/estolfo/mongoid.git', branch: 'MONGOID-4218-rails-5'
 gem 'bson_ext'
 
-gem 'resque'
-gem 'resque-scheduler'
+# gem 'resque'
+# gem 'resque-scheduler'
+gem 'sneakers'
+gem 'bunny'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
