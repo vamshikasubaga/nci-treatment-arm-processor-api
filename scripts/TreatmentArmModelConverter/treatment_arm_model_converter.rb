@@ -6,8 +6,9 @@ require 'rails'
 class TreatmentArmModelConverter
 
   def initialize
-    @client = Mongo::Client.new([ '127.0.0.1:27017' ], :database => 'match')
-    @conn = Bunny.new
+    @client = Mongo::Client.new([ '192.168.99.100:27017' ], :database => 'match')
+    # @conn = Bunny.new
+    @conn = Bunny.new(:host => "192.168.99.100", :vhost => "/", :user => "guest", :password => "guest")
     @conn.start
   end
 
