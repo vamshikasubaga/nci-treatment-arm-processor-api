@@ -12,7 +12,6 @@ class PatientWorker
       if pre_check_existence(patient[:patient_sequence_number], patient[:treatment_arm_id],
                           patient[:treatment_arm_version], patient[:current_patient_status])
         raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
-        reject!
       end
       case patient[:current_patient_status]
         when "ON_TREATMENT_ARM"
@@ -32,6 +31,7 @@ class PatientWorker
       end
     rescue => error
       p error
+      reject!
     end
   end
 
