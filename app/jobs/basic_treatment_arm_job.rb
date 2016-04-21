@@ -2,22 +2,17 @@ require 'bundler/setup'
 require 'active_job'
 require 'sneakers'
 
-Sneakers.configure(:heartbeat => 20,
-                   :amqp => 'amqp://guest:guest@192.168.99.100:5672',
-                   :vhost => '/')
-ActiveJob::Base.queue_adapter = :sneakers
-
 class BasicTreatmentArmJob < ActiveJob::Base
-  queue_as :default
+  queue_as :basic_treatmnet_arm
 
   def perform
     begin
-      p TreatmentArm.where(:patient.nin => ["", nil]).count
       treatment_arm_list = TreatmentArm.distinct(:treatment_arm_id)
       all_treatment_arms_accounted(treatment_arm_list)
       treatment_arm_list.each do | treatment_arm_id |
         update(get_latest_treatment_arm(treatment_arm_id))
       end
+      p "BasicTreatmentArmJob has updated basic_treatment_arm model"
     rescue => error
       p error
     end
@@ -55,7 +50,6 @@ class BasicTreatmentArmJob < ActiveJob::Base
     basic_treatment_arm.date_closed = sorted_status_log.key("CLOSED")
     basic_treatment_arm.date_suspended = sorted_status_log.key("SUSPENDED")
     basic_treatment_arm.save
-    p "Updating basic_treatment_arm #{basic_treatment_arm._id}"
   end
 
 end
