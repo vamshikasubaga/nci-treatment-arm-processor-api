@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'factory_girl_rails'
 
-describe TreatmentJob do
+describe TreatmentWorker do
 
   describe "takes in TreatmentArm job and process" do
 
