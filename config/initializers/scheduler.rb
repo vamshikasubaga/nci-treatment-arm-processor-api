@@ -7,4 +7,5 @@ treatment_arm_thread.every '2s' do
 end
 patient_thread.every '5s' do
   Publisher.publish("patient_status")
+  Publisher.publish("patient_disease")
 end
