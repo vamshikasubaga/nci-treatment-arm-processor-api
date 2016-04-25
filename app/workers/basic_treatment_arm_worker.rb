@@ -1,11 +1,11 @@
-require 'bundler/setup'
-require 'active_job'
-require 'sneakers'
+class BasicTreatmentArmWorker
+  include Sneakers::Worker
 
-class BasicTreatmentArmJob < ActiveJob::Base
-  queue_as :basic_treatmnet_arm
+  from_queue :basic_treatment_arm,
+             :durable => true,
+             :block => true
 
-  def perform
+  def work(message)
     begin
       treatment_arm_list = TreatmentArm.distinct(:treatment_arm_id)
       all_treatment_arms_accounted(treatment_arm_list)
@@ -13,8 +13,10 @@ class BasicTreatmentArmJob < ActiveJob::Base
         update(get_latest_treatment_arm(treatment_arm_id))
       end
       p "BasicTreatmentArmJob has updated basic_treatment_arm model"
+      ack!
     rescue => error
       p error
+      reject!
     end
   end
 
@@ -53,5 +55,3 @@ class BasicTreatmentArmJob < ActiveJob::Base
   end
 
 end
-
-BasicTreatmentArmJob.perform_later()
