@@ -12,10 +12,10 @@ class BasicTreatmentArm
   field :not_enrolled_patients
   field :pending_patients
   field :treatment_arm_status
-  field :date_created
-  field :date_opened
-  field :date_closed
-  field :date_suspended
+  field :date_created, type: Date
+  field :date_opened, type: Date
+  field :date_closed, type: Date
+  field :date_suspended, type: Date
 
 end
 

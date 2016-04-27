@@ -47,10 +47,10 @@ class BasicTreatmentArmWorker
     basic_treatment_arm.not_enrolled_patients = TreatmentArm.where(:treatment_arm_id => treatment_arm[:treatment_arm_id]).in('patient.current_patient_status' => ["NOT_ELIGIBLE", "OFF_TRIAL_DECEASED", "OFF_TRIAL_NOT_CONSENTED", "FORMERLY_ON_ARM_PROGRESSED"]).count
     basic_treatment_arm.pending_patients = TreatmentArm.where(:treatment_arm_id => treatment_arm[:treatment_arm_id], 'patient.current_patient_status' => "PENDING_APPROVAL").count
     basic_treatment_arm.treatment_arm_status = treatment_arm[:treatment_arm_status]
-    basic_treatment_arm.date_created = !treatment_arm[:date_created].blank? ? (treatment_arm[:date_created]).to_time.to_i : nil
-    basic_treatment_arm.date_opened = sorted_status_log.key("OPEN")
-    basic_treatment_arm.date_closed = sorted_status_log.key("CLOSED")
-    basic_treatment_arm.date_suspended = sorted_status_log.key("SUSPENDED")
+    basic_treatment_arm.date_created = !treatment_arm[:date_created].blank? ? treatment_arm[:date_created].to_time : nil
+    basic_treatment_arm.date_opened = !sorted_status_log.key("OPEN").blank? ? Time.strptime(sorted_status_log.key("OPEN"), '%Q') : nil
+    basic_treatment_arm.date_closed = !sorted_status_log.key("CLOSED").blank? ? Time.strptime(sorted_status_log.key("CLOSED"), '%Q') : nil
+    basic_treatment_arm.date_suspended = !sorted_status_log.key("SUSPENDED").blank? ? Time.strptime(sorted_status_log.key("SUSPENDED"), '%Q') : nil
     basic_treatment_arm.save
   end
 
