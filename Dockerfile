@@ -22,4 +22,4 @@ RUN gem install rails --version "$RAILS_VERSION"
 
 # Default command 
 #CMD ["rails", "server", "--binding", "0.0.0.0"]
-CMD ["bundle", "exec", "rake", "sneakers:run", "--binding", "0.0.0.0"]
+CMD ["bundle", "exec", "rake", "sneakers:run"]
