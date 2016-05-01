@@ -21,6 +21,10 @@ gem 'puma'
 gem 'mongoid', git: 'https://github.com/estolfo/mongoid.git', branch: 'MONGOID-4218-rails-5'
 gem 'bson_ext'
 
+gem 'aws-sdk', '~>2'
+gem 'aws-sdk-rails'
+gem 'dynamoid', git: 'https://github.com/josephverbeck/Dynamoid'
+
 # gem 'resque'
 # gem 'resque-scheduler'
 gem 'sneakers'
