@@ -1,20 +1,20 @@
 class TreatmentWorker
-  include Sneakers::Worker
-    from_queue :treatment_arm,
-               :durable => true,
-               :block => true
+  include Shoryuken::Worker
 
-    def work(treatment_arm)
+    shoryuken_options queue: 'treatment_arm_dev', auto_delete: true
+
+    def perform(sqs_message, treatment_arm)
       begin
-        treatment_arm = JSON.parse(treatment_arm).symbolize_keys
-        if TreatmentArm.where(:treatment_arm_id => treatment_arm[:treatment_arm_id]).exists?
-          update(treatment_arm)
-        else
-          insert(treatment_arm)
-        end
-        ack!
+        p treatment_arm
+        # treatment_arm = JSON.parse(treatment_arm).symbolize_keys
+        # if TreatmentArm.where(:treatment_arm_id => treatment_arm[:treatment_arm_id]).exists?
+        #   update(treatment_arm)
+        # else
+        #   insert(treatment_arm)
+        # end
+        # ack!
       rescue => error
-        reject!
+        # reject!
         p error
       end
     end
@@ -33,7 +33,6 @@ class TreatmentWorker
         treatment_arm_model.save
       rescue => error
         p "Failed to said treatment arm with error #{error}"
-        reject!
       end
     end
 end

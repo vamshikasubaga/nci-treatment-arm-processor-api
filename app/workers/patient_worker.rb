@@ -1,37 +1,36 @@
 
 class PatientWorker
-  include Sneakers::Worker
+  include Shoryuken::Worker
 
-  from_queue :patient,
-             :durable => true,
-             :block => true
+  shoryuken_options queue: 'treatment_arm_dev', auto_delete: true
 
-  def work(patient)
+  def perform(sqs_message, patient)
     begin
-      patient = JSON.parse(patient).symbolize_keys
-      if pre_check_existence(patient[:patient_sequence_number], patient[:treatment_arm_id],
-                          patient[:treatment_arm_version], patient[:current_patient_status])
-        raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
-      end
-      case patient[:current_patient_status]
-        when "ON_TREATMENT_ARM"
-          p "Recieved patient at state ON_TREATMENT_ARM : #{patient[:patient_sequence_number]}"
-          store_patient_on_arm(patient)
-        when "NOT_ELIGIBLE"
-          p "Recieved patient at state NOT_ELIGIBLE : #{patient[:patient_sequence_number]}"
-          store_patient_on_arm(patient)
-        when "PENDING_APPROVAL"
-          p "Recieved patient at state PENDING_APPROVAL : #{patient[:patient_sequence_number]}"
-          store_patient_on_arm(patient)
-        when "OFF_TRIAL", "OFF_TRIAL_NOT_CONSENTED", "OFF_TRIAL_DECEASED"
-          p "Recieved patient at state OFF_TRIAL_* : #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
-          store_patient_on_arm(patient)
-        else
-          p "Recieved patient with no current state : #{patient[:patient_sequence_number]}"
-      end
+      p patient
+    #   patient = JSON.parse(patient).symbolize_keys
+    #   if pre_check_existence(patient[:patient_sequence_number], patient[:treatment_arm_id],
+    #                       patient[:treatment_arm_version], patient[:current_patient_status])
+    #     raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
+    #   end
+    #   case patient[:current_patient_status]
+    #     when "ON_TREATMENT_ARM"
+    #       p "Recieved patient at state ON_TREATMENT_ARM : #{patient[:patient_sequence_number]}"
+    #       store_patient_on_arm(patient)
+    #     when "NOT_ELIGIBLE"
+    #       p "Recieved patient at state NOT_ELIGIBLE : #{patient[:patient_sequence_number]}"
+    #       store_patient_on_arm(patient)
+    #     when "PENDING_APPROVAL"
+    #       p "Recieved patient at state PENDING_APPROVAL : #{patient[:patient_sequence_number]}"
+    #       store_patient_on_arm(patient)
+    #     when "OFF_TRIAL", "OFF_TRIAL_NOT_CONSENTED", "OFF_TRIAL_DECEASED"
+    #       p "Recieved patient at state OFF_TRIAL_* : #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
+    #       store_patient_on_arm(patient)
+    #     else
+    #       p "Recieved patient with no current state : #{patient[:patient_sequence_number]}"
+    #   end
     rescue => error
       p error
-      reject!
+    #   reject!
     end
   end
 

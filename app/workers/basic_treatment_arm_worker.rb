@@ -1,11 +1,9 @@
 class BasicTreatmentArmWorker
-  include Sneakers::Worker
+  include Shoryuken::Worker
 
-  from_queue :basic_treatment_arm,
-             :durable => true,
-             :block => true
+  shoryuken_options queue: 'treatment_arm_dev', auto_delete: true
 
-  def work(message)
+  def perform(message)
     begin
       treatment_arm_list = TreatmentArm.distinct(:treatment_arm_id)
       all_treatment_arms_accounted(treatment_arm_list)
