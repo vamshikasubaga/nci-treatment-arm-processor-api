@@ -1,3 +1,3 @@
-Shoryuken.configure_server do | config |
-  # Rails.logger = Shoryuken::Logger.logger
+Shoryuken.options do | config |
+
 end
