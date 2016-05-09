@@ -23,14 +23,8 @@ gem 'bson_ext'
 
 gem 'aws-sdk', '~>2'
 gem 'aws-sdk-rails'
-gem 'dynamoid', git: 'https://github.com/josephverbeck/Dynamoid'
-
 gem 'aws-record'
 
-# gem 'resque'
-# gem 'resque-scheduler'
-gem 'sneakers'
-gem 'bunny'
 gem 'rufus-scheduler'
 
 gem 'shoryuken'

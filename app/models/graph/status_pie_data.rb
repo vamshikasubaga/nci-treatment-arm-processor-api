@@ -1,8 +1,10 @@
 class StatusPieData
-  include Mongoid::Document
+  include Aws::Record
 
-  field :_id
-  field :status_array, type: Array
+  set_table_name "ta_status_pie_data_dev"
+
+  string_attr :treatment_arm_id, hash_key: true
+  list_attr :status_array
 
 
 end

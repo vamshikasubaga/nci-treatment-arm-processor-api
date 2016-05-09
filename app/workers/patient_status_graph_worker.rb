@@ -1,11 +1,9 @@
 class PatientStatusGraphWorker
-  include Sneakers::Worker
+  include Shoryuken::Worker
 
-  from_queue :patient_status,
-             :durable => true,
-             :block => true
+  shoryuken_options queue: 'ta_basic_treatment_arm_dev', auto_delete: true
 
-  def work(message)
+  def perform(sqs_message, body)
     begin
       treatment_arms = TreatmentArm.distinct(:treatment_arm_id)
       treatment_arms.each do | treatment_arm_id |
@@ -13,10 +11,8 @@ class PatientStatusGraphWorker
         update_pie_data(treatment_arm_id)
       end
       p "patient_status_pie_data has been updated"
-      ack!
     rescue => error
       p error
-      reject!
     end
   end
 

@@ -1,11 +1,9 @@
 class PatientDiseaseGraphWorker
-  include Sneakers::Worker
+  include Shoryuken::Worker
 
-  from_queue :patient_disease,
-             :durable => true,
-             :block => true
+  shoryuken_options queue: 'ta_basic_treatment_arm_dev', auto_delete: true
 
-  def work(message)
+  def perform(message)
     begin
       treatment_arms = TreatmentArm.distinct(:treatment_arm_id)
       treatment_arms.each do | treatment_arm_id |
