@@ -6,8 +6,13 @@ class BasicTreatmentArmWorker
   def perform(sqs_message, patient)
     begin
       treatment_arm_list = TreatmentArm.scan({})
+      ta_distinct_list = []
       treatment_arm_list.each do | treatment_arm_id |
-        update(treatment_arm_id)
+        ta_distinct_list << treatment_arm_id
+      end
+      ta_distinct_list.uniq!{ |x| x.name }
+      ta_distinct_list.each do | ta |
+        update(ta)
       end
     rescue => error
       p error
@@ -51,7 +56,7 @@ class BasicTreatmentArmWorker
       basic_treatment_arm.treatment_arm_status = treatment_arm.treatment_arm_status
       basic_treatment_arm.date_created = treatment_arm.date_created
       basic_treatment_arm.former_patients = 0
-      basic_treatment_arm.current_patients = 0
+      basic_treatment_arm.current_patients = TreatmentArm.query({:treatment_arm_name_version => treatment_arm[:treatment_arm_id], 'patient.current_patient_status' => "ON_TREATMENT_ARM"}).count
       basic_treatment_arm.not_enrolled_patients = 0
       basic_treatment_arm.pending_patients = 0
       basic_treatment_arm.save
