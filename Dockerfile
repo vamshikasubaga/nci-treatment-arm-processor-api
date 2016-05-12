@@ -1,6 +1,8 @@
 # Base image 
 FROM ruby:2.2.4
 
+MAINTAINER jeremy.pumphrey@nih.gov
+
 ENV RAILS_VERSION 5.0.0.beta3
 ENV HOME /home/rails/myapp 
 WORKDIR $HOME 
