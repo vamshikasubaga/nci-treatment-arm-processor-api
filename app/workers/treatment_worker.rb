@@ -6,21 +6,13 @@ class TreatmentWorker
   def perform(sqs_message, treatment_arm)
     begin
       treatment_arm = JSON.parse(treatment_arm).symbolize_keys!
-      if(TreatmentArm.find(name: treatment_arm[:_id], version: treatment_arm[:version])).blank?
+      if(TreatmentArm.find(name: treatment_arm[:id], version: treatment_arm[:version])).blank?
         insert(treatment_arm)
       else
-        p "TreatmentArm #{treatment_arm[:_id]} version #{treatment_arm[:version]} exists already.  Skipping"
+        Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} version #{treatment_arm[:version]} exists already.  Skipping")
       end
     rescue => error
       p error
-    end
-  end
-
-  def update(treatment_arm)
-    if TreatmentArm.where(:treatment_arm_id => treatment_arm[:treatment_arm_id]).and(:version => treatment_arm[:version]).exists?
-      p "Treatment_arm (#{treatment_arm[:treatment_arm_id]}) version (#{treatment_arm[:version]}) already exists"
-    else
-      insert(treatment_arm)
     end
   end
 
@@ -29,14 +21,15 @@ class TreatmentWorker
       treatment_arm_model = TreatmentArm.new
       treatment_arm_model.from_json(convert_model(treatment_arm).to_json)
       treatment_arm_model.save
+      Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} version #{treatment_arm[:version]} has been saved successfully")
     rescue => error
-      p "Failed to save treatment arm with error #{error}"
+      Shoryuken.logger.error("Failed to save treatment arm with error #{error}")
     end
   end
 
   def convert_model(treatment_arm={})
     remove_blank_document({
-        name: treatment_arm[:_id],
+        name: treatment_arm[:id],
         version: treatment_arm[:version],
         description: treatment_arm[:description],
         target_id: treatment_arm[:target_id],
