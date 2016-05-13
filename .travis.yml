@@ -1,22 +1,20 @@
 sudo: required
-services: 
-  - docker
+services:
+- docker
 language: ruby
 rvm:
-  - 2.2.3
-#before_script:
+- 2.2.3
 after_success:
-  - ls -alth
-  - docker build -t matchbox/nci-treatment-arm-processor-api .
-  - docker images
-  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker tag -f matchbox/nci-treatment-arm-processor-api matchbox/nci-treatment-arm-processor-api:latest
-  - docker images
-  - docker push matchbox/nci-treatment-arm-processor-api
-#after_script:
+- ls -alth
+- docker build -t matchbox/nci-treatment-arm-processor-api .
+- docker images
+- docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker tag -f matchbox/nci-treatment-arm-processor-api matchbox/nci-treatment-arm-processor-api:latest
+- docker images
+- docker push matchbox/nci-treatment-arm-processor-api
 notifications:
   slack:
-    secure: D/KgyfwUfYKzLf86BlND9XM4f/8spR5P2zzECbvrFCG2RMxcg1n2rzidJHZl46DvkGm0NCGNe3q4zYi9u7FivG3++dvox1UKnq3PEwnBqqWW76b3ZMnfA7D/gmi+sF182lPlxHjCgZGSOgV6aFGndkjMPh0NH+KPo+gkDNenoUAoq/JEu+qo5IKWV2vXLgZcl4vGH2/JZRei2pfnlkA0yNY2ziLw2ZOphD14D4LN4Vm1O+NwWHFA6JJmjlzezgzbXPBBq/0Lx1ZrYsNgf3Jpao448bNT5VoJJ3nXjRRyVvXzwL/lporKrOThszf09vERi/FqAAFox//d/YQgcOt1CCArZECDVp8r3m0UelKss6O2JksRn1V/N4fXhG47SpuzUgRKH5RHm3/kTdunhHefH5mNuQJ+Fh37VYCEk729l+Jh2igrofGkMwwUevplRrD45j27EejOu6+U7ij47Y4HQV6Tqg6ptXOE+Iq2yu3n/gpiMlhjw1juqQATjYNbcwZ1IvQgQF93VcdyVmi6XrDvbLyNIqhMpxhbsAnzwQ7IFa9KZ1J32aE4jJgjMuQGetNmNfHEg5lO8ADDzXO9KHHbJXhDv4wP5rjMLYo4V8ogaN7Nd06TXyPpPQ4EenJ+SBcY/PPogeOt3DQplJqbOqlzP0/2Bs4SqJ8IMWKOD4yZ/Lo=
+    secure: YC185gYAkbEklgq2WhVn7F8As/ydZnB6FRD7y4iM7+M6O4zbIY2YI4tS0LqAsBZmJQ0voBo/+qN/sgM4BmskzxItY97qmJ0GAdQrlCdMSACsH7JCtEBJNT3OkyEAGiT98050+gWosfxRMrAXx0e2+sIY8VMiYMPAAIi7TAVPFJGDeD6uu1v/fzotL+2UuF90yG+R9QzXVUUqz0OuEXPcmErT4DvhnMe1R4tUQvHe9qUz7ExHsulH05X/UG4k2nU/Mm+7MzSbkh6QDkmT/CEoXFMNxJXHwIobexWETJLZrOnzl7uHwz/09fyREtMG30FptjIFOcqNMrZ/VGxH8QYTfIfU1TFhdGLHEoyFLUOvCMpRWiIvSKl6F8JU6zSHf6Hjk3ffrGwSmIZV01DbS2cGVB1JhrzsPiV53WtYcDtXBztlWEDeMPg3d7wrWbYhRECfWxS9mkJiNFm+B+/zPWaxTN5XsPFhiL1MySDrmE3p69orX0bcNkrKQ9YOZjer7KdE4Qkv/yw4DccXRb1bP/CkMS5J1BZk6KeW0Vttup60rALEcZqn8ko6Xo2/afWzTW0uhtaaYhtq0wFNyiDNCnUYEv2kgaYuyfOn0i1+JDfOThGA4BX/qwBzY0Y+oQtljWZGEIr0CSNJVlIph8LNqLaktSrDXgOEk2fYGF/Gqb2rml4=
 addons:
   code_climate:
     repo_token:
