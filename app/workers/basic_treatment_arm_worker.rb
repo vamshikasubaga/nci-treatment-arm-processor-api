@@ -3,39 +3,21 @@ class BasicTreatmentArmWorker
 
   shoryuken_options queue: 'treatment_arm_dev', auto_delete: true
 
-  def perform(sqs_message, patient)
+  def perform(_sqs_message, patient)
     begin
       treatment_arm_list = TreatmentArm.scan({})
-      ta_distinct_list = []
+      ta_distinct_list ||= []
       treatment_arm_list.each do | treatment_arm_id |
-        ta_distinct_list << treatment_arm_id
+        ta_distinct_list.push(treatment_arm_id)
       end
       ta_distinct_list.uniq!{ |x| x.name }
       ta_distinct_list.each do | ta |
         update(ta)
       end
     rescue => error
-      p error
+      Shoryuken.logger.error("BasicTreatmentArm failed with error #{error}")
     end
   end
-
-  def all_treatment_arms_accounted(treatment_arm_list)
-    treatment_arm_list.each do | treatment_arm_id |
-      if !BasicTreatmentArm.where(:_id => treatment_arm_id).exists?
-        basic_insert(treatment_arm_id)
-      end
-    end
-  end
-
-  def get_latest_treatment_arm(treatment_arm_id)
-    # TreatmentArm.find(:name => treatment_arm_id[:name])
-  end
-
-  # def basic_insert(treatment_arm_id)
-  #   basic_treatment_arm = {:_id => treatment_arm_id}
-  #   BasicTreatmentArm.new(basic_treatment_arm).save
-  #   p "Saving treatment_arm_id #{treatment_arm_id} as a basic_treatment_arm object"
-  # end
 
   def update(treatment_arm)
     if(BasicTreatmentArm.find(:treatment_arm_id => treatment_arm.name).blank?)
@@ -49,6 +31,7 @@ class BasicTreatmentArmWorker
       basic_treatment_arm.not_enrolled_patients = 0
       basic_treatment_arm.pending_patients = 0
       basic_treatment_arm.save
+      Shoryuken.logger.info("BasicTreatmentArm for #{basic_treatment_arm.treatment_arm_id} has been updated")
     else
       basic_treatment_arm = BasicTreatmentArm.find(:treatment_arm_id => treatment_arm.name)
       basic_treatment_arm.treatment_arm_id = treatment_arm.name
@@ -56,10 +39,11 @@ class BasicTreatmentArmWorker
       basic_treatment_arm.treatment_arm_status = treatment_arm.treatment_arm_status
       basic_treatment_arm.date_created = treatment_arm.date_created
       basic_treatment_arm.former_patients = 0
-      basic_treatment_arm.current_patients = TreatmentArm.query({:treatment_arm_name_version => treatment_arm[:treatment_arm_id], 'patient.current_patient_status' => "ON_TREATMENT_ARM"}).count
+      basic_treatment_arm.current_patients = 0 #TreatmentArm.scan({:treatment_arm_name_version => treatment_arm[:name], 'patient.current_patient_status' => "ON_TREATMENT_ARM"}).count
       basic_treatment_arm.not_enrolled_patients = 0
       basic_treatment_arm.pending_patients = 0
       basic_treatment_arm.save
+      Shoryuken.logger.info("BasicTreatmentArm for #{basic_treatment_arm.treatment_arm_id} has been updated")
     end
     # sorted_status_log = !treatment_arm[:status_log].blank? ? treatment_arm[:status_log].sort_hash_descending  : {}
     # basic_treatment_arm.treatment_arm_name = treatment_arm[:name]

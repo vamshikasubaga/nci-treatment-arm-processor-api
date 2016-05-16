@@ -3,7 +3,7 @@ class TreatmentWorker
 
   shoryuken_options queue: 'treatment_arm_dev', auto_delete: true
 
-  def perform(sqs_message, treatment_arm)
+  def perform(_sqs_message, treatment_arm)
     begin
       treatment_arm = JSON.parse(treatment_arm).symbolize_keys!
       if(TreatmentArm.find(name: treatment_arm[:id], version: treatment_arm[:version])).blank?
@@ -12,7 +12,7 @@ class TreatmentWorker
         Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} version #{treatment_arm[:version]} exists already.  Skipping")
       end
     rescue => error
-      p error
+      Shoryuken.logger.error("Treatment Arm Worker failed with error #{error}")
     end
   end
 
@@ -36,7 +36,7 @@ class TreatmentWorker
         target_name: treatment_arm[:target_name],
         gene: treatment_arm[:gene],
         treatment_arm_status: treatment_arm[:treatment_arm_status],
-        date_created: treatment_arm[:date_created],
+        date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc().to_s : treatment_arm[:date_created],
         max_patients_allowed: treatment_arm[:max_patients_allowed],
         num_patients_assigned: treatment_arm[:num_patients_assigned],
         treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],

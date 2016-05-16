@@ -4,7 +4,7 @@ class PatientWorker
 
   shoryuken_options queue: 'treatment_arm_dev', auto_delete: true
 
-  def perform(sqs_message, patient)
+  def perform(_sqs_message, patient)
     begin
       p patient
     #   patient = JSON.parse(patient).symbolize_keys

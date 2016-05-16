@@ -3,7 +3,7 @@ class PatientStatusGraphWorker
 
   shoryuken_options queue: 'ta_basic_treatment_arm_dev', auto_delete: true
 
-  def perform(sqs_message, body)
+  def perform(_sqs_message, body)
     begin
       treatment_arms = TreatmentArm.distinct(:treatment_arm_id)
       treatment_arms.each do | treatment_arm_id |
