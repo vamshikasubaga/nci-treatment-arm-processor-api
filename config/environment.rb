@@ -2,5 +2,6 @@
 require File.expand_path('../application', __FILE__)
 
 require 'hash_extension'
-# Initialize the Rails application.
+require 'item_operations'
+
 Rails.application.initialize!
