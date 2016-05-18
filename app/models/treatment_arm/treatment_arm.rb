@@ -1,8 +1,11 @@
 
 class TreatmentArm
   include Aws::Record
+  include Aws::Record::RecordClassMethods
   include Aws::Record::Query::QueryClassMethods
+
   include ActiveModel::Serializers::JSON
+  include ModelSerializer
 
   set_table_name "ta_#{self.name.underscore}_#{Rails.env}"
 
@@ -26,17 +29,6 @@ class TreatmentArm
   list_attr :exclusion_drugs
   list_attr :pten_results
   map_attr :status_log
-
-
-  def attributes=(hash)
-    hash.each do |key, value|
-    send("#{key}=", value)
-    end
-  end
-
-  def attributes
-    instance_values
-  end
 
 end
 
