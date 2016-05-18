@@ -18,15 +18,11 @@ gem 'puma'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'mongoid', git: 'https://github.com/estolfo/mongoid.git', branch: 'MONGOID-4218-rails-5'
-gem 'bson_ext'
-
 gem 'aws-sdk', '~>2'
 gem 'aws-sdk-rails'
 gem 'aws-record'
 
 gem 'rufus-scheduler'
-
 gem 'shoryuken'
 
 group :development, :test do
@@ -34,7 +30,6 @@ group :development, :test do
   gem 'byebug'
 
   gem 'rspec-rails'
-  gem 'mongoid-rspec'
   gem 'factory_girl_rails'
 
 end
