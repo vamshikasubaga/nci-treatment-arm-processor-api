@@ -1,7 +1,7 @@
 class BasicTreatmentArmWorker
   include Shoryuken::Worker
 
-  shoryuken_options queue: 'treatment_arm_dev', auto_delete: true
+  shoryuken_options queue: ->{ "treatment_arm_#{Rails.env}"}, auto_delete: true
 
   def perform(_sqs_message, patient)
     begin

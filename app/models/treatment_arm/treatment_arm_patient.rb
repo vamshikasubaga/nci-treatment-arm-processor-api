@@ -3,7 +3,7 @@ class TreatmentArmPatient
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
-  set_table_name "ta_#{self.name.underscore}_#{Rails.env}"
+  set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
 
   string_attr :treatment_arm_name_version, hash_key: true
   string_attr :patient_sequence_number, range_key: true
