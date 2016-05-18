@@ -20,12 +20,10 @@ require 'rails_helper'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require "codeclimate-test-reporter"
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 require 'simplecov'
 require 'simplecov-rcov'
-
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-SimpleCov.start 'rails'
-CodeClimate::TestReporter.start
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
