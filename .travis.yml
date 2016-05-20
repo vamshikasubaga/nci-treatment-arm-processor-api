@@ -9,7 +9,7 @@ language: ruby
 rvm:
   - 2.2.3
 script:
-  - bundle exec rspec
+  - RAILS_ENV=test bundle exec rspec spec/
 after_success:
   # - ls -alth
   - docker build -t matchbox/nci-treatment-arm-processor-api .
