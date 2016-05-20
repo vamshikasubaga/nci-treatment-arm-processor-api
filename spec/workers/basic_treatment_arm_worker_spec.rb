@@ -58,7 +58,15 @@ describe BasicTreatmentArmWorker do
 
     subject { BasicTreatmentArmWorker.new }
 
-    it 'should respond to a new message' do
+    it 'should accept new queue message and perform update' do
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      allow(BasicTreatmentArm).to receive(:find).and_return(basic_treatment_arm)
+      expect(subject.perform(sqs_message, body)).to be_truthy
+    end
+
+    it 'should accept new queue message and perform insert' do
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      allow(BasicTreatmentArm).to receive(:find).and_return("")
       expect(subject.perform(sqs_message, body)).to be_truthy
     end
 
