@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 describe TreatmentWorker do
 
   let(:sqs_message) do
