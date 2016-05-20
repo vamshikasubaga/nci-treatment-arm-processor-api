@@ -8,6 +8,8 @@ services:
 language: ruby
 rvm:
   - 2.2.3
+script:
+  - bundle exec rspec
 after_success:
   # - ls -alth
   - docker build -t matchbox/nci-treatment-arm-processor-api .
