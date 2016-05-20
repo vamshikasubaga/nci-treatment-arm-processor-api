@@ -53,10 +53,12 @@ class TreatmentWorker
   def remove_blank_document(treatment_arm)
     hash_proc = Proc.new { |k, v| v.kind_of?(Hash) ? (v.delete_if(&hash_proc); nil) : v.to_s.blank? }
     treatment_arm.delete_if(&hash_proc)
-    treatment_arm[:exclusion_drugs].each do | drugs |
-      drugs.each do | moreDrugs |
-        moreDrugs[1].each do | lastDrugs |
-          lastDrugs.delete_if(&hash_proc)
+    if !treatment_arm[:exclusion_drugs].blank?
+      treatment_arm[:exclusion_drugs].each do | drugs |
+        drugs.each do | moreDrugs |
+          moreDrugs[1].each do | lastDrugs |
+            lastDrugs.delete_if(&hash_proc)
+          end
         end
       end
     end
