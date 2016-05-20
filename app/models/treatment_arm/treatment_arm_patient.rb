@@ -38,4 +38,5 @@ class TreatmentArmPatient
 
   integer_attr :current_step_number
 
+
 end

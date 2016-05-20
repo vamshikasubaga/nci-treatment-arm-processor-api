@@ -1,5 +1,7 @@
 class StatusPieData
   include Aws::Record
+  include Aws::Record::RecordClassMethods
+  include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
   set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
 

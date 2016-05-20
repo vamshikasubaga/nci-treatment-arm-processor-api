@@ -2,7 +2,7 @@ development:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_development"
-  shoryuken_delay: "10"
+  shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
 
@@ -10,7 +10,7 @@ test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_test"
-  shoryuken_delay: "10"
+  shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
 
@@ -19,6 +19,6 @@ production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_production"
-  shoryuken_delay: "10"
+  shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"

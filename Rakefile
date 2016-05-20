@@ -6,6 +6,7 @@ require 'rspec/core/rake_task'
 
 begin
   RSpec::Core::RakeTask.new(:spec)
+
 rescue LoadError
 end
 Rails.application.load_tasks

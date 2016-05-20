@@ -2,7 +2,9 @@
 require File.expand_path('../application', __FILE__)
 
 require 'hash_extension'
-require 'item_operations'
 require 'model_serializer'
+require 'item_operations'
+
+Dir["/path/to/directory/*.rb"].each {|file| require file }
 
 Rails.application.initialize!
