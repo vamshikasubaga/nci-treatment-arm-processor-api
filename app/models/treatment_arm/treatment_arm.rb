@@ -30,5 +30,10 @@ class TreatmentArm
   list_attr :pten_results
   map_attr :status_log
 
+  integer_attr :current_patients
+  integer_attr :former_patients
+  integer_attr :not_enrolled_patients
+  integer_attr :pending_patients
+
 end
 

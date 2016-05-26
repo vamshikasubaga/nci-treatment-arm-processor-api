@@ -25,12 +25,10 @@ describe TreatmentArm do
     ba.gene = "FGHS"
     ba.treatment_arm_status = "CLOSED"
     ba.study_id = "EAY131"
-    ba.max_patients_allowed = "32"
     ba.num_patients_assigned = 4
     ba.date_created = "2014-02-30"
     ba.treatment_arm_drugs = []
     ba.variant_report = {}
-    ba.exclusion_criterias = []
     ba.exclusion_diseases = []
     ba.exclusion_drugs = []
     ba.pten_results = []
@@ -53,7 +51,6 @@ describe TreatmentArm do
     expect(treatment_arm.study_id).to be_kind_of(String)
     expect(treatment_arm.date_created).to be_kind_of(String)
 
-    expect(treatment_arm.max_patients_allowed).to be_kind_of(Integer)
     expect(treatment_arm.num_patients_assigned).to be_kind_of(Integer)
 
 
