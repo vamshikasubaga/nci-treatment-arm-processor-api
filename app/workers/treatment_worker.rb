@@ -55,11 +55,7 @@ class TreatmentWorker
     treatment_arm.delete_if(&hash_proc)
     if !treatment_arm[:exclusion_drugs].blank?
       treatment_arm[:exclusion_drugs].each do | drugs |
-        drugs.each do | moreDrugs |
-          moreDrugs[1].each do | lastDrugs |
-            lastDrugs.delete_if(&hash_proc)
-          end
-        end
+        drugs.delete_if(&hash_proc)
       end
     end
     treatment_arm

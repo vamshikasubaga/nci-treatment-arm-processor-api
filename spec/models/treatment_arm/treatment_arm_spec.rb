@@ -44,7 +44,7 @@ describe TreatmentArm do
     expect(treatment_arm.name).to be_kind_of(String)
     expect(treatment_arm.version).to be_kind_of(String)
     expect(treatment_arm.description).to be_kind_of(String)
-    expect(treatment_arm.target_id).to be_kind_of(String)
+    expect(treatment_arm.target_id).to be_kind_of(Integer)
     expect(treatment_arm.target_name).to be_kind_of(String)
     expect(treatment_arm.gene).to be_kind_of(String)
     expect(treatment_arm.treatment_arm_status).to be_kind_of(String)

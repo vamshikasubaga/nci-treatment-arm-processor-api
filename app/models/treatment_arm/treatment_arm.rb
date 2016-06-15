@@ -13,7 +13,7 @@ class TreatmentArm
   string_attr :name, hash_key: true
   string_attr :version, range_key: true
   string_attr :description
-  string_attr :target_id
+  integer_attr :target_id
   string_attr :target_name
   string_attr :gene
   string_attr :treatment_arm_status

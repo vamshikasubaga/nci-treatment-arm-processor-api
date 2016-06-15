@@ -34,7 +34,6 @@ describe TreatmentWorker do
     ba.exclusion_criterias = []
     ba.exclusion_diseases = []
     ba.exclusion_drugs = [
-        {"drugs"=> [
             {"drug_id"=> "763093",
              "name" => "Trametinib",
              "pathway" => "B-RAF inhibitor",
@@ -42,9 +41,7 @@ describe TreatmentWorker do
             },
             {"drug_id" => "763760",
              "name" => ""
-            }
-        ]},
-        {"drugs" => [
+            },
             {"drug_id" => "",
              "name" => "Trametinib"
             },
@@ -52,8 +49,7 @@ describe TreatmentWorker do
              "name" => "Trametinib",
              "pathway" => "",
              "target" => "B-RAF"
-            }]
-        }
+            }
     ]
     ba.pten_results = []
     ba.status_log = {}
@@ -95,23 +91,20 @@ describe TreatmentWorker do
 
     it "should remove empty strings from json" do
       expected_results = [
-          {"drugs" => [
               {"drug_id"=>"763093",
                "name"=>"Trametinib",
                "pathway"=>"B-RAF inhibitor",
                "target"=>"B-RAF"
               },
               {"drug_id"=>"763760",
-              }
-          ]},
-          {"drugs" => [
+              },
               {"name"=>"Trametinib"
               },
               {"drug_id"=>"763093",
                "name" =>"Trametinib",
                "target" =>"B-RAF"
-              }]
-          }
+              }
+
       ]
       expect(subject.remove_blank_document(treatment_arm.to_h)[:exclusion_drugs]).to eq(expected_results)
     end
