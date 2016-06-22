@@ -19,34 +19,14 @@ class TreatmentWorker
   def insert(treatment_arm)
     begin
       treatment_arm_model = TreatmentArm.new
-      treatment_arm_model.from_json(convert_model(treatment_arm).to_json)
+      json = remove_blank_document(treatment_arm)
+      json = treatment_arm_model.convert_models(json).to_json
+      treatment_arm_model.from_json(json)
       treatment_arm_model.save
       Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} version #{treatment_arm[:version]} has been saved successfully")
     rescue => error
       Shoryuken.logger.error("Failed to save treatment arm with error #{error}")
     end
-  end
-
-  def convert_model(treatment_arm={})
-    remove_blank_document({
-        name: treatment_arm[:id],
-        version: treatment_arm[:version],
-        description: treatment_arm[:description],
-        target_id: treatment_arm[:target_id],
-        target_name: treatment_arm[:target_name],
-        gene: treatment_arm[:gene],
-        treatment_arm_status: treatment_arm[:treatment_arm_status],
-        date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc().to_s : treatment_arm[:date_created],
-        max_patients_allowed: treatment_arm[:max_patients_allowed],
-        num_patients_assigned: treatment_arm[:num_patients_assigned],
-        treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
-        exclusion_criterias: treatment_arm[:exclusion_criterias],
-        exclusion_diseases: treatment_arm[:exclusion_diseases],
-        exclusion_drugs: treatment_arm[:exclusion_drugs],
-        pten_results: treatment_arm[:pten_results],
-        status_log: treatment_arm[:status_log],
-        variant_report: treatment_arm[:variant_report]
-    })
   end
 
   #Refacto!

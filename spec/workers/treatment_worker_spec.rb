@@ -26,12 +26,10 @@ describe TreatmentWorker do
     ba.gene = "FGHS"
     ba.treatment_arm_status = "CLOSED"
     ba.study_id = "EAY131"
-    ba.max_patients_allowed = "32"
     ba.num_patients_assigned = 4
     ba.date_created = "2014-02-30"
     ba.treatment_arm_drugs = []
     ba.variant_report = {}
-    ba.exclusion_criterias = []
     ba.exclusion_diseases = []
     ba.exclusion_drugs = [
             {"drug_id"=> "763093",
@@ -80,8 +78,8 @@ describe TreatmentWorker do
     end
 
     it "should convert json to the given model" do
-      expect(subject.convert_model()).to be_truthy
-      expect(subject.convert_model({ :id => "EAY131-A",
+      expect(TreatmentArm.new.convert_models({})).to be_truthy
+      expect(TreatmentArm.new.convert_models({ :id => "EAY131-A",
                               :version => "testVersion",
                               :description => "testDiscription",
                               :target_id => "",
