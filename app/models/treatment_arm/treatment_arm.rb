@@ -27,6 +27,7 @@ class TreatmentArm
   list_attr :treatment_arm_drugs
   map_attr :variant_report
   list_attr :exclusion_diseases
+  list_attr :inclusion_diseases
   list_attr :exclusion_drugs
   list_attr :pten_results
   map_attr :status_log
@@ -42,6 +43,7 @@ class TreatmentArm
         name: treatment_arm[:id],
         version: treatment_arm[:version],
         study_id: treatment_arm[:study_id],
+        stratum_id: treatment_arm[:stratum_id],
         description: treatment_arm[:description],
         target_id: treatment_arm[:target_id],
         target_name: treatment_arm[:target_name],
@@ -52,6 +54,7 @@ class TreatmentArm
         num_patients_assigned: treatment_arm[:num_patients_assigned],
         treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
         exclusion_diseases: treatment_arm[:exclusion_diseases],
+        inclusion_diseases: treatment_arm[:inclusion_diseases],
         exclusion_drugs: treatment_arm[:exclusion_drugs],
         pten_results: treatment_arm[:pten_results],
         status_log: treatment_arm[:status_log],
