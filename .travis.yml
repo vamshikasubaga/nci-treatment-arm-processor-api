@@ -18,6 +18,7 @@ after_success:
   - docker images
   - docker push matchbox/nci-treatment-arm-processor-api
   - docker run -it --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION=us-east-1 silintl/ecs-deploy --cluster uMatch-Test --service-name uMatch-nci-treatment-arm-processor-api-TEST -i matchbox/nci-treatment-arm-processor-api:latest
+  - docker run -it --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION=us-east-1 silintl/ecs-deploy --cluster PedMatch-IntTest --service-name uMatch-nci-treatment-arm-processor-api-INTTEST -i matchbox/nci-treatment-arm-processor-api:latest
   - "curl -s -X POST -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Travis-API-Version: 3\" -H \"Authorization: token $TRAVIS_TOKEN\" -d '{\"request\": {\"message\": \"Triggered by nci-treatment-arm-processor-api\",\"branch\":\"master\", \"config\": {\"env\": {\"matrix\": [\"TRIGGER_REPO=matchbox/nci-treatment-arm-processor-api;CUC_TAG=@treatment_arm\"]}}}}' https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests"
 notifications:
   slack:
