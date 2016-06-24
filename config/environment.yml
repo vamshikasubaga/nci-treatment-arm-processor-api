@@ -1,10 +1,11 @@
 development:
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+  aws_dynamo_endpoint: "http://localhost:8000"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm_development"
+  queue_name: "jv_dev"
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
+  PORT: "3100"
 
 test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -13,7 +14,6 @@ test:
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
-
 
 production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
