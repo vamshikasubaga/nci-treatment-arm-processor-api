@@ -52,7 +52,6 @@ describe TreatmentArm do
     expect(treatment_arm.gene).to be_kind_of(String)
     expect(treatment_arm.treatment_arm_status).to be_kind_of(String)
     expect(treatment_arm.study_id).to be_kind_of(String)
-    expect(treatment_arm.date_created).to be_kind_of(String)
     expect(treatment_arm.stratum_id).to be_kind_of(String)
 
   end
@@ -95,7 +94,6 @@ describe TreatmentArm do
     expect(treatment_arm.gene).to eq(from_json_ta.gene)
     expect(treatment_arm.treatment_arm_status).to eq(from_json_ta.treatment_arm_status)
     expect(treatment_arm.num_patients_assigned).to eq(from_json_ta.num_patients_assigned)
-    expect(treatment_arm.date_created).to eq(from_json_ta.date_created)
     expect(treatment_arm.assay_results).to eq(from_json_ta.assay_results)
     expect(treatment_arm.treatment_arm_drugs).to eq(from_json_ta.treatment_arm_drugs)
     expect(treatment_arm.variant_report).to eq(from_json_ta.variant_report)

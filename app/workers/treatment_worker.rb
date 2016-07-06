@@ -6,7 +6,16 @@ class TreatmentWorker
   def perform(_sqs_message, treatment_arm)
     begin
       treatment_arm = JSON.parse(treatment_arm).symbolize_keys!
-      if(TreatmentArm.find(name: treatment_arm[:id], version: treatment_arm[:version])).blank?
+      if(TreatmentArm.scan(:scan_filter =>
+                               {"name" => {:comparison_operator => "EQ",
+                                           :attribute_value_list => [treatment_arm[:id]]},
+                                "stratum_id" => {:comparison_operator => "EQ",
+                                                 :attribute_value_list => [treatment_arm[:stratum_id]]
+                                },
+                                "version" => {:comparison_operator => "EQ",
+                                              :attribute_value_list => [treatment_arm[:version]]
+                                }
+                               }, :conditional_operator => "AND").collect{ | data | data.to_h }.blank?)
         insert(treatment_arm)
       else
         Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} version #{treatment_arm[:version]} exists already.  Skipping")
