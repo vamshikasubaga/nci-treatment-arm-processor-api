@@ -17,6 +17,15 @@ namespace :setup do
   desc "Create tables for DB"
   task :db => [:treatment_arm, :treatment_arm_patient]
 
+  desc "Create queue for project"
+  task :queue => :before do
+    Aws::SQS::Client.new(access_key_id: ENV["aws_access_key_id"],
+                 secret_access_key: ENV["aws_secret_access_key"],
+                 region: ENV["aws_region"]).create_queue({:queue_name => ENV["queue_name"]})
+  end
+
+  task :all => [:db, :queue]
+
 
   def add_env_variables(env_file)
     if File.exists?(env_file)
