@@ -17,7 +17,7 @@ test:
   shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
-  cog_url: " "
+  cog_url: "http://pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
 
 uat:
@@ -28,7 +28,7 @@ uat:
   shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
-  cog_url: ""
+  cog_url: "http://uat.pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
 
 production:
