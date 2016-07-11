@@ -80,7 +80,7 @@ describe TreatmentArm do
         :inclusion_diseases => [],
         :exclusion_drugs => [],
         :pten_results => [],
-        :status_log => {},
+        :status_log => {Time.now.to_i.to_s => "OPEN"},
     }
     hash = TreatmentArm.new.convert_models(json)
     from_json_ta = TreatmentArm.new.from_json(hash.to_json)
@@ -101,7 +101,7 @@ describe TreatmentArm do
     expect(treatment_arm.inclusion_diseases).to eq(from_json_ta.inclusion_diseases)
     expect(treatment_arm.exclusion_drugs).to eq(from_json_ta.exclusion_drugs)
     expect(treatment_arm.pten_results).to eq(from_json_ta.pten_results)
-    expect(treatment_arm.status_log).to eq(from_json_ta.status_log)
+    expect(from_json_ta.status_log).to be_truthy
 
   end
 

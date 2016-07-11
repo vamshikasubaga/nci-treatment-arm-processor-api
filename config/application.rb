@@ -27,6 +27,15 @@ module NciTreatmentArmProcessorApi
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '*')]
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'treatment_arm', '{*/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'treatment_arm', 'variants', '{*/}')]
+
+    config.before_configuration do
+      env_file = Rails.root.join('config', 'environment.yml')
+      if File.exists?(env_file)
+        YAML.load_file(env_file)[Rails.env].each do |key, value|
+          ENV[key.to_s] = value
+        end
+      end
+    end
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
