@@ -48,10 +48,13 @@ class TreatmentWorker
       cog_treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
       match_treatment_arm = TreatmentArm.find_by(cog_treatment_arm[:treatment_arm_id], cog_treatment_arm[:stratum_id]).first
       if(!match_treatment_arm.blank?)
-        match_treatment_arm.treatment_arm_status = cog_treatment_arm[:status]
-        match_treatment_arm.status_log = match_treatment_arm.status_log.merge!({cog_treatment_arm[:status_date] => cog_treatment_arm[:status]}).to_h
-        match_treatment_arm.save
-        Shoryuken.logger.info("Treatment arm #{cog_treatment_arm[:treatment_arm_id]} (#{cog_treatment_arm[:stratum_id]}) has been updated")
+        if(match_treatment_arm.treatment_arm_status != "CLOSED")
+          match_treatment_arm.treatment_arm_status = cog_treatment_arm[:status]
+          match_treatment_arm.status_log = match_treatment_arm.status_log.merge!({cog_treatment_arm[:status_date] => cog_treatment_arm[:status]}).to_h
+          match_treatment_arm.save
+          Shoryuken.logger.info("Treatment arm #{cog_treatment_arm[:treatment_arm_id]} (#{cog_treatment_arm[:stratum_id]}) has been updated")
+        end
+        Shoryuken.logger.info("Treatment arm #{cog_treatment_arm[:treatment_arm_id]} (#{cog_treatment_arm[:stratum_id]}) is currently CLOSED")
       end
       Shoryuken.logger.info("No Treatment Arms status to update")
     rescue => error
