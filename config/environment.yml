@@ -6,6 +6,8 @@ development:
   shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
+  cog_url: "http://localhost:3000"
+  cog_treatment_arms: "/treatmentArms"
 
 test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -15,6 +17,8 @@ test:
   shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
+  cog_url: " "
+  cog_treatment_arms: "/treatmentArms"
 
 uat:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -24,6 +28,8 @@ uat:
   shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
+  cog_url: ""
+  cog_treatment_arms: "/treatmentArms"
 
 production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -33,3 +39,5 @@ production:
   shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
+  cog_url: " "
+  cog_treatment_arms: "/treatmentArms"
