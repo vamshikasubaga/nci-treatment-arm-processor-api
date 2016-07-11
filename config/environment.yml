@@ -1,7 +1,7 @@
 development:
   aws_dynamo_endpoint: "http://localhost:8000"
   aws_region: "us-east-1"
-  queue_name: "jv_dev"
+  queue_name: "treatment_arm_development"
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
