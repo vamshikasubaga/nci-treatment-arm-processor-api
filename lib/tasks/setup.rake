@@ -36,18 +36,22 @@ namespace :setup do
   end
 
   def create_table(model_class)
-    migration = Aws::Record::TableMigration.new(model_class,
-                                                {:client => Aws::DynamoDB::Client.new(endpoint: ENV["aws_dynamo_endpoint"],
-                                                                                                   access_key_id: ENV["aws_access_key_id"],
-                                                                                                   secret_access_key: ENV["aws_secret_access_key"],
-                                                                                                   region: ENV["aws_region"])})
-    migration.create!(
-        provisioned_throughput: {
-            read_capacity_units: 10,
-            write_capacity_units: 10
-        }
-    )
-    migration.wait_until_available
+    if (!model_class.table_exists?)
+      migration = Aws::Record::TableMigration.new(model_class,
+                                                  {:client => Aws::DynamoDB::Client.new(endpoint: ENV["aws_dynamo_endpoint"],
+                                                                                        access_key_id: ENV["aws_access_key_id"],
+                                                                                        secret_access_key: ENV["aws_secret_access_key"],
+                                                                                        region: ENV["aws_region"])})
+      migration.create!(
+          provisioned_throughput: {
+              read_capacity_units: 10,
+              write_capacity_units: 10
+          }
+      )
+      migration.wait_until_available
+    else
+      p "Table #{model_class.table_name} already exists....skipping"
+    end
   end
 
 end
