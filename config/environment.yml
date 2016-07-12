@@ -8,6 +8,8 @@ development:
   PORT: "10236"
   cog_url: "http://localhost:3000"
   cog_treatment_arms: "/treatmentArms"
+  read_capacity_units: "30"
+  write_capacity_units: "30"
 
 test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -19,6 +21,8 @@ test:
   PORT: "10236"
   cog_url: "http://pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
+  read_capacity_units: "30"
+  write_capacity_units: "30"
 
 uat:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -30,6 +34,8 @@ uat:
   PORT: "10236"
   cog_url: "http://uat.pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
+  read_capacity_units: "30"
+  write_capacity_units: "30"
 
 production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -41,3 +47,5 @@ production:
   PORT: "10236"
   cog_url: " "
   cog_treatment_arms: "/treatmentArms"
+  read_capacity_units: "30"
+  write_capacity_units: "30"

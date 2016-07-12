@@ -44,8 +44,8 @@ namespace :setup do
                                                                                         region: ENV["aws_region"])})
       migration.create!(
           provisioned_throughput: {
-              read_capacity_units: 10,
-              write_capacity_units: 10
+              read_capacity_units: ENV["read_capacity_units"].to_i,
+              write_capacity_units: ENV["write_capacity_units"].to_i
           }
       )
       migration.wait_until_available

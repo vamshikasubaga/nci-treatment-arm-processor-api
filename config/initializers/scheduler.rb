@@ -1,13 +1,14 @@
 require 'rufus-scheduler'
 
-patient_thread = Rufus::Scheduler.singleton
+# patient_thread = Rufus::Scheduler.singleton
 treatment_arm_thread = Rufus::Scheduler.singleton
 
 treatment_arm_thread.every '30s' do
+  TreatmentWorker.perform_async({})
   # PatientGraphWorker.perform_async("PatientGraph")
   # BasicTreatmentArmWorker.perform_async("BasicTreatmentArmUpdater")
 end
 
-patient_thread.every '30s' do
-  # PatientWorker.perform_async("patient found")
-end
+# patient_thread.every '30s' do
+#   # PatientWorker.perform_async("patient found")
+# end
