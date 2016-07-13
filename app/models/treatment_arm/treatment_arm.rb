@@ -7,7 +7,7 @@ class TreatmentArm
   include ActiveModel::Serializers::JSON
   include ModelSerializer
 
-  set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
+  set_table_name "#{self.name.underscore}"
 
   boolean_attr :active, database_attribute_name: "is_active_flag"
   string_attr :name, hash_key: true
