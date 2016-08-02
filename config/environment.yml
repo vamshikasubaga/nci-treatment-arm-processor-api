@@ -1,13 +1,15 @@
 development:
   aws_dynamo_endpoint: "http://localhost:8000"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm_development"
+  queue_name: "jv_ta_dev"
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
   cog_url: "http://localhost:3000"
   cog_treatment_arms: "/treatmentArms"
+  patient_api_url: "http://localhost:10240"
+  patient_assignment: ""
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -21,6 +23,8 @@ test:
   PORT: "10236"
   cog_url: "http://pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
+  patient_api_url: "http://pedmatch.org:10240"
+  patient_assignment: ""
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -34,6 +38,8 @@ uat:
   PORT: "10236"
   cog_url: "http://uat.pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
+  patient_api_url: "http://uat.pedmatch.org:10240"
+  patient_assignment: ""
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -47,5 +53,7 @@ production:
   PORT: "10236"
   cog_url: " "
   cog_treatment_arms: "/treatmentArms"
+  patient_api_url: ""
+  patient_assignment: ""
   read_capacity_units: "30"
   write_capacity_units: "30"

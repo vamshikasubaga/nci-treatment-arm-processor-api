@@ -1,10 +1,7 @@
 
 class PatientWorker
-  include Shoryuken::Worker
 
-  shoryuken_options queue: ->{"#{ENV['queue_name']}"}, auto_delete: true
-
-  def perform(_sqs_message, patient)
+  def perform(patient)
     begin
       p patient
     #   patient = JSON.parse(patient).symbolize_keys

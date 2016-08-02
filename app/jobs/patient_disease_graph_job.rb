@@ -1,9 +1,6 @@
-class PatientDiseaseGraphWorker
-  include Shoryuken::Worker
+class PatientDiseaseGraphJob
 
-  shoryuken_options queue: ->{"#{ENV['queue_name']}"}, auto_delete: true
-
-  def perform(_sqs_message, body)
+  def perform(body)
     begin
       treatment_arms = TreatmentArm.distinct(:treatment_arm_id)
       treatment_arms.each do | treatment_arm_id |

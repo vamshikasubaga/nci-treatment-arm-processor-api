@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TreatmentWorker do
+describe TreatmentJob do
 
   let(:sqs_message) do
     { id: 'fc754df7-9cc2-4c41-96ca-5996a44b771e',
@@ -11,6 +11,7 @@ describe TreatmentWorker do
   let(:body) do
     {
         "id" => "EAY131-A",
+        "stratumId" => "3",
         "version" => "2016-02-20"
     }.to_json
   end
@@ -57,12 +58,12 @@ describe TreatmentWorker do
 
   describe '#perform' do
 
-    subject { TreatmentWorker.new }
+    subject { TreatmentJob.new }
 
     it 'should respond to a new message' do
       allow(TreatmentArm).to receive(:find).and_return([])
       allow(TreatmentArm.new).to receive(:save).and_return(true)
-      expect(subject.perform(sqs_message, body)).to be_truthy
+      expect(subject.perform(body)).to be_truthy
     end
 
     it "should try to insert a new TreatmentArm" do

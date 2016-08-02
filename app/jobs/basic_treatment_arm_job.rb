@@ -1,9 +1,6 @@
-class BasicTreatmentArmWorker
-  include Shoryuken::Worker
+class BasicTreatmentArmJob
 
-  shoryuken_options queue: ->{"#{ENV['queue_name']}"}, auto_delete: true
-
-  def perform(_sqs_message, patient)
+  def perform(patient)
     begin
       treatment_arm_list = TreatmentArm.scan({})
       treatment_arm_list.each do | ta |

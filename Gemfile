@@ -21,8 +21,6 @@ gem 'puma'
 gem 'aws-sdk', '~>2'
 gem 'aws-sdk-rails'
 gem 'aws-record'
-
-gem 'rufus-scheduler'
 gem 'shoryuken'
 
 gem 'httparty'
