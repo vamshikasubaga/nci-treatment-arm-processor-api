@@ -1,6 +1,6 @@
 class BasicTreatmentArmJob
 
-  def perform(patient)
+  def perform
     begin
       treatment_arm_list = TreatmentArm.scan({})
       treatment_arm_list.each do | ta |
@@ -24,13 +24,12 @@ class BasicTreatmentArmJob
     treatment_arm.pending_patients = find_patient_count_for_status(treatment_arm.name, ["PENDING_APPROVAL"])
     treatment_arm.save
     Shoryuken.logger.info("BasicTreatmentArm info for #{treatment_arm.name} has been updated")
-    treatment_arm
   end
 
 
   def find_patient_count_for_status(treatment_arm_name, status_list=[])
-    TreatmentArmPatient.scan(:scan_filter => {"treatment_arm_name_version" => {:comparison_operator => "CONTAINS", :attribute_value_list => [treatment_arm_name]},
-                                              "current_patient_status" => {:comparison_operator => "IN", :attribute_value_list => status_list}},
+    TreatmentArmPatient.scan(:scan_filter => {"treatment_arm_name" => {:comparison_operator => "CONTAINS", :attribute_value_list => [treatment_arm_name]},
+                                              "patient_assignment_status" => {:comparison_operator => "IN", :attribute_value_list => status_list}},
                              :conditional_operator => "AND").count
   end
 

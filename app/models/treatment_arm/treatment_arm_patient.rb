@@ -3,17 +3,20 @@ class TreatmentArmPatient
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
+  include ActiveModel::Serializers::JSON
+  include ModelSerializer
+
   set_table_name "#{self.name.underscore}"
 
   string_attr :patient_id, hash_key: true
-  date_attr :date_assigned
+  date_attr :date_assigned, range_key: true
 
   string_attr :treatment_arm_name
   string_attr :stratum_id
   string_attr :version
 
   string_attr :concordance
-  string_attr :current_patient_status
+  string_attr :patient_assignment_status
   string_attr :date_created
   string_attr :description
 
@@ -24,9 +27,7 @@ class TreatmentArmPatient
 
   string_attr :gene
 
-  # integer_attr :max_patients_allowed
   string_attr :name
-  # integer_attr :num_patients_assigned
 
   list_attr :patient_assignments
   list_attr :pten_results
@@ -40,7 +41,7 @@ class TreatmentArmPatient
 
   map_attr :status_log
 
-  integer_attr :current_step_number
+  integer_attr :step_number
 
   def self.find_by(opts = {})
     query = {}
@@ -65,7 +66,11 @@ class TreatmentArmPatient
     return {
         patient_id: patient_assignment[:patient_id],
         date_assigned: patient_assignment[:date_assigned],
-        treatment_arm_name: patient_assignment[:treatment_arm_name]
+        treatment_arm_name: patient_assignment[:treatment_arm_id],
+        stratum_id: patient_assignment[:stratum_id],
+        version: patient_assignment[:version],
+        step_number: patient_assignment[:step_number],
+        patient_assignment_status: patient_assignment[:patient_assignment_status]
     }
   end
 

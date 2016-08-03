@@ -19,7 +19,7 @@ describe TreatmentArmPatient do
     ba.date_assigned = "2012-02-20"
     ba.patient_id = "200re"
     ba.concordance = "Y"
-    ba.current_patient_status = "ON_TREATMENT_ARM"
+    ba.patient_assignment_status = "ON_TREATMENT_ARM"
     ba.date_created = "2013-02-15"
     ba.description = "TestDescription"
     ba.diseases = [{"drug_id" => "1234"}]
@@ -39,7 +39,7 @@ describe TreatmentArmPatient do
     ba.variant_report = []
     ba.version = "2012-02-20"
     ba.status_log = {}
-    ba.current_step_number = 0
+    ba.step_number = 0
     ba
   end
 
@@ -50,7 +50,7 @@ describe TreatmentArmPatient do
     patient_treatment_arm.configure_client(client: stub_client)
     expect(patient_treatment_arm.name).to be_kind_of(String)
     expect(patient_treatment_arm.concordance).to be_kind_of(String)
-    expect(patient_treatment_arm.current_patient_status).to be_kind_of(String)
+    expect(patient_treatment_arm.patient_assignment_status).to be_kind_of(String)
     expect(patient_treatment_arm.version).to be_kind_of(String)
     expect(patient_treatment_arm.description).to be_kind_of(String)
     expect(patient_treatment_arm.target_id).to be_kind_of(String)
@@ -58,9 +58,6 @@ describe TreatmentArmPatient do
     expect(patient_treatment_arm.gene).to be_kind_of(String)
     expect(patient_treatment_arm.treatment_arm_status).to be_kind_of(String)
     expect(patient_treatment_arm.date_created).to be_kind_of(String)
-    
-
-
 
   end
 
