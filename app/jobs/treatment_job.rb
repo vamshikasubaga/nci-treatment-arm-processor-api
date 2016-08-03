@@ -3,7 +3,6 @@ class TreatmentJob
 
   def perform(treatment_arm)
     begin
-      p "here"
       treatment_arm = treatment_arm.symbolize_keys!
       if(TreatmentArm.find_by(treatment_arm[:id], treatment_arm[:stratum_id], treatment_arm[:version]).blank?)
         insert(treatment_arm)

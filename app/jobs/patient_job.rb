@@ -5,7 +5,7 @@ class PatientJob
     begin
       patient_assignment.symbolize_keys!
       if(!TreatmentArmPatient.find(patient_id: patient_assignment[:patient_id], date_assigned: patient_assignment[:date_assigned]).blank?)
-        raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_id]} at state #{patient_assignment[:date_assigned]}"
+        raise ArgumentError, "Patient #{patient_assignment[:patient_id]} with assignment date #{patient_assignment[:date_assigned]}is already in database...ignoring"
       end
       case patient_assignment[:patient_assignment_status]
         when "ON_TREATMENT_ARM"
@@ -20,6 +20,9 @@ class PatientJob
         when "OFF_TRIAL", "OFF_TRIAL_NOT_CONSENTED", "OFF_TRIAL_DECEASED"
           Shoryuken.logger.info("Recieved patient at state OFF_TRIAL_* : #{patient_assignment[:patient_id]} at state #{patient_assignment[:patient_assignment_status]}")
           store_patient(patient_assignment)
+        when "FORMERLY_ON_ARM_PROGRESSED"
+          Shoryuken.logger.info("Recieved patient at state FORMERLY_ON_ARM_PROGRESSED : #{patient_assignment[:patient_id]} at state #{patient_assignment[:patient_assignment_status]}")
+          store_patient(patient_assignment)
         else
           Shoryuken.logger.info("Recieved patient with no current recognized state : #{patient_assignment[:patient_id]}")
       end
@@ -30,7 +33,6 @@ class PatientJob
 
   def store_patient(patient_assignment)
     begin
-      #TODO: Add treatment arm info
       patient_assignment.compact!
       patient_model = TreatmentArmPatient.new
       json = patient_model.convert_model(patient_assignment).to_json
