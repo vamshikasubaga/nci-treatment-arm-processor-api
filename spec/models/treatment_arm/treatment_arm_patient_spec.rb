@@ -16,8 +16,8 @@ describe TreatmentArmPatient do
 
   let(:patient_treatment_arm) do
     ba = TreatmentArmPatient.new
-    ba.treatment_arm_name_version = "2012-02-20"
-    ba.patient_sequence_number = "200re"
+    ba.date_assigned = "2012-02-20"
+    ba.patient_id = "200re"
     ba.concordance = "Y"
     ba.current_patient_status = "ON_TREATMENT_ARM"
     ba.date_created = "2013-02-15"
@@ -27,9 +27,9 @@ describe TreatmentArmPatient do
     ba.exclusion_diseases = []
     ba.exclusion_drugs = []
     ba.gene = "EADF"
-    ba.max_patients_allowed = "32"
+    # ba.max_patients_allowed = "32"
     ba.name = "Test"
-    ba.num_patients_assigned = 0
+    # ba.num_patients_assigned = 0
     ba.patient_assignments = []
     ba.pten_results = []
     ba.target_id = "Cancer"
@@ -58,9 +58,7 @@ describe TreatmentArmPatient do
     expect(patient_treatment_arm.gene).to be_kind_of(String)
     expect(patient_treatment_arm.treatment_arm_status).to be_kind_of(String)
     expect(patient_treatment_arm.date_created).to be_kind_of(String)
-
-    expect(patient_treatment_arm.max_patients_allowed).to be_kind_of(Integer)
-    expect(patient_treatment_arm.num_patients_assigned).to be_kind_of(Integer)
+    
 
 
 

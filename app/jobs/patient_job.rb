@@ -1,69 +1,66 @@
 
-class PatientWorker
+class PatientJob
 
-  def perform(patient)
+  def perform(patient_assignment)
     begin
-      p patient
-    #   patient = JSON.parse(patient).symbolize_keys
-    #   if pre_check_existence(patient[:patient_sequence_number], patient[:treatment_arm_id],
-    #                       patient[:treatment_arm_version], patient[:current_patient_status])
-    #     raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
-    #   end
-    #   case patient[:current_patient_status]
-    #     when "ON_TREATMENT_ARM"
-    #       p "Recieved patient at state ON_TREATMENT_ARM : #{patient[:patient_sequence_number]}"
-    #       store_patient_on_arm(patient)
-    #     when "NOT_ELIGIBLE"
-    #       p "Recieved patient at state NOT_ELIGIBLE : #{patient[:patient_sequence_number]}"
-    #       store_patient_on_arm(patient)
-    #     when "PENDING_APPROVAL"
-    #       p "Recieved patient at state PENDING_APPROVAL : #{patient[:patient_sequence_number]}"
-    #       store_patient_on_arm(patient)
-    #     when "OFF_TRIAL", "OFF_TRIAL_NOT_CONSENTED", "OFF_TRIAL_DECEASED"
-    #       p "Recieved patient at state OFF_TRIAL_* : #{patient[:patient_sequence_number]} at state #{patient[:current_patient_status]}"
-    #       store_patient_on_arm(patient)
-    #     else
-    #       p "Recieved patient with no current state : #{patient[:patient_sequence_number]}"
-    #   end
+      patient_assignment = JSON.parse(patient_assignment).symbolize_keys
+      if(!TreatmentArmPatient.find(patient_id: patient_assignment[:patient_id], assignment_date: patient_assignment[:date_assigned]).blank?)
+        raise ArgumentError, "Patient is already in database...ignoring #{patient[:patient_id]} at state #{patient_assignment[:date_assigned]}"
+      end
+      case patient_assignment[:patient_assignment_status]
+        when "ON_TREATMENT_ARM"
+          Shoryuken.logger.info("Recieved patient at state ON_TREATMENT_ARM : #{patient_assignment[:patient_id]}")
+          store_patient(patient_assignment)
+        when "NOT_ELIGIBLE"
+          Shoryuken.logger.info("Recieved patient at state NOT_ELIGIBLE : #{patient_assignment[:patient_id]}")
+          store_patient(patient_assignment)
+        when "PENDING_APPROVAL"
+          Shoryuken.logger.info("Recieved patient at state PENDING_APPROVAL : #{patient_assignment[:patient_id]}")
+          store_patient(patient_assignment)
+        when "OFF_TRIAL", "OFF_TRIAL_NOT_CONSENTED", "OFF_TRIAL_DECEASED"
+          Shoryuken.logger.info("Recieved patient at state OFF_TRIAL_* : #{patient_assignment[:patient_id]} at state #{patient_assignment[:patient_assignment_status]}")
+          store_patient(patient_assignment)
+        else
+          Shoryuken.logger.info("Recieved patient with no current recognized state : #{patient_assignment[:patient_id]}")
+      end
     rescue => error
-      p error
-    #   reject!
+      Shoryuken.logger.error("Failed to process patient assignment message with error #{error.message}")
     end
   end
 
-
-  def store_patient_on_arm(patient)
-    if TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.in => ["", nil]).exists?
-      ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
-      insert(ta, patient)
-    elsif TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.nin => ["", nil]).exists?
-      ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
-      update(ta, patient)
-    else
-      raise ArgumentError, "Patient was found for treatment arm #{patient[:treatment_arm_id]} but treatment arm does not exists...requeue patient"
+  def store_patient(patient_assignment)
+    begin
+      patient_model = TreatmentArmPatient.new
+    rescue => error
+      Shoryuken.logger.error("Failed to insert TreatmentArmPatient with error: #{error.message}")
     end
   end
 
+  # def store_patient_on_arm(patient)
+  #   if TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.in => ["", nil]).exists?
+  #     ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
+  #     insert(ta, patient)
+  #   elsif TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version], :patient.nin => ["", nil]).exists?
+  #     ta = TreatmentArm.where(:treatment_arm_id => patient[:treatment_arm_id], :version => patient[:treatment_arm_version]).first
+  #     update(ta, patient)
+  #   else
+  #     raise ArgumentError, "Patient was found for treatment arm #{patient[:treatment_arm_id]} but treatment arm does not exists...requeue patient"
+  #   end
+  # end
 
-  def pre_check_existence(patient_sequence_number, treatment_arm_id, version, status)
-    TreatmentArm.where(:treatment_arm_id => treatment_arm_id,
-                          :version => version,
-                          :'patient.patient_sequence_number' => patient_sequence_number,
-                          :'patient.current_patient_status' => status).exists?
-  end
 
-  def update(treatment_arm, patient)
-    patient_on_arm = treatment_arm.clone
-    patient_on_arm.patient = mold_patient_data(patient)
-    patient_on_arm.save
-    ack!
-  end
+  # def update(treatment_arm, patient)
+  #   patient_on_arm = treatment_arm.clone
+  #   patient_on_arm.patient = mold_patient_data(patient)
+  #   patient_on_arm.save
+  #   ack!
+  # end
 
-  def insert(treatment_arm, patient)
-    treatment_arm.patient = mold_patient_data(patient)
-    treatment_arm.save
-    ack!
-  end
+  # def insert(treatment_arm, patient)
+  #   treatment_arm.patient = mold_patient_data(patient)
+  #   treatment_arm.save
+  #   ack!
+  # end
 
   def mold_patient_data(patient)
     new_patient = Patient.new

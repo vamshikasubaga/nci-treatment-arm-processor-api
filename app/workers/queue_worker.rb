@@ -14,9 +14,9 @@ class QueueWorker
         when :treatment_arm
           TreatmentJob.new.perform(message[processor_key])
         when :patient_assignment
-          p "patient_assignment"
+          PatientJob.new.perform(message[processor_key])
         else
-          p "unknown"
+          Shoryuken.logger.warn("Message was not recognized.  Please verify it is valid and resend. Message: #{message}")
       end
     rescue => error
       Shoryuken.logger.error("Unable to process #{message} because of #{error}")
