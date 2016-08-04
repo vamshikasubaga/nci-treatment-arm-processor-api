@@ -45,7 +45,7 @@ class TreatmentArm
     if append_and?(!id.nil? ,!stratum_id.nil?, !version.nil?)
       query.merge!(:conditional_operator => "AND")
     end
-    self.scan(query).collect { |data| data }
+    self.scan(query).collect { |data| data.to_h }
   end
 
   def self.build_scan_filter(id=nil, stratum_id=nil, version=nil)

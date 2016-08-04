@@ -10,6 +10,7 @@ class TreatmentJob
         Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} stratum_id #{treatment_arm[:stratum_id]} version #{treatment_arm[:version]} exists already.  Skipping")
       end
       CogTreatmentJob.new.perform
+      BasicTreatmentArmJob.new.perform
     rescue => error
       Shoryuken.logger.error("Treatment Arm Worker failed with error #{error}")
     end
