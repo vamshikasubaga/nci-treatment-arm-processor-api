@@ -39,7 +39,7 @@ describe TreatmentArm do
     ba
   end
 
-  it "should the correct class type for the variables" do
+  it "should be the correct class type for the variables" do
     stub_client.stub_responses(:describe_table, {
         table: {table_status: "ACTIVE"}
     })
@@ -51,9 +51,17 @@ describe TreatmentArm do
     expect(treatment_arm.target_name).to be_kind_of(String)
     expect(treatment_arm.gene).to be_kind_of(String)
     expect(treatment_arm.treatment_arm_status).to be_kind_of(String)
+    expect(treatment_arm.num_patients_assigned).to be_kind_of(Integer)
     expect(treatment_arm.study_id).to be_kind_of(String)
     expect(treatment_arm.stratum_id).to be_kind_of(String)
-
+    expect(treatment_arm.assay_results).to be_kind_of(Array)
+    expect(treatment_arm.treatment_arm_drugs).to be_kind_of(Array)
+    expect(treatment_arm.exclusion_diseases).to be_kind_of(Array)
+    expect(treatment_arm.inclusion_diseases).to be_kind_of(Array)
+    expect(treatment_arm.exclusion_drugs).to be_kind_of(Array)
+    expect(treatment_arm.pten_results).to be_kind_of(Array)
+    expect(treatment_arm.variant_report).to be_kind_of(Hash)
+    expect(treatment_arm.status_log).to be_kind_of(Hash)
   end
 
   it "should return the correct values" do
@@ -102,7 +110,6 @@ describe TreatmentArm do
     expect(treatment_arm.exclusion_drugs).to eq(from_json_ta.exclusion_drugs)
     expect(treatment_arm.pten_results).to eq(from_json_ta.pten_results)
     expect(from_json_ta.status_log).to be_truthy
-
   end
 
 end

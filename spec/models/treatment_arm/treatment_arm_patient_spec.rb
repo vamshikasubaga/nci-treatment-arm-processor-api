@@ -19,6 +19,7 @@ describe TreatmentArmPatient do
     ba.date_assigned = "2012-02-20"
     ba.patient_id = "200re"
     ba.concordance = "Y"
+    ba.stratum_id = "EAY131"
     ba.patient_assignment_status = "ON_TREATMENT_ARM"
     ba.date_created = "2013-02-15"
     ba.description = "TestDescription"
@@ -43,13 +44,14 @@ describe TreatmentArmPatient do
     ba
   end
 
-  it "should the correct class type for the variables" do
+  it "should be the correct class type for the variables" do
     stub_client.stub_responses(:describe_table, {
         table: {table_status: "ACTIVE"}
     })
     patient_treatment_arm.configure_client(client: stub_client)
     expect(patient_treatment_arm.name).to be_kind_of(String)
     expect(patient_treatment_arm.concordance).to be_kind_of(String)
+    expect(patient_treatment_arm.patient_id).to be_kind_of(String)
     expect(patient_treatment_arm.patient_assignment_status).to be_kind_of(String)
     expect(patient_treatment_arm.version).to be_kind_of(String)
     expect(patient_treatment_arm.description).to be_kind_of(String)
@@ -58,7 +60,39 @@ describe TreatmentArmPatient do
     expect(patient_treatment_arm.gene).to be_kind_of(String)
     expect(patient_treatment_arm.treatment_arm_status).to be_kind_of(String)
     expect(patient_treatment_arm.date_created).to be_kind_of(String)
+    expect(patient_treatment_arm.diseases).to be_kind_of(Array)
+    expect(patient_treatment_arm.exclusion_criterias).to be_kind_of(Array)
+    expect(patient_treatment_arm.exclusion_diseases).to be_kind_of(Array)
+    expect(patient_treatment_arm.exclusion_drugs).to be_kind_of(Array)
+    expect(patient_treatment_arm.patient_assignments).to be_kind_of(Array)
+    expect(patient_treatment_arm.pten_results).to be_kind_of(Array)
+    expect(patient_treatment_arm.treatment_arm_drugs).to be_kind_of(Array)
+    expect(patient_treatment_arm.variant_report).to be_kind_of(Array)
+    expect(patient_treatment_arm.status_log).to be_kind_of(Hash)
+    expect(patient_treatment_arm.step_number).to be_kind_of(Integer)
+  end
 
+  it "should return the correct values" do
+    stub_client.stub_responses(:describe_table, {
+        table: {table_status: "ACTIVE"}
+    })
+    patient_treatment_arm.configure_client(client: stub_client)
+    json = {
+        :patient_id => "200re",
+        :date_assigned => "2012-02-20",
+        :treatment_arm_name => "Test",
+        :stratum_id => "EAY131",
+        :version => "2012-02-20",
+        :patient_assignment_status => "ON_TREATMENT_ARM"
+    }
+    hash = TreatmentArmPatient.new.convert_model(json)
+    from_json_ta = TreatmentArmPatient.new.from_json(hash.to_json)
+    expect(patient_treatment_arm.patient_id).to eq(from_json_ta.patient_id)
+    expect(patient_treatment_arm.date_assigned).to eq(from_json_ta.date_assigned)
+    expect(patient_treatment_arm.treatment_arm_name).to eq(from_json_ta.treatment_arm_name)
+    expect(patient_treatment_arm.stratum_id).to eq(from_json_ta.stratum_id)
+    expect(patient_treatment_arm.version).to eq(from_json_ta.version)
+    expect(patient_treatment_arm.patient_assignment_status).to eq(from_json_ta.patient_assignment_status)
   end
 
 end
