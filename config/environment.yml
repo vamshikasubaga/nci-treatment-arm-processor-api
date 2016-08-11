@@ -24,7 +24,7 @@ test:
   cog_url: "http://pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
   patient_api_url: "http://pedmatch.org:10240"
-  patient_assignment: "trigger"
+  patient_assignment: "/treatmentArmsUpdatedr"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -39,7 +39,7 @@ uat:
   cog_url: "http://uat.matchbox.nci.nih.gov:3000"
   cog_treatment_arms: "/treatmentArms"
   patient_api_url: "http://uat.matchbox.nci.nih.gov:10240"
-  patient_assignment: "trigger"
+  patient_assignment: "/treatmentArmsUpdated"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -54,6 +54,6 @@ production:
   cog_url: " "
   cog_treatment_arms: "/treatmentArms"
   patient_api_url: ""
-  patient_assignment: "trigger"
+  patient_assignment: "/treatmentArmsUpdated"
   read_capacity_units: "30"
   write_capacity_units: "30"
