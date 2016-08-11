@@ -9,7 +9,7 @@ development:
   cog_url: "http://localhost:3000"
   cog_treatment_arms: "/treatmentArms"
   patient_api_url: "http://localhost:10240"
-  patient_assignment: "trigger"
+  patient_assignment: "/trigger"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
