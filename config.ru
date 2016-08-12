@@ -2,10 +2,8 @@
 
 require ::File.expand_path('../config/environment', __FILE__)
 
-if (Rails.env.to_s != 'test')
-  worker_cmd = 'bundle exec shoryuken -R'
-  pid = Process.spawn worker_cmd
-end
+worker_cmd = 'bundle exec shoryuken -R'
+pid = Process.spawn worker_cmd
 
 p "============== Shoryuken process started with pid: [#{pid}] ================="
 
