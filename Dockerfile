@@ -4,7 +4,8 @@ FROM ruby:2.2.4
 MAINTAINER jeremy.pumphrey@nih.gov
 
 ENV RAILS_VERSION 5.0.0.beta3
-ENV HOME /home/rails/myapp 
+ENV HOME /home/rails/myapp
+ENV RAILS_ENV test
 WORKDIR $HOME 
 
 # see update.sh for why all "apt-get install"s have to stay as one long line
