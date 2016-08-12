@@ -6,7 +6,7 @@ class TreatmentArmPatient
   include ActiveModel::Serializers::JSON
   include ModelSerializer
 
-  set_table_name "#{self.name.underscore}"
+  set_table_name "#{self.name.underscore}_#{Rails.env}"
 
   string_attr :patient_id, hash_key: true
   date_attr :date_assigned, range_key: true
