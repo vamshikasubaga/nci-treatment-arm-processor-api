@@ -63,10 +63,11 @@ class TreatmentArmPatient
   end
 
   def convert_model(patient_assignment)
+    p patient_assignment
     return {
         patient_id: patient_assignment[:patient_id],
         date_assigned: patient_assignment[:date_assigned],
-        treatment_arm_name: patient_assignment[:treatment_arm_id],
+        treatment_arm_name: patient_assignment[:treatment_arm_name],
         stratum_id: patient_assignment[:stratum_id],
         version: patient_assignment[:version],
         step_number: patient_assignment[:step_number],

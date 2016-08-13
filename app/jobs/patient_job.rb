@@ -3,6 +3,7 @@ class PatientJob
 
   attr_accessor :patient_assignment_message
 
+
   def perform(patient_assignment)
     begin
       patient_assignment.symbolize_keys!
@@ -56,6 +57,7 @@ class PatientJob
       patient_model = TreatmentArmPatient.new
       json = patient_model.convert_model(patient_assignment).to_json
       patient_model.from_json(json)
+      p patient_model
       patient_model.save
       Shoryuken.logger.info("Patient #{patient_model.patient_id} was successfully saved for assignment to #{patient_model.treatment_arm_name}")
     rescue => error
