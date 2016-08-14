@@ -23,7 +23,7 @@ test:
   PORT: "10236"
   cog_url: "http://pedmatch.org:3000"
   cog_treatment_arms: "/treatmentArms"
-  patient_api_url: "http://pedmatch.org:10240"
+  patient_api_url: "http://pedmatch.org:3010"
   patient_assignment: "/treatmentArmsUpdated"
   read_capacity_units: "30"
   write_capacity_units: "30"
