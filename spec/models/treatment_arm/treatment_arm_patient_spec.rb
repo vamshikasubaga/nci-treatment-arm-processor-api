@@ -29,7 +29,7 @@ describe TreatmentArmPatient do
     ba.exclusion_drugs = []
     ba.gene = "EADF"
     # ba.max_patients_allowed = "32"
-    ba.name = "Test"
+    ba.treatment_arm_name = "Test"
     # ba.num_patients_assigned = 0
     ba.patient_assignments = []
     ba.pten_results = []
@@ -49,7 +49,7 @@ describe TreatmentArmPatient do
         table: {table_status: "ACTIVE"}
     })
     patient_treatment_arm.configure_client(client: stub_client)
-    expect(patient_treatment_arm.name).to be_kind_of(String)
+    expect(patient_treatment_arm.treatment_arm_name).to be_kind_of(String)
     expect(patient_treatment_arm.concordance).to be_kind_of(String)
     expect(patient_treatment_arm.patient_id).to be_kind_of(String)
     expect(patient_treatment_arm.patient_assignment_status).to be_kind_of(String)
