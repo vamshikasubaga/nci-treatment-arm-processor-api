@@ -37,7 +37,7 @@ describe BasicTreatmentArm do
 
     end
 
-    it "model data is filled correctly" do
+    it "should fill the model data correctly" do
       stub_client.stub_responses(:describe_table, {
           table: {table_status: "ACTIVE"}
       })
@@ -53,22 +53,21 @@ describe BasicTreatmentArm do
       expect(basic_treatment_arm.pending_patients).to eq(1)
     end
 
-    it "should the correct class type for the variables" do
+    it "should be the correct class type for the variables" do
       stub_client.stub_responses(:describe_table, {
           table: {table_status: "ACTIVE"}
       })
       basic_treatment_arm.configure_client(client: stub_client)
+      expect(basic_treatment_arm.treatment_arm_id).to be_kind_of(String)
       expect(basic_treatment_arm.description).to be_kind_of(String)
       expect(basic_treatment_arm.treatment_arm_status).to be_kind_of(String)
       expect(basic_treatment_arm.date_created).to be_kind_of(String)
       expect(basic_treatment_arm.date_opened).to be_kind_of(String)
-
       expect(basic_treatment_arm.current_patients).to be_kind_of(Integer)
       expect(basic_treatment_arm.former_patients).to be_kind_of(Integer)
       expect(basic_treatment_arm.not_enrolled_patients).to be_kind_of(Integer)
       expect(basic_treatment_arm.pending_patients).to be_kind_of(Integer)
     end
-
   end
 
 end

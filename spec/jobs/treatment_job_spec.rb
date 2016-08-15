@@ -10,9 +10,9 @@ describe TreatmentJob do
 
   let(:body) do
     {
-        "id" => "EAY131-A",
-        "stratumId" => "3",
-        "version" => "2016-02-20"
+      "id" => "EAY131-A",
+      "stratumId" => "3",
+      "version" => "2016-02-20"
     }.to_json
   end
 
@@ -54,7 +54,6 @@ describe TreatmentJob do
     ba.status_log = {}
     ba
   end
-
 
   describe '#perform' do
 
@@ -103,13 +102,9 @@ describe TreatmentJob do
                "name" =>"Trametinib",
                "target" =>"B-RAF"
               }
-
       ]
       expect(subject.remove_blank_document(treatment_arm.to_h)[:exclusion_drugs]).to eq(expected_results)
     end
-
   end
-
-
 
 end

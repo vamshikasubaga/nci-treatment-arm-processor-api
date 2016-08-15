@@ -1,3 +1,4 @@
+require 'spec_helper'
 
 describe DiseasePieData do
 
@@ -7,7 +8,6 @@ describe DiseasePieData do
     disease_data.disease_array = ["must be a array"]
     disease_data
   end
-
 
   it "recieved from db" do
     ba = disease_pie_data
