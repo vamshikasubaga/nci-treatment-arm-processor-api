@@ -3,6 +3,15 @@ Rails.application.configure do
 
   # config.logger = Logger.new("#{Rails.root}/log/my.log")
   # config.logger.level = Logger::INFO
+
+  # Enable stdout logger
+  config.logger = Logger.new(STDOUT)
+  # Set log level
+  config.log_level = :INFO
+  # Prepend all log lines with the following tags.
+  # config.log_tags = [ :subdomain, :uuid ]
+  config.log_tags = [ "Treatment-Arm-Processor", :subdomain, :uuid ]
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.

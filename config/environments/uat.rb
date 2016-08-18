@@ -35,10 +35,18 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  # config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  # config.log_tags = [ :request_id ]
+
+  # Enable stdout logger
+  config.logger = Logger.new(STDOUT)
+  # Set log level
+  config.log_level = :WARN
+  # Prepend all log lines with the following tags.
+  # config.log_tags = [ :subdomain, :uuid ]
+  config.log_tags = [ "Treatment-Arm-Processor", :subdomain, :uuid, :request_id ]
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
