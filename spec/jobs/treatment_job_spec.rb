@@ -30,7 +30,6 @@ describe TreatmentJob do
     ba.num_patients_assigned = 4
     ba.date_created = "2014-02-30"
     ba.treatment_arm_drugs = []
-    ba.variant_report = {}
     ba.exclusion_diseases = []
     ba.exclusion_drugs = [
             {"drug_id"=> "763093",
@@ -50,7 +49,6 @@ describe TreatmentJob do
              "target" => "B-RAF"
             }
     ]
-    ba.pten_results = []
     ba.status_log = {}
     ba
   end

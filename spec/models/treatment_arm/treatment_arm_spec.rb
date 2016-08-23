@@ -28,13 +28,11 @@ describe TreatmentArm do
     ba.study_id = "EAY131"
     ba.num_patients_assigned = 4
     ba.date_created = "2014-02-30"
-    ba.assay_results = []
+    ba.assay_rules = []
     ba.treatment_arm_drugs = []
-    ba.variant_report = {}
     ba.exclusion_diseases = []
     ba.inclusion_diseases = []
     ba.exclusion_drugs = []
-    ba.pten_results = []
     ba.status_log = {}
     ba
   end
@@ -54,13 +52,11 @@ describe TreatmentArm do
     expect(treatment_arm.num_patients_assigned).to be_kind_of(Integer)
     expect(treatment_arm.study_id).to be_kind_of(String)
     expect(treatment_arm.stratum_id).to be_kind_of(String)
-    expect(treatment_arm.assay_results).to be_kind_of(Array)
+    expect(treatment_arm.assay_rules).to be_kind_of(Array)
     expect(treatment_arm.treatment_arm_drugs).to be_kind_of(Array)
     expect(treatment_arm.exclusion_diseases).to be_kind_of(Array)
     expect(treatment_arm.inclusion_diseases).to be_kind_of(Array)
     expect(treatment_arm.exclusion_drugs).to be_kind_of(Array)
-    expect(treatment_arm.pten_results).to be_kind_of(Array)
-    expect(treatment_arm.variant_report).to be_kind_of(Hash)
     expect(treatment_arm.status_log).to be_kind_of(Hash)
   end
 
@@ -81,13 +77,11 @@ describe TreatmentArm do
         :treatment_arm_status => "CLOSED",
         :num_patients_assigned => 4,
         :date_created => "2014-02-30",
-        :assay_results => [],
+        :assay_rules => [],
         :treatment_arm_drugs => [],
-        :variant_report => {},
         :exclusion_diseases => [],
         :inclusion_diseases => [],
         :exclusion_drugs => [],
-        :pten_results => [],
         :status_log => {Time.now.to_i.to_s => "OPEN"},
     }
     hash = TreatmentArm.new.convert_models(json)
@@ -102,13 +96,11 @@ describe TreatmentArm do
     expect(treatment_arm.gene).to eq(from_json_ta.gene)
     expect(treatment_arm.treatment_arm_status).to eq(from_json_ta.treatment_arm_status)
     expect(treatment_arm.num_patients_assigned).to eq(from_json_ta.num_patients_assigned)
-    expect(treatment_arm.assay_results).to eq(from_json_ta.assay_results)
+    expect(treatment_arm.assay_rules).to eq(from_json_ta.assay_rules)
     expect(treatment_arm.treatment_arm_drugs).to eq(from_json_ta.treatment_arm_drugs)
-    expect(treatment_arm.variant_report).to eq(from_json_ta.variant_report)
     expect(treatment_arm.exclusion_diseases).to eq(from_json_ta.exclusion_diseases)
     expect(treatment_arm.inclusion_diseases).to eq(from_json_ta.inclusion_diseases)
     expect(treatment_arm.exclusion_drugs).to eq(from_json_ta.exclusion_drugs)
-    expect(treatment_arm.pten_results).to eq(from_json_ta.pten_results)
     expect(from_json_ta.status_log).to be_truthy
   end
 
