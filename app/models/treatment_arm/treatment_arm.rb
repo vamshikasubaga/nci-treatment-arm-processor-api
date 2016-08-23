@@ -20,19 +20,19 @@ class TreatmentArm
   string_attr :gene
   string_attr :treatment_arm_status
   string_attr :study_id
-
-  list_attr :assay_results
+  list_attr :assay_rules
   integer_attr :num_patients_assigned
   string_attr :date_opened
   list_attr :treatment_arm_drugs
-  map_attr :variant_report
   list_attr :exclusion_diseases
   list_attr :inclusion_diseases
   list_attr :exclusion_drugs
-  list_attr :pten_results
+  list_attr :single_nucleotide_variants
+  list_attr :indels
+  list_attr :non_hotspot_rules
+  list_attr :copy_number_variants
+  list_attr :gene_fusions
   map_attr :status_log
-
-
   integer_attr :current_patients
   integer_attr :former_patients
   integer_attr :not_enrolled_patients
@@ -76,7 +76,7 @@ class TreatmentArm
         target_id: treatment_arm[:target_id],
         target_name: treatment_arm[:target_name],
         gene: treatment_arm[:gene],
-        assay_results: treatment_arm[:assay_results],
+        assay_rules: treatment_arm[:assay_rules],
         treatment_arm_status: treatment_arm[:treatment_arm_status],
         date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc() : treatment_arm[:date_created],
         num_patients_assigned: treatment_arm[:num_patients_assigned],
@@ -84,11 +84,13 @@ class TreatmentArm
         exclusion_diseases: treatment_arm[:exclusion_diseases],
         inclusion_diseases: treatment_arm[:inclusion_diseases],
         exclusion_drugs: treatment_arm[:exclusion_drugs],
-        pten_results: treatment_arm[:pten_results],
-        status_log: treatment_arm[:status_log].blank? ? {Time.now.to_i.to_s => "OPEN"} : treatment_arm[:status_log],
-        variant_report: treatment_arm[:variant_report]
+        single_nucleotide_variants: treatment_arm[:single_nucleotide_variants],
+        indels: treatment_arm[:indels],
+        non_hotspot_rules: treatment_arm[:non_hotspot_rules],
+        copy_number_variants: treatment_arm[:copy_number_variants],
+        gene_fusions: treatment_arm[:gene_fusions],
+        status_log: treatment_arm[:status_log].blank? ? {Time.now.to_i.to_s => "OPEN"} : treatment_arm[:status_log]
     }
   end
-
 end
 
