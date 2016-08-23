@@ -30,8 +30,7 @@ describe TreatmentArm do
     ba.date_created = "2014-02-30"
     ba.assay_rules = []
     ba.treatment_arm_drugs = []
-    ba.exclusion_diseases = []
-    ba.inclusion_diseases = []
+    ba.diseases = []
     ba.exclusion_drugs = []
     ba.status_log = {}
     ba
@@ -54,8 +53,7 @@ describe TreatmentArm do
     expect(treatment_arm.stratum_id).to be_kind_of(String)
     expect(treatment_arm.assay_rules).to be_kind_of(Array)
     expect(treatment_arm.treatment_arm_drugs).to be_kind_of(Array)
-    expect(treatment_arm.exclusion_diseases).to be_kind_of(Array)
-    expect(treatment_arm.inclusion_diseases).to be_kind_of(Array)
+    expect(treatment_arm.diseases).to be_kind_of(Array)
     expect(treatment_arm.exclusion_drugs).to be_kind_of(Array)
     expect(treatment_arm.status_log).to be_kind_of(Hash)
   end
@@ -79,8 +77,7 @@ describe TreatmentArm do
         :date_created => "2014-02-30",
         :assay_rules => [],
         :treatment_arm_drugs => [],
-        :exclusion_diseases => [],
-        :inclusion_diseases => [],
+        :diseases => [],
         :exclusion_drugs => [],
         :status_log => {Time.now.to_i.to_s => "OPEN"},
     }
@@ -98,8 +95,7 @@ describe TreatmentArm do
     expect(treatment_arm.num_patients_assigned).to eq(from_json_ta.num_patients_assigned)
     expect(treatment_arm.assay_rules).to eq(from_json_ta.assay_rules)
     expect(treatment_arm.treatment_arm_drugs).to eq(from_json_ta.treatment_arm_drugs)
-    expect(treatment_arm.exclusion_diseases).to eq(from_json_ta.exclusion_diseases)
-    expect(treatment_arm.inclusion_diseases).to eq(from_json_ta.inclusion_diseases)
+    expect(treatment_arm.diseases).to eq(from_json_ta.diseases)
     expect(treatment_arm.exclusion_drugs).to eq(from_json_ta.exclusion_drugs)
     expect(from_json_ta.status_log).to be_truthy
   end

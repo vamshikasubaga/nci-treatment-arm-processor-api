@@ -24,8 +24,7 @@ class TreatmentArm
   integer_attr :num_patients_assigned
   string_attr :date_opened
   list_attr :treatment_arm_drugs
-  list_attr :exclusion_diseases
-  list_attr :inclusion_diseases
+  list_attr :diseases
   list_attr :exclusion_drugs
   list_attr :single_nucleotide_variants
   list_attr :indels
@@ -42,7 +41,7 @@ class TreatmentArm
   def self.find_by(id=nil, stratum_id=nil, version=nil)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
-    if append_and?(!id.nil? ,!stratum_id.nil?, !version.nil?)
+    if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?)
       query.merge!(:conditional_operator => "AND")
     end
     self.scan(query).collect { |data| data.to_h }
@@ -81,8 +80,7 @@ class TreatmentArm
         date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc() : treatment_arm[:date_created],
         num_patients_assigned: treatment_arm[:num_patients_assigned],
         treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
-        exclusion_diseases: treatment_arm[:exclusion_diseases],
-        inclusion_diseases: treatment_arm[:inclusion_diseases],
+        diseases: treatment_arm[:diseases],
         exclusion_drugs: treatment_arm[:exclusion_drugs],
         single_nucleotide_variants: treatment_arm[:single_nucleotide_variants],
         indels: treatment_arm[:indels],
