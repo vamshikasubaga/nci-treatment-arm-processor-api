@@ -4,8 +4,8 @@ module ModelConfig
     configure_table(TreatmentArm)
     ensure_table(TreatmentArm)
 
-    configure_table(TreatmentArmPatient)
-    ensure_table(TreatmentArmPatient)
+    configure_table(TreatmentArmAssignmentEvent)
+    ensure_table(TreatmentArmAssignmentEvent)
   end
 
   def self.configure_table(table)
