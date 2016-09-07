@@ -11,8 +11,8 @@ class TreatmentArm
 
   boolean_attr :active, database_attribute_name: "is_active_flag"
   string_attr :name, hash_key: true
-  datetime_attr :date_created, range_key: true
   string_attr :version
+  string_attr :date_created, range_key: true
   string_attr :stratum_id
   string_attr :description
   string_attr :target_id
@@ -66,8 +66,8 @@ class TreatmentArm
 
   def convert_models(treatment_arm)
     return {
-             active: treatment_arm[:active],
-             name: treatment_arm[:id],
+             active: (treatment_arm[:id] && treatment_arm[:stratum_id] && treatment_arm[:version]).present? ? true : false,
+             name: treatment_arm[:id] || treatment_arm[:name],
              version: treatment_arm[:version],
              study_id: treatment_arm[:study_id],
              stratum_id: treatment_arm[:stratum_id],
@@ -76,8 +76,9 @@ class TreatmentArm
              target_name: treatment_arm[:target_name],
              gene: treatment_arm[:gene],
              assay_rules: treatment_arm[:assay_rules],
-             treatment_arm_status: treatment_arm[:treatment_arm_status],
+             treatment_arm_status: (treatment_arm[:name] && treatment_arm[:stratum_id] && treatment_arm[:version]).present? ? 'OPEN' : 'CLOSED',
              date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc() : treatment_arm[:date_created],
+             date_opened: treatment_arm[:date_opened].blank? ?  Time.now  : treatment_arm[:date_opened],
              num_patients_assigned: treatment_arm[:num_patients_assigned],
              treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
              diseases: treatment_arm[:diseases],
