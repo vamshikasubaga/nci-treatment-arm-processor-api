@@ -25,7 +25,7 @@ describe TreatmentJob do
     ba.target_id = "gene"
     ba.target_name = "otherGene"
     ba.gene = "FGHS"
-    ba.treatment_arm_status = "CLOSED"
+    ba.treatment_arm_status = "OPEN"
     ba.study_id = "EAY131"
     ba.num_patients_assigned = 4
     ba.date_created = "2014-02-30"

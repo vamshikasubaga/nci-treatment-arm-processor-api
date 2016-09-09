@@ -24,7 +24,7 @@ describe TreatmentArm do
     ba.target_id = "gene"
     ba.target_name = "otherGene"
     ba.gene = "FGHS"
-    ba.treatment_arm_status = "CLOSED"
+    ba.treatment_arm_status = "OPEN"
     ba.study_id = "EAY131"
     ba.num_patients_assigned = 4
     ba.date_created = "2014-02-30"
@@ -72,7 +72,7 @@ describe TreatmentArm do
         :target_id => "gene",
         :target_name => "otherGene",
         :gene => "FGHS",
-        :treatment_arm_status => "CLOSED",
+        :treatment_arm_status => "OPEN",
         :num_patients_assigned => 4,
         :date_created => "2014-02-30",
         :assay_rules => [],
