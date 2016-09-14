@@ -11,7 +11,7 @@ class PatientGraphJob
     end
     @ta_distinct_list.uniq!{ |x| x.name }
 
-    patient_status = TreatmentArmPatient.scan({attributes_to_get: ["current_patient_status"]})
+    patient_status = TreatmentArmAssignmentEvent.scan({attributes_to_get: ["current_patient_status"]})
     @status_distinct_list ||= []
     patient_status.each do | treatment_arm_id |
       status_distinct_list.push(treatment_arm_id)
@@ -28,7 +28,7 @@ class PatientGraphJob
   def update(ta_name)
     new_status_array = []
     status_distinct_list.each do | status |
-      status_data = TreatmentArmPatient.scan(:scan_filter => {"treatment_arm_name_version" => {:comparison_operator => "CONTAINS", :attribute_value_list => [ta_name.name]},
+      status_data = TreatmentArmAssignmentEvent.scan(:scan_filter => {"treatment_arm_name_version" => {:comparison_operator => "CONTAINS", :attribute_value_list => [ta_name.name]},
                                                               "current_patient_status" => {:comparison_operator => "EQ", :attribute_value_list => [status.current_patient_status]}},
                                              :conditional_operator => "AND").map {| val | val.patient_sequence_number}
       pie_data = {

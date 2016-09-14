@@ -9,11 +9,9 @@ class TreatmentArmAssignmentEvent
   set_table_name "#{self.name.underscore}"
 
   string_attr :patient_id, hash_key: true
-  date_attr :date_created, range_key: true
-  date_attr :date_selected
+  date_attr :date_generated, range_key: true
   date_attr :date_on_arm
   date_attr :date_off_arm
-  string_attr :treatment_arm_name
   string_attr :treatment_arm_id
   string_attr :stratum_id
   string_attr :version
@@ -43,15 +41,14 @@ class TreatmentArmAssignmentEvent
   end
 
   def convert_model(patient_assignment)
-    p patient_assignment
     return {
         patient_id: patient_assignment[:patient_id],
-        date_created: patient_assignment[:date_created],
-        treatment_arm_name: patient_assignment[:treatment_arm_name],
+        date_generated: patient_assignment[:date_created],
+        treatment_arm_id: patient_assignment[:treatment_arm_id],
         stratum_id: patient_assignment[:stratum_id],
         version: patient_assignment[:version],
         step_number: patient_assignment[:step_number],
-        patient_status: patient_assignment[:patient_status]
+        patient_status: patient_assignment[:patient_current_status]
     }
   end
 end

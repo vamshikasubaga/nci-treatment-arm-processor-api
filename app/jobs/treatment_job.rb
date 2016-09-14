@@ -31,6 +31,7 @@ class TreatmentJob
     treatment_arm.save
   end
 
+  # Saves the TreatmentArm into the DataBase
   def insert(treatment_arm)
     begin
       treatment_arm_model = TreatmentArm.new

@@ -10,8 +10,8 @@ namespace :setup do
      create_table(TreatmentArm)
   end
 
-  task :treatment_arm_patient => :before do
-    create_table(TreatmentArmPatient)
+  task :treatment_arm_assignment_event => :before do
+    create_table(TreatmentArmAssignmentEvent)
   end
 
   desc "Create tables for DB"

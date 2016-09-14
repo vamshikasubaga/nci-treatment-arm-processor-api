@@ -83,7 +83,6 @@ describe TreatmentArm do
     }
     hash = TreatmentArm.new.convert_models(json)
     from_json_ta = TreatmentArm.new.from_json(hash.to_json)
-    expect(treatment_arm.name).to eq(from_json_ta.name)
     expect(treatment_arm.version).to eq(from_json_ta.version)
     expect(treatment_arm.study_id).to eq(from_json_ta.study_id)
     expect(treatment_arm.stratum_id).to eq(from_json_ta.stratum_id)

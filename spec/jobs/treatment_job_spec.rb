@@ -81,7 +81,7 @@ describe TreatmentJob do
                               :description => "testDiscription",
                               :target_id => "",
                               :target_name => "GENE"
-                            })).to include({:name=>"EAY131-A", :version=>"testVersion", :description=>"testDiscription", :target_name=>"GENE"})
+                            })).to include({:id=>"EAY131-A", :version=>"testVersion", :description=>"testDiscription", :target_name=>"GENE"})
     end
 
     it "should remove empty strings from json" do

@@ -15,12 +15,10 @@ describe TreatmentArmAssignmentEvent do
 
   let(:treatment_arm_assignment) do
     ba = TreatmentArmAssignmentEvent.new
-    ba.date_created = "2012-02-20"
+    ba.date_generated = "2012-02-20"
     ba.patient_id = "200re"
-    ba.treatment_arm_name = "Test"
     ba.treatment_arm_id = "EAC123"
     ba.stratum_id = "EAY131"
-    ba.date_selected = "2013-02-15"
     ba.patient_status = "PENDING"
     ba.assignment_reason = ""
     ba.diseases = [{ "drug_id" => "1234" }]
@@ -35,7 +33,6 @@ describe TreatmentArmAssignmentEvent do
   it "should be the correct class type for the variables" do
     stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm_assignment.configure_client(client: stub_client)
-    expect(treatment_arm_assignment.treatment_arm_name).to be_kind_of(String)
     expect(treatment_arm_assignment.treatment_arm_id).to be_kind_of(String)
     expect(treatment_arm_assignment.patient_id).to be_kind_of(String)
     expect(treatment_arm_assignment.version).to be_kind_of(String)
@@ -61,9 +58,7 @@ describe TreatmentArmAssignmentEvent do
     hash = TreatmentArmAssignmentEvent.new.convert_model(json)
     from_json_ta = TreatmentArmAssignmentEvent.new.from_json(hash.to_json)
     expect(treatment_arm_assignment.patient_id).to eq(from_json_ta.patient_id)
-    expect(treatment_arm_assignment.treatment_arm_name).to eq(from_json_ta.treatment_arm_name)
     expect(treatment_arm_assignment.stratum_id).to eq(from_json_ta.stratum_id)
     expect(treatment_arm_assignment.version).to eq(from_json_ta.version)
-    expect(treatment_arm_assignment.patient_status).to eq(from_json_ta.patient_status)
   end
 end

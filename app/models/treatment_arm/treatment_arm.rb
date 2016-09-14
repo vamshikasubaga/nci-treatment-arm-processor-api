@@ -10,7 +10,8 @@ class TreatmentArm
   set_table_name "#{self.name.underscore}"
 
   boolean_attr :active, database_attribute_name: 'is_active_flag'
-  string_attr :name, hash_key: true
+  string_attr :id, hash_key: true
+  string_attr :name
   string_attr :version
   string_attr :date_created, range_key: true
   string_attr :stratum_id
@@ -53,7 +54,7 @@ class TreatmentArm
   def self.build_scan_filter(id=nil, stratum_id=nil, version=nil)
     query = { scan_filter: {} }
     unless id.nil?
-      query[:scan_filter].merge!('name' => { comparison_operator: 'EQ', attribute_value_list: [id]} )
+      query[:scan_filter].merge!('id' => { comparison_operator: 'EQ', attribute_value_list: [id]} )
     end
     unless stratum_id.nil?
       query[:scan_filter].merge!('stratum_id' => { comparison_operator: 'EQ', attribute_value_list: [stratum_id] })
@@ -71,6 +72,7 @@ class TreatmentArm
   def self.build_cloned(treatment_arm)
     return {
              active: true,
+             id: treatment_arm[:id],
              name: treatment_arm[:name],
              version: treatment_arm[:new_version],
              study_id: treatment_arm[:study_id],
@@ -98,8 +100,9 @@ class TreatmentArm
 
   def convert_models(treatment_arm)
     return {
-             active: attributes_present(treatment_arm) ? true : false,
-             name: treatment_arm[:id] || treatment_arm[:name],
+             active: true,
+             id: treatment_arm[:id],
+             name: treatment_arm[:name],
              version: treatment_arm[:version],
              study_id: treatment_arm[:study_id],
              stratum_id: treatment_arm[:stratum_id],
