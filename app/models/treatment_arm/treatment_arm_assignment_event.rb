@@ -43,7 +43,7 @@ class TreatmentArmAssignmentEvent
   def convert_model(patient_assignment)
     return {
         patient_id: patient_assignment[:patient_id],
-        date_generated: patient_assignment[:date_created],
+        date_generated: patient_assignment[:date_generated],
         treatment_arm_id: patient_assignment[:treatment_arm_id],
         stratum_id: patient_assignment[:stratum_id],
         version: patient_assignment[:version],
