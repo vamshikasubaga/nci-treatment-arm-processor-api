@@ -27,8 +27,7 @@ class TreatmentArm
   list_attr :treatment_arm_drugs
   list_attr :diseases
   list_attr :exclusion_drugs
-  list_attr :single_nucleotide_variants
-  list_attr :indels
+  list_attr :snv_indels
   list_attr :non_hotspot_rules
   list_attr :copy_number_variants
   list_attr :gene_fusions
@@ -89,8 +88,7 @@ class TreatmentArm
              treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
              diseases: treatment_arm[:diseases],
              exclusion_drugs: treatment_arm[:exclusion_drugs],
-             single_nucleotide_variants: treatment_arm[:single_nucleotide_variants],
-             indels: treatment_arm[:indels],
+             snv_indels: treatment_arm[:snv_indels],
              non_hotspot_rules: treatment_arm[:non_hotspot_rules],
              copy_number_variants: treatment_arm[:copy_number_variants],
              gene_fusions: treatment_arm[:gene_fusions],
@@ -118,8 +116,7 @@ class TreatmentArm
              treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
              diseases: treatment_arm[:diseases],
              exclusion_drugs: treatment_arm[:exclusion_drugs],
-             single_nucleotide_variants: treatment_arm[:single_nucleotide_variants],
-             indels: treatment_arm[:indels],
+             snv_indels: treatment_arm[:snv_indels],
              non_hotspot_rules: treatment_arm[:non_hotspot_rules],
              copy_number_variants: treatment_arm[:copy_number_variants],
              gene_fusions: treatment_arm[:gene_fusions],
