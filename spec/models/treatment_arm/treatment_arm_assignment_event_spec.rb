@@ -15,7 +15,7 @@ describe TreatmentArmAssignmentEvent do
 
   let(:treatment_arm_assignment) do
     ba = TreatmentArmAssignmentEvent.new
-    ba.date_generated = "2012-02-20"
+    ba.assignment_date = "2012-02-20"
     ba.patient_id = "200re"
     ba.treatment_arm_id = "EAC123"
     ba.stratum_id = "EAY131"

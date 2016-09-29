@@ -9,19 +9,25 @@ class TreatmentArmAssignmentEvent
   set_table_name "#{self.name.underscore}"
 
   string_attr :patient_id, hash_key: true
-  date_attr :date_generated, range_key: true
+  date_attr :assignment_date, range_key: true
   date_attr :date_on_arm
   date_attr :date_off_arm
   string_attr :treatment_arm_id
   string_attr :stratum_id
   string_attr :version
   string_attr :patient_status
+  string_attr :event
   string_attr :assignment_reason
   list_attr :diseases
   string_attr :step_number
   string_attr :surgical_event_id
   string_attr :molecular_id
   string_attr :analysis_id
+
+  PENDING_PATIENT = "PENDING_PATIENT"
+  CURRENT_PATIENT = "CURRENT_PATIENT"
+  NOT_ENROLLED = "NOT_ENROLLED"
+  FORMER_PATIENT = "FORMER_PATIENT"
 
   def self.find_by(opts = {})
     query = {}
@@ -42,13 +48,34 @@ class TreatmentArmAssignmentEvent
 
   def convert_model(patient_assignment)
     return {
-        patient_id: patient_assignment[:patient_id],
-        date_generated: patient_assignment[:date_generated],
+        assignment_date: patient_assignment[:assignment_date],
         treatment_arm_id: patient_assignment[:treatment_arm_id],
-        stratum_id: patient_assignment[:stratum_id],
         version: patient_assignment[:version],
+        stratum_id: patient_assignment[:stratum_id],
+        patient_id: patient_assignment[:patient_id],
+        date_on_arm: patient_assignment[:date_on_arm],
+        date_off_arm: patient_assignment[:date_off_arm],
+        patient_status: patient_assignment[:patient_status],
+        assignment_reason: patient_assignment[:assignment_reason],
+        diseases: patient_assignment[:diseases],
         step_number: patient_assignment[:step_number],
-        patient_status: patient_assignment[:patient_current_status]
+        surgical_event_id: patient_assignment[:surgical_event_id],
+        molecular_id: patient_assignment[:molecular_id],
+        analysis_id: patient_assignment[:analysis_id],
+        event: patient_assignment[:event] || PENDING_PATIENT
     }
+  end
+
+  # Captures the order of Patient Statuses and changes the Version & Stratum Statictics accordingly
+  def next_event(next_state)
+    if event.nil? || event == PENDING_PATIENT && next_state == "PENDING_APPROVAL"
+      PENDING_PATIENT
+    elsif event == PENDING_PATIENT && next_state == "ON_TREATMENT_ARM"
+      CURRENT_PATIENT
+    elsif event == CURRENT_PATIENT && ["REQUEST_ASSIGNMENT", "REQUEST_NO_ASSIGNMENT", "OFF_STUDY", "OFF_STUDY_BIOPSY_EXPIRED"].include?(next_state)
+      FORMER_PATIENT
+    elsif event == PENDING_PATIENT && ["REQUEST_ASSIGNMENT", "REQUEST_NO_ASSIGNMENT", "OFF_STUDY", "OFF_STUDY_BIOPSY_EXPIRED"].include?(next_state)
+      NOT_ENROLLED
+    end
   end
 end
