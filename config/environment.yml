@@ -1,7 +1,7 @@
 development:
   aws_dynamo_endpoint: "http://localhost:8000"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm_dev"
+  queue_name: <%= ENV["TA_QUEUE_NAME"] %>
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
@@ -16,7 +16,7 @@ development:
 test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm_test"
+  queue_name: "treatment_arm_queue"
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
@@ -31,7 +31,7 @@ test:
 uat:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm"
+  queue_name: "treatment_arm_queue"
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
@@ -46,7 +46,7 @@ uat:
 production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm"
+  queue_name: "treatment_arm_queue"
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
   table_prefix: "ta"
