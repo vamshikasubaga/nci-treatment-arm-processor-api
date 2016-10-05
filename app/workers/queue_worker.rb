@@ -2,7 +2,7 @@
 class QueueWorker
   include Shoryuken::Worker
 
-  shoryuken_options queue: -> { "#{ENV['queue_name']}" }, auto_delete: true
+  shoryuken_options queue: -> { "#{Rails.configuration.environment.fetch('queue_name')}" }, auto_delete: true
 
   def perform(_sqs_message, message)
     begin

@@ -4,7 +4,7 @@ class BasicTreatmentArm
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
-  set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
+  set_table_name "#{Rails.configuration.environment.fetch('table_prefix')}_#{self.name.underscore}_#{Rails.env}"
 
   boolean_attr :active, database_attribute_name: "is_active_flag"
   string_attr :treatment_arm_id, hash_key: true

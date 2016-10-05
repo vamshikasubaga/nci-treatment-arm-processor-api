@@ -2,13 +2,13 @@
 module Shoryuken
   def self.options
     @options = {
-        concurrency: ENV['shoryuken_concurrency'].to_i,
-        queues: [ENV['queue_name']],
+        concurrency: Rails.configuration.environment.fetch('shoryuken_concurrency').to_i,
+        queues: [Rails.configuration.environment.fetch('queue_name')],
         aws: {access_key_id: Rails.application.secrets.aws_access_key_id,
               secret_access_key: Rails.application.secrets.aws_secret_access_key,
-              region: ENV['aws_region']
+              region: Rails.configuration.environment.fetch('aws_region')
         },
-        delay: ENV['shoryuken_delay'].to_i,
+        delay: Rails.configuration.environment.fetch('shoryuken_delay').to_i,
         timeout: 8,
         lifecycle_events: {
             startup: [],
@@ -31,13 +31,13 @@ end
 Shoryuken.configure_server do | config |
   Shoryuken.logger.info "====== Configuring SQS connection ======"
 
-   region = ENV['aws_region']
-   Shoryuken.logger.info "====== region: #{ENV['aws_region']} ======"
+   region = Rails.configuration.environment.fetch('aws_region')
+   Shoryuken.logger.info "====== region: #{Rails.configuration.environment.fetch('aws_region')} ======"
 
    end_point = "https://sqs.#{region}.amazonaws.com"
    Shoryuken.logger.info "====== end point: #{end_point} ======"
 
-   @queue_name = ENV['queue_name']
+   @queue_name = Rails.configuration.environment.fetch('queue_name')
    Shoryuken.logger.info "====== queue_name: #{@queue_name} ======"
 
    access_key = Rails.application.secrets.aws_access_key_id

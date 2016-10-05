@@ -15,8 +15,8 @@ module ModelConfig
   end
 
   def self.ensure_table(table)
-    read_capacity_units =  ENV['read_capacity_units'].to_i
-    write_capacity_units = ENV['write_capacity_units'].to_i
+    read_capacity_units = Rails.configuration.environment.fetch('read_capacity_units').to_i
+    write_capacity_units = Rails.configuration.environment.fetch('write_capacity_units').to_i
 
     unless table.table_exists?
       puts "====== Table [#{table.table_name}] does not exist. Creating the table ======"

@@ -4,7 +4,7 @@ class CogTreatmentJob
 
   def perform
     begin
-      results = HTTParty.get(ENV['cog_url'] + ENV['cog_treatment_arms'])
+      results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
       cog_arms_status = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys!
       cog_arms_status[:treatment_arms].each do |treatment_arm|
         update_status(treatment_arm)

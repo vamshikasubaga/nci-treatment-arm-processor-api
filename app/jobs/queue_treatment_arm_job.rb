@@ -5,7 +5,7 @@ class QueueTreatmentArmJob
     begin
       CogTreatmentJob.new.perform
       treatment_arms = TreatmentArm.find_by()
-      HTTParty.post(ENV["patient_api_url"] + ENV["patient_assignment"],
+      HTTParty.post(Rails.configuration.environment.fetch('patient_api_url') + Rails.configuration.environment.fetch('patient_assignment'),
                     :body => {:treatment_arms => treatment_arms}.to_json,
                     :headers => { 'Content-Type' => 'application/json' }
       )
