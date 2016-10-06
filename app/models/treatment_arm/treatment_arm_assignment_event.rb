@@ -23,6 +23,8 @@ class TreatmentArmAssignmentEvent
   string_attr :surgical_event_id
   string_attr :molecular_id
   string_attr :analysis_id
+  map_attr :variant_report
+  map_attr :assignment_report
 
   PENDING_PATIENT = "PENDING_PATIENT"
   CURRENT_PATIENT = "CURRENT_PATIENT"
@@ -62,6 +64,8 @@ class TreatmentArmAssignmentEvent
         surgical_event_id: patient_assignment[:surgical_event_id],
         molecular_id: patient_assignment[:molecular_id],
         analysis_id: patient_assignment[:analysis_id],
+        variant_report: patient_assignment[:variant_report],
+        assignment_report: patient_assignment[:assignment_report],
         event: patient_assignment[:event] || PENDING_PATIENT
     }
   end
