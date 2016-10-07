@@ -41,12 +41,12 @@ Rails.application.configure do
   # config.log_tags = [ :request_id ]
 
   # Enable stdout logger
-  config.logger = Logger.new(STDOUT)
+  # config.logger = Logger.new(STDOUT)
   # Set log level
   config.log_level = :WARN
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
-  config.log_tags = [ "Treatment-Arm-Processor", :subdomain, :uuid, :request_id ]
+  # config.log_tags = [ "Treatment-Arm-Processor", :subdomain, :uuid, :request_id ]
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
@@ -76,5 +76,5 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  # config.log_formatter = ::Logger::Formatter.new
 end
