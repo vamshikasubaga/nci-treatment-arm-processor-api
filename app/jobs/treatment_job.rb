@@ -5,10 +5,10 @@ class TreatmentJob
   def perform(treatment_arm, clone=false)
     begin
       treatment_arm = treatment_arm.symbolize_keys!
-      if TreatmentArm.find_by(treatment_arm[:id], treatment_arm[:stratum_id], treatment_arm[:version]).blank?
+      if TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], treatment_arm[:version]).blank?
         insert(treatment_arm)
-      elsif treatment_arm[:id].present? && treatment_arm[:stratum_id].present? && treatment_arm[:version].present?
-        Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} stratum_id #{treatment_arm[:stratum_id]} version #{treatment_arm[:version]} exists already.  Skipping")
+      elsif treatment_arm[:treatment_arm_id].present? && treatment_arm[:stratum_id].present? && treatment_arm[:version].present?
+        Shoryuken.logger.info("TreatmentArm #{treatment_arm[:treatment_arm_id]} stratum_id #{treatment_arm[:stratum_id]} version #{treatment_arm[:version]} exists already.  Skipping")
         clone(treatment_arm)
       end
       CogTreatmentJob.new.perform
@@ -26,7 +26,7 @@ class TreatmentJob
 
   # Turns the old TA active flag to false if the TA gets updated with a new version
   def deactivate(treatment_arm)
-    treatment_arm = TreatmentArm.find_by(treatment_arm[:id], treatment_arm[:stratum_id], treatment_arm[:version], false).first
+    treatment_arm = TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], treatment_arm[:version], false).first
     treatment_arm.active = false
     treatment_arm.save
   end
@@ -39,7 +39,7 @@ class TreatmentJob
       json = treatment_arm_model.convert_models(json).to_json
       treatment_arm_model.from_json(json)
       treatment_arm_model.save
-      Shoryuken.logger.info("TreatmentArm #{treatment_arm[:id]} version #{treatment_arm[:version]} has been saved successfully")
+      Shoryuken.logger.info("TreatmentArm #{treatment_arm[:treatment_arm_id]} version #{treatment_arm[:version]} has been saved successfully")
     rescue => error
       Shoryuken.logger.error("Failed to save treatment arm with error #{error}")
     end

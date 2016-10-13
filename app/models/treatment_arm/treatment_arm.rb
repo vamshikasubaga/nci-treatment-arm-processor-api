@@ -10,7 +10,7 @@ class TreatmentArm
   set_table_name "#{self.name.underscore}"
 
   boolean_attr :active, database_attribute_name: 'is_active_flag'
-  string_attr :id, hash_key: true
+  string_attr :treatment_arm_id, hash_key: true
   string_attr :name
   string_attr :version
   string_attr :date_created, range_key: true
@@ -71,7 +71,7 @@ class TreatmentArm
   def self.build_cloned(treatment_arm)
     return {
              active: true,
-             id: treatment_arm[:id],
+             treatment_arm_id: treatment_arm[:treatment_arm_id],
              name: treatment_arm[:name],
              version: treatment_arm[:new_version],
              study_id: treatment_arm[:study_id],
@@ -99,7 +99,7 @@ class TreatmentArm
   def convert_models(treatment_arm)
     return {
              active: true,
-             id: treatment_arm[:id],
+             treatment_arm_id: treatment_arm[:treatment_arm_id],
              name: treatment_arm[:name],
              version: treatment_arm[:version],
              study_id: treatment_arm[:study_id],

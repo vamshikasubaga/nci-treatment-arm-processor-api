@@ -10,7 +10,7 @@ describe TreatmentJob do
 
   let(:body) do
     {
-      "id" => "EAY131-A",
+      "treatment_arm_id" => "EAY131-A",
       "stratumId" => "3",
       "version" => "2016-02-20"
     }.to_json
@@ -31,21 +31,25 @@ describe TreatmentJob do
     ba.date_created = "2014-02-30"
     ba.treatment_arm_drugs = []
     ba.exclusion_drugs = [
-            {"drug_id"=> "763093",
-             "name" => "Trametinib",
-             "pathway" => "B-RAF inhibitor",
-             "target" => "B-RAF"
+            {
+              "drug_id" => "763093",
+              "name" => "Trametinib",
+              "pathway" => "B-RAF inhibitor",
+              "target" => "B-RAF"
             },
-            {"drug_id" => "763760",
-             "name" => ""
+            {
+              "drug_id" => "763760",
+              "name" => ""
             },
-            {"drug_id" => "",
-             "name" => "Trametinib"
+            {
+              "drug_id" => "",
+              "name" => "Trametinib"
             },
-            {"drug_id"=> "763093",
-             "name" => "Trametinib",
-             "pathway" => "",
-             "target" => "B-RAF"
+            {
+              "drug_id" => "763093",
+              "name" => "Trametinib",
+              "pathway" => "",
+              "target" => "B-RAF"
             }
     ]
     ba.status_log = {}
@@ -53,9 +57,7 @@ describe TreatmentJob do
   end
 
   describe '#perform' do
-
     subject { TreatmentJob.new }
-
     it 'should respond to a new message' do
       allow(TreatmentArm).to receive(:find).and_return([])
       allow(TreatmentArm.new).to receive(:save).and_return(true)
@@ -76,32 +78,35 @@ describe TreatmentJob do
 
     it "should convert json to the given model" do
       expect(TreatmentArm.new.convert_models({})).to be_truthy
-      expect(TreatmentArm.new.convert_models({ :id => "EAY131-A",
-                              :version => "testVersion",
-                              :description => "testDiscription",
-                              :target_id => "",
-                              :target_name => "GENE"
-                            })).to include({:id=>"EAY131-A", :version=>"testVersion", :description=>"testDiscription", :target_name=>"GENE"})
+      expect(TreatmentArm.new.convert_models({ treatment_arm_id: "EAY131-A",
+                                               version: "testVersion",
+                                               description: "testDiscription",
+                                               target_id: "",
+                                               target_name: "GENE"
+                                             })).to include( { treatment_arm_id: "EAY131-A", version: "testVersion", description: "testDiscription", target_name: "GENE"} )
     end
 
     it "should remove empty strings from json" do
       expected_results = [
-              {"drug_id"=>"763093",
-               "name"=>"Trametinib",
-               "pathway"=>"B-RAF inhibitor",
-               "target"=>"B-RAF"
+              {
+                "drug_id" => "763093",
+                "name" => "Trametinib",
+                "pathway" => "B-RAF inhibitor",
+                "target" => "B-RAF"
               },
-              {"drug_id"=>"763760",
+              {
+                "drug_id" => "763760",
               },
-              {"name"=>"Trametinib"
+              {
+                "name" => "Trametinib"
               },
-              {"drug_id"=>"763093",
-               "name" =>"Trametinib",
-               "target" =>"B-RAF"
+              {
+                "drug_id" => "763093",
+                "name" => "Trametinib",
+                "target" => "B-RAF"
               }
       ]
       expect(subject.remove_blank_document(treatment_arm.to_h)[:exclusion_drugs]).to eq(expected_results)
     end
   end
-
 end
