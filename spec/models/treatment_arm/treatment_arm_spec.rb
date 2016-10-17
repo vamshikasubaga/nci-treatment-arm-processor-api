@@ -64,7 +64,7 @@ describe TreatmentArm do
     })
     treatment_arm.configure_client(client: stub_client)
     json = {
-        :id => "TestData",
+        :treatment_arm_id => "TestData",
         :version => "EAY13102",
         :study_id => "EAY131",
         :stratum_id => "EAY131",
