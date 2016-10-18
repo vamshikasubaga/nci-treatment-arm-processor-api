@@ -43,6 +43,8 @@ class PatientJob
       patient_ta.event = next_event
       patient_ta.patient_status = assess_patient_status(next_event, patient_assignment[:patient_status])
       patient_ta.step_number = patient_assignment[:step_number]
+      patient_ta.date_on_arm = patient_assignment[:date_on_arm]
+      patient_ta.date_off_arm = patient_assignment[:date_off_arm]
       patient_ta.save(force: true)
     rescue => error
       Shoryuken.logger.error("Failed to update TreatmentArmAssignmentEvent with error: #{error.message} #{error.backtrace}")
