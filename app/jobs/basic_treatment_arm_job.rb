@@ -18,7 +18,7 @@ class BasicTreatmentArmJob
   # basic_treatment_arm.date_suspended = !sorted_status_log.key("SUSPENDED").blank? ? Time.strptime(sorted_status_log.key("SUSPENDED"), '%Q') : nil
 
   def update(treatment_arm)
-    treatment_arm.former_patients = find_patient_count_by_event(treatment_arm, ["FORMER_PATIENT"])
+    treatment_arm.former_patients = find_patient_count_by_event(treatment_arm, "FORMER_PATIENT")
     treatment_arm.current_patients = find_patient_count_for_status(treatment_arm, ["ON_TREATMENT_ARM"])
     treatment_arm.not_enrolled_patients = find_patient_count_by_event(treatment_arm, "NOT_ENROLLED")
     treatment_arm.pending_patients = find_patient_count_for_status(treatment_arm, ["PENDING_APPROVAL"])
