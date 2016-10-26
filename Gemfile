@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '5.0.0.1'
-#gem 'rails', '>= 5.0.0.beta3', '< 5.1'
+gem 'newrelic_rpm'
+
 # Use Puma as the app server
 gem 'puma'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
