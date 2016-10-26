@@ -15,25 +15,33 @@ describe TreatmentArmAssignmentEvent do
 
   let(:treatment_arm_assignment) do
     ba = TreatmentArmAssignmentEvent.new
-    ba.assignment_date = "2012-02-20"
-    ba.patient_id = "200re"
-    ba.treatment_arm_id = "EAC123"
-    ba.stratum_id = "EAY131"
-    ba.patient_status = "PENDING"
-    ba.assignment_reason = ""
-    ba.diseases = [{ "drug_id" => "1234" }]
-    ba.version = "2012-02-20"
-    ba.step_number = "0"
-    ba.analysis_id = "1"
-    ba.molecular_id = "2"
-    ba.surgical_event_id = "3"
+    ba.assignment_date = '2012-02-20'
+    ba.date_on_arm = '2016-05-27'
+    ba.date_off_arm = '2013-01-19'
+    ba.patient_id = '200re'
+    ba.treatment_arm_id = 'EAC123'
+    ba.stratum_id = 'EAY131'
+    ba.patient_status = 'PENDING'
+    ba.assignment_reason = ''
+    ba.diseases = [{ 'drug_id' => '1234' }]
+    ba.version = '2012-02-20'
+    ba.step_number = '0'
+    ba.analysis_id = '1'
+    ba.molecular_id = '2'
+    ba.surgical_event_id = '3'
+    ba.variant_report = {}
+    ba.assignment_report = {}
+    ba.event = 'EVENT_INIT'
     ba
   end
 
-  it "should be the correct class type for the variables" do
+  it 'should be the correct class type for the variables' do
     stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm_assignment.configure_client(client: stub_client)
     expect(treatment_arm_assignment.treatment_arm_id).to be_kind_of(String)
+    expect(treatment_arm_assignment.assignment_date).to be_kind_of(Date)
+    expect(treatment_arm_assignment.date_off_arm).to be_kind_of(Date)
+    expect(treatment_arm_assignment.date_on_arm).to be_kind_of(Date)
     expect(treatment_arm_assignment.patient_id).to be_kind_of(String)
     expect(treatment_arm_assignment.version).to be_kind_of(String)
     expect(treatment_arm_assignment.analysis_id).to be_kind_of(String)
@@ -42,10 +50,12 @@ describe TreatmentArmAssignmentEvent do
     expect(treatment_arm_assignment.step_number).to be_kind_of(String)
     expect(treatment_arm_assignment.diseases).to be_kind_of(Array)
     expect(treatment_arm_assignment.assignment_reason).to be_kind_of(String)
+    expect(treatment_arm_assignment.variant_report).to be_kind_of(Hash)
+    expect(treatment_arm_assignment.assignment_report).to be_kind_of(Hash)
     expect(treatment_arm_assignment.patient_status).to be_kind_of(String)
   end
 
-  it "should return the correct values" do
+  it 'should return the correct values' do
     stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm_assignment.configure_client(client: stub_client)
     json = {
@@ -60,5 +70,23 @@ describe TreatmentArmAssignmentEvent do
     expect(treatment_arm_assignment.patient_id).to eq(from_json_ta.patient_id)
     expect(treatment_arm_assignment.stratum_id).to eq(from_json_ta.stratum_id)
     expect(treatment_arm_assignment.version).to eq(from_json_ta.version)
+  end
+
+  it 'should be of the correct instance' do
+    treatment_arm_assignment = TreatmentArmAssignmentEvent.new()
+    expect(treatment_arm_assignment).to be_an_instance_of(TreatmentArmAssignmentEvent)
+  end
+
+  it 'automatically declares patient_id' do
+    expect{treatment_arm_assignment.patient_id}.to_not raise_error
+  end
+
+  it "should be valid when an instance is created" do
+    expect(TreatmentArmAssignmentEvent.new).to be_truthy
+  end
+
+  it 'should be valid with valid attributes' do
+    treatment_arm_assignment = TreatmentArmAssignmentEvent.new(patient_id: '200re', stratum_id: 'EAY131', version: '2012-02-20')
+    expect(treatment_arm_assignment).to be_truthy
   end
 end
