@@ -43,6 +43,10 @@ describe TreatmentArm do
     ba.pending_patients = 2
     ba.not_enrolled_patients = 1
     ba.former_patients = 2
+    ba.version_current_patients = 0
+    ba.version_former_patients = 1
+    ba.version_pending_patients = 1
+    ba.version_not_enrolled_patients = 2
     ba
   end
 
@@ -69,16 +73,23 @@ describe TreatmentArm do
     expect(treatment_arm.treatment_arm_drugs).to be_kind_of(Array)
     expect(treatment_arm.diseases).to be_kind_of(Array)
     expect(treatment_arm.exclusion_drugs).to be_kind_of(Array)
-    expect(treatment_arm.current_patients).to be_kind_of(Integer)
-    expect(treatment_arm.pending_patients).to be_kind_of(Integer)
-    expect(treatment_arm.not_enrolled_patients).to be_kind_of(Integer)
-    expect(treatment_arm.former_patients).to be_kind_of(Integer)
     expect(treatment_arm.gene_fusions).to be_kind_of(Array)
     expect(treatment_arm.snv_indels).to be_kind_of(Array)
     expect(treatment_arm.non_hotspot_rules).to be_kind_of(Array)
     expect(treatment_arm.copy_number_variants).to be_kind_of(Array)
     expect(treatment_arm.date_created).to be_kind_of(String)
     expect(treatment_arm.date_opened).to be_kind_of(String)
+  end
+
+  it 'should be the correc class type for the version and stratum statistics' do
+    expect(treatment_arm.not_enrolled_patients).to be_kind_of(Integer)
+    expect(treatment_arm.former_patients).to be_kind_of(Integer)
+    expect(treatment_arm.pending_patients).to be_kind_of(Integer)
+    expect(treatment_arm.current_patients).to be_kind_of(Integer)
+    expect(treatment_arm.version_pending_patients).to be_kind_of(Integer)
+    expect(treatment_arm.version_former_patients).to be_kind_of(Integer)
+    expect(treatment_arm.version_current_patients).to be_kind_of(Integer)
+    expect(treatment_arm.version_not_enrolled_patients).to be_kind_of(Integer)
   end
 
   it 'should return the correct class type for the Boolean attribute' do
