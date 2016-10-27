@@ -1,4 +1,4 @@
-# Calls COG and Updates the Latest TA Status
+# Calls COG and Updates the Latest TreatmentArm Status
 class CogTreatmentJob
   include HTTParty
 
@@ -11,7 +11,7 @@ class CogTreatmentJob
       end
       cog_arms_status[:treatment_arms]
     rescue => error
-      Shoryuken.logger.error('Failed to connect to COG #{error}')
+      Shoryuken.logger.error("Failed to connect to COG with error #{error}::#{error.backtrace}")
     end
   end
 
@@ -24,14 +24,14 @@ class CogTreatmentJob
           match_treatment_arm.treatment_arm_status = cog_treatment_arm[:status]
           match_treatment_arm.status_log = rewrite_status_log(match_treatment_arm.status_log, {cog_treatment_arm[:status_date] => cog_treatment_arm[:status]})
           match_treatment_arm.save
-          Shoryuken.logger.info("Treatment arm #{cog_treatment_arm[:treatment_arm_id]} (#{cog_treatment_arm[:stratum_id]}) has been updated")
+          Shoryuken.logger.info("The status for the TreatmentArm with id #{cog_treatment_arm[:treatment_arm_id]} & stratum_id #{cog_treatment_arm[:stratum_id]} has been successfully updated")
         else
-          Shoryuken.logger.info("Treatment arm #{cog_treatment_arm[:treatment_arm_id]} (#{cog_treatment_arm[:stratum_id]}) is currently CLOSED or Already in the correct state")
+          Shoryuken.logger.info("TreatmentArm with id #{cog_treatment_arm[:treatment_arm_id]} & stratum_id #{cog_treatment_arm[:stratum_id]} is currently CLOSED or already in the correct state")
         end
       end
-      Shoryuken.logger.info('No Treatment Arms status to update')
+      Shoryuken.logger.info("No TreatmentArms status to update")
     rescue => error
-      Shoryuken.logger.error('Failed to update TA status from COG with error #{error}')
+      Shoryuken.logger.error("Failed to update TreatmentArm status from COG with error #{error}::#{error.backtrace}")
     end
   end
 

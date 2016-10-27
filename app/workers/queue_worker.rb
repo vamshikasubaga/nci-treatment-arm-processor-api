@@ -20,10 +20,10 @@ class QueueWorker
       when :assignment_event
         PatientJob.new.perform(message[processor_key])
       else
-        Shoryuken.logger.warn("Message was not recognized.  Please verify it is valid and resend. Message: #{message}")
+        Shoryuken.logger.warn("Message was not recognized. Please verify it is valid and resend. Message: #{message}")
       end
     rescue => error
-      Shoryuken.logger.error("Unable to process #{message} because of #{error}")
+      Shoryuken.logger.error("Unable to process message #{message} because of error #{error}::#{error.backtrace}")
     end
   end
 end

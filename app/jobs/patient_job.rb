@@ -7,23 +7,23 @@ class PatientJob
       patient_assignment.symbolize_keys!
       # fail_safe(patient_assignment)
       case patient_assignment[:patient_status]
-      when "PENDING_CONFIRMATION"
-        Shoryuken.logger.info("Recieved patient #{patient_assignment[:patient_id]} at state PENDING_CONFIRMATION")
+      when 'PENDING_CONFIRMATION'
+        Shoryuken.logger.info("Recieved patient with id #{patient_assignment[:patient_id]} at state PENDING_CONFIRMATION")
         store_patient(patient_assignment)
-      when "PENDING_APPROVAL"
-        Shoryuken.logger.info("Recieved patient #{patient_assignment[:patient_id]} at state PENDING_APPROVAL")
+      when 'PENDING_APPROVAL'
+        Shoryuken.logger.info("Recieved patient with id #{patient_assignment[:patient_id]} at state PENDING_APPROVAL")
         store_patient(patient_assignment)
-      when "ON_TREATMENT_ARM"
-        Shoryuken.logger.info("Recieved patient #{patient_assignment[:patient_id]} at state ON_TREATMENT_ARM")
+      when 'ON_TREATMENT_ARM'
+        Shoryuken.logger.info("Recieved patient with id #{patient_assignment[:patient_id]} at state ON_TREATMENT_ARM")
         store_patient(patient_assignment)
-      when "REQUEST_ASSIGNMENT", "REQUEST_NO_ASSIGNMENT", "OFF_STUDY", "OFF_STUDY_BIOPSY_EXPIRED"
+      when 'REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT', 'OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'
         Shoryuken.logger.info("Recieved patient #{patient_assignment[:patient_id]} at state #{patient_assignment[:patient_status]}")
         store_patient(patient_assignment)
       else
-        Shoryuken.logger.info("Recieved patient #{patient_assignment[:patient_id]} with no current recognized state")
+        Shoryuken.logger.info("Recieved patient with id #{patient_assignment[:patient_id]} with no current recognized state")
       end
     rescue => error
-      Shoryuken.logger.error("Failed to process patient assignment message with error #{error.message}")
+      Shoryuken.logger.error("Failed to process Patient Assignment message with error #{error}::#{error.backtrace}")
     end
   end
 
@@ -38,7 +38,7 @@ class PatientJob
 
   def update(patient_assignment)
     begin
-      patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id]).sort_by{ | pa_ta | pa_ta.assignment_date }.reverse.first
+      patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id]).sort_by{ |pa_ta| pa_ta.assignment_date }.reverse.first
       next_event = patient_ta.next_event(patient_ta.event, patient_assignment[:patient_status])
       patient_ta.event = next_event
       patient_ta.patient_status = assess_patient_status(next_event, patient_assignment[:patient_status])
@@ -47,7 +47,7 @@ class PatientJob
       patient_ta.date_off_arm = patient_assignment[:date_off_arm]
       patient_ta.save(force: true)
     rescue => error
-      Shoryuken.logger.error("Failed to update TreatmentArmAssignmentEvent with error: #{error.message} #{error.backtrace}")
+      Shoryuken.logger.error("Failed to update Patient Assignment with error: #{error}::#{error.backtrace}")
     end
   end
 
@@ -59,7 +59,7 @@ class PatientJob
       patient_model.save
       Shoryuken.logger.info("Patient #{patient_model.patient_id} was successfully saved for assignment to #{patient_model.treatment_arm.id}")
     rescue => error
-      Shoryuken.logger.error("Failed to insert TreatmentArmAssignmentEvent with error: #{error.message}")
+      Shoryuken.logger.error("Failed to insert Patient Assignment with error: #{error}::#{error.backtrace}")
     end
   end
 
@@ -71,7 +71,7 @@ class PatientJob
     patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id]).sort_by{ |patient_ta| patient_ta.assignment_date }.reverse.first
     unless patient_ta.blank?
       if patient_ta.assignment_date > Date.parse(patient_assignment[:assignment_date])
-        raise ArgumentError, 'Patient #{patient_assignment[:patient_id]} assignment is out of order.  Current: #{patient_ta.to_h} Received: #{patient_assignment}'
+        raise ArgumentError, "Patient #{patient_assignment[:patient_id]} assignment is out of order. Current: #{patient_ta.to_h} Received: #{patient_assignment}"
       end
     end
   end
@@ -79,14 +79,14 @@ class PatientJob
   private
 
   def assess_patient_status(event, status)
-    if event == TreatmentArmAssignmentEvent::FORMER_PATIENT && ["REQUEST_ASSIGNMENT", "REQUEST_NO_ASSIGNMENT"].include?(status.upcase)
-      status = "PREVIOUSLY_ON_ARM"
-    elsif event == TreatmentArmAssignmentEvent::FORMER_PATIENT && ["OFF_STUDY", "OFF_STUDY_BIOPSY_EXPIRED"].include?(status.upcase)
-      status = "PREVIOUSLY_ON_ARM_OFF_STUDY"
-    elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && ["REQUEST_ASSIGNMENT", "REQUEST_NO_ASSIGNMENT"].include?(status.upcase)
-      status = "NOT_ENROLLED_ON_ARM"
-    elsif event ==  TreatmentArmAssignmentEvent::NOT_ENROLLED && ["OFF_STUDY", "OFF_STUDY_BIOPSY_EXPIRED"].include?(status.upcase)
-      status = "NOT_ENROLLED_ON_ARM_OFF_STUDY"
+    if event == TreatmentArmAssignmentEvent::FORMER_PATIENT && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT'].include?(status.upcase)
+      status = 'PREVIOUSLY_ON_ARM'
+    elsif event == TreatmentArmAssignmentEvent::FORMER_PATIENT && ['OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(status.upcase)
+      status = 'PREVIOUSLY_ON_ARM_OFF_STUDY'
+    elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT'].include?(status.upcase)
+      status = 'NOT_ENROLLED_ON_ARM'
+    elsif event ==  TreatmentArmAssignmentEvent::NOT_ENROLLED && ['OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(status.upcase)
+      status = 'NOT_ENROLLED_ON_ARM_OFF_STUDY'
     else
       # Confirm the PENDING_CONFIRMATION TO OFF_STUDY STATUS TRANSFER
     end

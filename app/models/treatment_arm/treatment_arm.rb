@@ -36,6 +36,10 @@ class TreatmentArm
   integer_attr :former_patients
   integer_attr :not_enrolled_patients
   integer_attr :pending_patients
+  integer_attr :version_current_patients
+  integer_attr :version_former_patients
+  integer_attr :version_not_enrolled_patients
+  integer_attr :version_pending_patients
 
   def self.find_by(id=nil, stratum_id=nil, version=nil, to_hash=true)
     query = {}
