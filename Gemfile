@@ -26,7 +26,7 @@ gem 'aws-record'
 gem 'shoryuken'
 
 gem 'httparty'
-
+gem 'nci_match_patient_models', :git => 'git://github.com/CBIIT/nci-match-lib.git', :branch => 'master'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -42,7 +42,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
-  # Code Climate Test Coverage 
+  # Code Climate Test Coverage
   gem 'codeclimate-test-reporter', require: nil
   gem 'simplecov', :require => false
   gem 'simplecov-rcov'
