@@ -38,11 +38,11 @@ namespace :setup do
     table_name = STDIN.gets.chomp
     if ["treatment_arm", "treatment_arm_assignment_event"].include?(table_name)
       puts "========================="
-      puts "Wiping off #{table_name}..."
+      puts "Wiping off #{table_name} table..."
       clear_table(table_name.camelize.constantize)
     else
       puts "========================="
-      puts "Wiping #{table_name}..."
+      puts "Wiping off #{table_name} table..."
       clear_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
     end
   end
@@ -51,9 +51,9 @@ namespace :setup do
   task :create_table => :before do
     missing_tables = table_names - list_tables
     missing_tables.each do |table_name|
-      puts "#{table_name} is missing. Creating it..."
+      puts "#{table_name} table is missing. Creating it..."
       if ["treatment_arm", "treatment_arm_assignment_event"].include?(table_name)
-        create_table(arg.camelize)
+        create_table(table_name.camelize)
       else
         create_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
       end
@@ -98,6 +98,7 @@ namespace :setup do
         }
       )
       migration.wait_until_available
+      puts "#{model_class} table has been created successfully"
     else
       puts "Table #{model_class.table_name} already exists....skipping"
     end
