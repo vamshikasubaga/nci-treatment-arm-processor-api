@@ -11,37 +11,31 @@ namespace :setup do
     puts list_tables
   end
 
-  table_names = ["assignment", "event", "patient", "shipment", "variant", "variant_report", "specimen", "treatment_arm", "treatment_arm_assignment_event"]
+  table_names = %W(assignment event patient shipment variant variant_report specimen treatment_arm treatment_arm_assignment_event)
 
   desc 'Deletes a table'
   task :delete_table => :before do
     args = list_tables;puts args
-    STDOUT.puts 'Which table would you like to delete?'
+    STDOUT.puts "\n Which table would you like to delete?"
     table_name = STDIN.gets.chomp
-    if table_names.include?(table_name)
-      puts "========================="
-      puts "Deleting #{table_name}..."
-      delete_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
-    elsif ["treatment_arm", "treatment_arm_assignment_event"].include?(table_name)
-      puts "========================="
-      puts "Deleting #{table_name}..."
+    if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
+      puts "Deleting #{table_name} table..."
       delete_table(table_name.camelize.constantize)
     else
-      puts "The table #{table_name} was not from the list of tables."
+      puts "Deleting #{table_name} table..."
+      delete_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
     end
   end
 
   desc 'Clears the table data'
   task :clear_table => :before do
     args = list_tables;puts args
-    STDOUT.puts "Which table would you like to clear the data?"
+    STDOUT.puts "\n Which table would you like to clear the data?"
     table_name = STDIN.gets.chomp
-    if ["treatment_arm", "treatment_arm_assignment_event"].include?(table_name)
-      puts "========================="
+    if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
       puts "Wiping off #{table_name} table..."
       clear_table(table_name.camelize.constantize)
     else
-      puts "========================="
       puts "Wiping off #{table_name} table..."
       clear_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
     end
@@ -52,8 +46,8 @@ namespace :setup do
     missing_tables = table_names - list_tables
     missing_tables.each do |table_name|
       puts "#{table_name} table is missing. Creating it..."
-      if ["treatment_arm", "treatment_arm_assignment_event"].include?(table_name)
-        create_table(table_name.camelize)
+      if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
+        create_table(table_name.camelize.constantize)
       else
         create_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
       end
@@ -80,37 +74,43 @@ namespace :setup do
 
   def clear_table(model_class)
     if model_class.table_exists?
-      model_class.scan({}).each do |record|
-        record.delete!
-        puts "Table #{model_class.table_name} has been Wiped off successfully"
+      data = model_class.scan({})
+      if data.blank?
+        puts "#{model_class.table_name} table is Empty or has no data"
+      else
+        data.each do |record|
+          record.delete!
+          puts "#{model_class.table_name} table has been Wiped off successfully"
+        end
       end
     end
   end
 
   def create_table(model_class)
     unless model_class.table_exists?
-      migration = Aws::Record::TableMigration.new(model_class, { client: get_client(Aws::DynamoDB::Client) })
+      migration = Aws::Record::TableMigration.new(model_class, client: get_client(Aws::DynamoDB::Client))
       migration.create!(
         provisioned_throughput:
         {
-          read_capacity_units: Rails.configuration.environment.fetch("read_capacity_units").to_i,
-          write_capacity_units: Rails.configuration.environment.fetch("write_capacity_units").to_i
+          read_capacity_units: Rails.configuration.environment.fetch('read_capacity_units').to_i,
+          write_capacity_units: Rails.configuration.environment.fetch('write_capacity_units').to_i
         }
       )
       migration.wait_until_available
-      puts "#{model_class} table has been created successfully"
+      puts "#{model_class.table_name} table has been created successfully"
+      puts "_____________________________________________________________"
     else
-      puts "Table #{model_class.table_name} already exists....skipping"
+      puts "#{model_class.table_name} table already exists....skipping"
     end
   end
 
   def delete_table(model_class)
     if model_class.table_exists?
-      migration = Aws::Record::TableMigration.new(model_class, { client: get_client(Aws::DynamoDB::Client) })
+      migration = Aws::Record::TableMigration.new(model_class, client: get_client(Aws::DynamoDB::Client))
       migration.delete!
-      puts "*** Table #{model_class.table_name} has been deleted successfully ***"
+      puts "#{model_class.table_name} table has been deleted successfully"
     else
-      puts "*** Table #{model_class.table_name} doesn't exist ***"
+      puts "#{model_class.table_name} table doesn't exist"
     end
   end
 
