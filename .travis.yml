@@ -11,7 +11,7 @@ rvm:
 script:
   - RAILS_ENV=test bundle exec rspec spec/
 after_success:
-  # - ls -alth
+  - bundle exec codeclimate-test-reporter
   - docker build -t matchbox/nci-treatment-arm-processor-api:latest .
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker images
@@ -27,5 +27,4 @@ notifications:
     secure: YC185gYAkbEklgq2WhVn7F8As/ydZnB6FRD7y4iM7+M6O4zbIY2YI4tS0LqAsBZmJQ0voBo/+qN/sgM4BmskzxItY97qmJ0GAdQrlCdMSACsH7JCtEBJNT3OkyEAGiT98050+gWosfxRMrAXx0e2+sIY8VMiYMPAAIi7TAVPFJGDeD6uu1v/fzotL+2UuF90yG+R9QzXVUUqz0OuEXPcmErT4DvhnMe1R4tUQvHe9qUz7ExHsulH05X/UG4k2nU/Mm+7MzSbkh6QDkmT/CEoXFMNxJXHwIobexWETJLZrOnzl7uHwz/09fyREtMG30FptjIFOcqNMrZ/VGxH8QYTfIfU1TFhdGLHEoyFLUOvCMpRWiIvSKl6F8JU6zSHf6Hjk3ffrGwSmIZV01DbS2cGVB1JhrzsPiV53WtYcDtXBztlWEDeMPg3d7wrWbYhRECfWxS9mkJiNFm+B+/zPWaxTN5XsPFhiL1MySDrmE3p69orX0bcNkrKQ9YOZjer7KdE4Qkv/yw4DccXRb1bP/CkMS5J1BZk6KeW0Vttup60rALEcZqn8ko6Xo2/afWzTW0uhtaaYhtq0wFNyiDNCnUYEv2kgaYuyfOn0i1+JDfOThGA4BX/qwBzY0Y+oQtljWZGEIr0CSNJVlIph8LNqLaktSrDXgOEk2fYGF/Gqb2rml4=
 addons:
   code_climate:
-    repo_token:
-      secure: kz1aq3Gapo01pMcO4Ub2MrZy//UAVrjyincC2qE8HWl2mgDxj14zEBaPWkU0mZtdjf2OD6JHlCKQ2sH1misHobeI41A7DNec3AmnVpdu1YAZAoplUY7kIni4M/pGDbkk3/qVnnVc3Ens56wRq4mbzoy3hOigzdEMoMz+fbfhM9PWg+/WThxOoFGSl1CqBO/2cNiyVmWwjgssjJNVNYbid//SwQIXGo7aCI1w0RJIMAfX7+s/r7Pyfm82Pc8Hhc5q+liV15LwBKBO5ZIOBtNKxoRBckwL9el7+sH66AgoZOQ77ecquz9PkjHJ0ZchdWKemSvaocGwbPeoiUdeU7J+Dlm1GJeqk05ThSPPNZaZz/GKRopGRExuMs207gjih2ip/0fnSNMZuRjXTvRBZOll+ATyBxpypirspcOX28vhgoqLsrO22Wh64qxvlGf/FRc5bttt+H5j6ndjcuJognUCQsLX5FUabjVZpYU0SGDer3kEU/m5DT+UpudLet2RSVZBNQUh6tK4xsEDjATpcgrxoR4r7qUgap6nYmyOwwjyylJ6rr4Lge2pIhDKrMD998AxFlUJJ0JNzVbk7F1UpXyI28ebz9aTho2H3lnhJRi/r1mgV3D99WQlE+yc0igQZrQxd7A8eIlrLPZksvJ8xhw2/kX0owRgG8ejZyXpJLYNPws=
+        repo_token: 55a2dc7851ea13b067e7d2ef6d86e1068da4634edc063a013b9af2a48c6d791a
