@@ -4,6 +4,7 @@ class TreatmentJob
 
   def perform(treatment_arm, clone=false)
     begin
+      p "******* inside TA perform block *******"
       treatment_arm = treatment_arm.symbolize_keys!
       if TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], treatment_arm[:version]).blank?
         insert(treatment_arm)
@@ -37,6 +38,7 @@ class TreatmentJob
 
   # Saves the TreatmentArm into the DataBase
   def insert(treatment_arm)
+    p "****** inside insert block *****************"
     begin
       treatment_arm_model = TreatmentArm.new
       json = remove_blank_document(treatment_arm)
@@ -47,6 +49,7 @@ class TreatmentJob
     rescue => error
       Shoryuken.logger.error("Failed to save TreatmentArm with the error #{error}::#{error.backtrace}")
     end
+    p "******** end of insert ************"
   end
 
   def remove_blank_document(treatment_arm)
