@@ -17,10 +17,10 @@ require 'rails_helper'
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+# require "codeclimate-test-reporter"
+# CodeClimate::TestReporter.start
 require 'simplecov'
-SimpleCov.start
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
+SimpleCov.start 'rails'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
