@@ -18,14 +18,14 @@ module Shoryuken
     }
   end
 
-  module Logging
-    def self.initialize_logger(log_target = STDOUT)
-      @logger = Logger.new(log_target, 50, 1.megabyte)
-      @logger.level = Logger::INFO
-      @logger.formatter = Pretty.new
-      @logger
-    end
-  end
+  # module Logging
+  #   def self.initialize_logger(log_target = STDOUT)
+  #     @logger = Logger.new(log_target, 50, 1.megabyte)
+  #     @logger.level = Logger::INFO
+  #     @logger.formatter = Pretty.new
+  #     @logger
+  #   end
+  # end
 end
 
 Shoryuken.configure_server do | config |
@@ -58,6 +58,8 @@ Shoryuken.configure_server do | config |
    end
 end
 
-logger = Shoryuken::Logging.initialize_logger("#{Rails.root}/log/shoryuken.log")
-logger.level = Logger::DEBUG
+#logger = Shoryuken::Logging.initialize_logger("#{Rails.root}/log/shoryuken.log")
+logger = Shoryuken::Logging.initialize_logger(STDOUT)
+logger.formatter = Proc.new { |severity, datetime, progname, msg| "[#{datetime.strftime("%B %d %H:%M:%S")}] [#{$$}] [#{severity}] [#{Rails.application.class.parent_name}], #{msg}\n"}
+logger.level = Logger::INFO
 Rails.logger = logger
