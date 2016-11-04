@@ -43,7 +43,7 @@ Rails.application.configure do
   # Enable stdout logger
   # config.logger = Logger.new(STDOUT)
   # Set log level
-  config.log_level = :WARN
+  config.log_level = :INFO
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
   # config.log_tags = [ "Treatment-Arm-Processor", :subdomain, :uuid, :request_id ]
