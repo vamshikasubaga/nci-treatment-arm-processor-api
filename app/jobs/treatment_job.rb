@@ -4,7 +4,6 @@ class TreatmentJob
 
   def perform(treatment_arm, clone=false)
     begin
-      p "******* inside TA perform block *******"
       treatment_arm = treatment_arm.symbolize_keys!
       if TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], treatment_arm[:version]).blank?
         insert(treatment_arm)
@@ -14,7 +13,7 @@ class TreatmentJob
       CogTreatmentJob.new.perform
       BasicTreatmentArmJob.new.perform
     rescue => error
-      Shoryuken.logger.error("TreatmentArm Worker when uploading TreatmentArm with id #{treatment_arm[:treatment_arm_id]} & stratum_id #{treatment_arm[:stratum_id]} failed with the error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("TreatmentArm Worker when uploading TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}' & stratum_id '#{treatment_arm[:stratum_id]}' failed with the error #{error}::#{error.backtrace}")
     end
   end
 
@@ -23,7 +22,7 @@ class TreatmentJob
       new_treatment_arm_json = TreatmentArm.build_cloned(treatment_arm)
       new_treatment_arm = TreatmentArm.new(new_treatment_arm_json)
       deactivate(treatment_arm) if new_treatment_arm.save
-      Shoryuken.logger.info("TreatmentArm with id #{new_treatment_arm.treatment_arm_id}, stratum_id #{new_treatment_arm.stratum_id} & with new version #{new_treatment_arm.version} has been saved successfully")
+      Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{new_treatment_arm.treatment_arm_id}', stratum_id '#{new_treatment_arm.stratum_id}' & with new version '#{new_treatment_arm.version}' has been saved successfully")
     rescue => error
       Shoryuken.logger.error("Failed to save the new version of the TreatmentArm(treatment_arm_id: #{new_treatment_arm.treatment_arm_id}, stratum_id: #{new_treatment_arm.stratum_id}) with the error #{error}::#{error.backtrace}")
     end
@@ -38,18 +37,16 @@ class TreatmentJob
 
   # Saves the TreatmentArm into the DataBase
   def insert(treatment_arm)
-    p "****** inside insert block *****************"
     begin
       treatment_arm_model = TreatmentArm.new
       json = remove_blank_document(treatment_arm)
       json = treatment_arm_model.convert_models(json).to_json
       treatment_arm_model.from_json(json)
       treatment_arm_model.save
-      Shoryuken.logger.info("TreatmentArm with id #{treatment_arm[:treatment_arm_id]}, stratum_id #{treatment_arm[:stratum_id]} & version #{treatment_arm[:version]} has been saved successfully")
+      Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}', stratum_id '#{treatment_arm[:stratum_id]}' & version '#{treatment_arm[:version]}' has been saved successfully")
     rescue => error
-      Shoryuken.logger.error("Failed to save TreatmentArm with the error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("Failed to save TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}', stratum_id '#{treatment_arm[:stratum_id]}' & version '#{treatment_arm[:version]}' with the error #{error}::#{error.backtrace}")
     end
-    p "******** end of insert ************"
   end
 
   def remove_blank_document(treatment_arm)

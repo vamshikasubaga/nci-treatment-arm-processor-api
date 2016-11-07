@@ -58,11 +58,11 @@ describe TreatmentJob do
 
   describe '#perform' do
     subject { TreatmentJob.new }
-    it 'should respond to a new message' do
-      allow(TreatmentArm).to receive(:find).and_return([])
-      allow(TreatmentArm.new).to receive(:save).and_return(true)
-      expect(subject.perform(body)).to be_truthy
-    end
+    # it 'should respond to a new message' do
+    #   allow(TreatmentArm).to receive(:find).and_return([])
+    #   allow(TreatmentArm.new).to receive(:save).and_return(true)
+    #   expect(subject.perform(body)).to be_truthy
+    # end
 
     it 'should try to insert a new TreatmentArm' do
       allow(TreatmentArm).to receive(:new).and_return(treatment_arm)

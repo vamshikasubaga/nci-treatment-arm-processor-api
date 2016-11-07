@@ -26,9 +26,9 @@ class CogTreatmentJob
             match_treatment_arm.treatment_arm_status = cog_treatment_arm[:status]
             match_treatment_arm.status_log = rewrite_status_log(match_treatment_arm.status_log, {cog_treatment_arm[:status_date] => cog_treatment_arm[:status]})
             match_treatment_arm.save
-            Shoryuken.logger.info("The status for the TreatmentArm with id #{cog_treatment_arm[:treatment_arm_id]} & stratum_id #{cog_treatment_arm[:stratum_id]} has been successfully updated")
+            Shoryuken.logger.info("The status for the TreatmentArm with treatment_arm_id '#{cog_treatment_arm[:treatment_arm_id]}' & stratum_id '#{cog_treatment_arm[:stratum_id]}' has been successfully updated")
           else
-            Shoryuken.logger.info("TreatmentArm with id #{cog_treatment_arm[:treatment_arm_id]} & stratum_id #{cog_treatment_arm[:stratum_id]} is currently CLOSED or already in the correct state")
+            Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{cog_treatment_arm[:treatment_arm_id]}' & stratum_id '#{cog_treatment_arm[:stratum_id]}' is currently CLOSED or already in the correct state")
           end
         end
       end

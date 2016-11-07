@@ -26,7 +26,7 @@ class BasicTreatmentArmJob
     treatment_arm.not_enrolled_patients = find_patient_count_by_event(treatment_arm, 'NOT_ENROLLED', true)
     treatment_arm.pending_patients = find_patient_count_for_status(treatment_arm, ['PENDING_APPROVAL'], true)
     treatment_arm.save
-    Shoryuken.logger.info("BasicTreatmentArm info for treatment_arm_id #{treatment_arm.treatment_arm_id} & stratum_id #{treatment_arm.stratum_id} has been successfully updated")
+    Shoryuken.logger.info("BasicTreatmentArm info for TreatmentArm with treatment_arm_id '#{treatment_arm.treatment_arm_id}' & stratum_id '#{treatment_arm.stratum_id}' has been successfully updated")
   end
 
   def find_patient_count_for_status(treatment_arm=nil, status_list=[], ignore_version=false)
