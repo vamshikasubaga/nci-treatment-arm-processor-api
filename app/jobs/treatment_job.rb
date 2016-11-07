@@ -14,7 +14,7 @@ class TreatmentJob
       CogTreatmentJob.new.perform
       BasicTreatmentArmJob.new.perform
     rescue => error
-      Shoryuken.logger.error("TreatmentArm Worker failed with the error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("TreatmentArm Worker when uploading TreatmentArm with id #{treatment_arm[:treatment_arm_id]} & stratum_id #{treatment_arm[:stratum_id]} failed with the error #{error}::#{error.backtrace}")
     end
   end
 
