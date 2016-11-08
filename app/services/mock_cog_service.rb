@@ -1,26 +1,18 @@
-# Calls COG and Updates the Latest TreatmentArm Status
-class CogTreatmentJob
+# Gets Triggered when COG is down or when Failed to connect to COG
+class MockCogService
   include HTTParty
 
-  def perform
-    begin
-      results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
-      cog_arms_status = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys!
+  def self.perform
+    Shoryuken.logger.info("Mock COG service is Triggered to get the Latest TreatmentArm status")
+    results = HTTParty.get(Rails.configuration.environment.fetch('mock_cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
+    cog_arms_status = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys!
       cog_arms_status[:treatment_arms].each do |treatment_arm|
-        update_status(treatment_arm)
+        status_update(treatment_arm)
       end
-      cog_arms_status[:treatment_arms]
-    rescue => error
-      Shoryuken.logger.error("Failed to connect to COG with error #{error}")
-      if Rails.env.uat?
-        Shoryuken.logger.info "Switching to use mock COG for UAT..."
-        Shoryuken.logger.info("Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}")
-        MockCogService.perform
-      end
-    end
+    cog_arms_status[:treatment_arms]
   end
 
-  def update_status(cog_treatment_arm)
+  def self.status_update(cog_treatment_arm)
     begin
       cog_treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
       match_treatment_arms = TreatmentArm.find_by(cog_treatment_arm[:treatment_arm_id], cog_treatment_arm[:stratum_id], nil, false)
@@ -38,11 +30,11 @@ class CogTreatmentJob
       end
       Shoryuken.logger.info("No TreatmentArms status to update")
     rescue => error
-      Shoryuken.logger.error("Failed to update TreatmentArm status from COG with error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("Failed to update TreatmentArm status from Mock COG with error #{error}::#{error.backtrace}")
     end
   end
 
-  def rewrite_status_log(status_log, append_hash={})
+  def self.rewrite_status_log(status_log, append_hash={})
     new_log = {}
     new_log.merge!(status_log)
     new_log.merge!(append_hash)
