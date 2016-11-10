@@ -14,40 +14,10 @@ describe TreatmentArm do
     client
   end
 
-  let(:treatment_arm) do
-    ba = TreatmentArm.new
-    ba.active = true
-    ba.treatment_arm_id = 'APEC1621-A'
-    ba.name = 'TestData'
-    ba.stratum_id = 'EAY131'
-    ba.version = 'EAY13102'
-    ba.description = 'testDescription'
-    ba.target_id = '113'
-    ba.target_name = 'Crizotinib'
-    ba.gene = 'ALK'
-    ba.treatment_arm_status = 'OPEN'
-    ba.study_id = 'APEC1621'
-    ba.num_patients_assigned = 4
-    ba.date_created = '2014-02-30'
-    ba.date_opened = '2016-03-25'
-    ba.assay_rules = []
-    ba.treatment_arm_drugs = []
-    ba.diseases = []
-    ba.exclusion_drugs = []
-    ba.snv_indels = []
-    ba.non_hotspot_rules = []
-    ba.copy_number_variants = []
-    ba.status_log = {}
-    ba.gene_fusions = []
-    ba.current_patients = 1
-    ba.pending_patients = 2
-    ba.not_enrolled_patients = 1
-    ba.former_patients = 2
-    ba.version_current_patients = 0
-    ba.version_former_patients = 1
-    ba.version_pending_patients = 1
-    ba.version_not_enrolled_patients = 2
-    ba
+  treatment_arm = FactoryGirl.build(:treatment_arm)
+
+  it 'has a valid factory' do
+    expect(treatment_arm).to be_truthy
   end
 
   it 'should be the correct class type for the variables' do
@@ -107,15 +77,15 @@ describe TreatmentArm do
     treatment_arm.configure_client(client: stub_client)
     json = {
              treatment_arm_id: 'APEC1621-A',
-             version: 'EAY13102',
+             version: '2016-20-02',
              study_id: 'APEC1621',
-             stratum_id: 'EAY131',
-             description: 'testDescription',
-             target_id: '113',
+             stratum_id: '12',
+             description: 'This is the sample Description',
+             target_id: 'HDFD',
              target_name: 'Crizotinib',
-             gene: 'ALK',
+             gene: 'GENE',
              treatment_arm_status: 'OPEN',
-             num_patients_assigned: 4,
+             num_patients_assigned: 2,
              date_created: '2014-02-30',
              assay_rules: [],
              treatment_arm_drugs: [],
