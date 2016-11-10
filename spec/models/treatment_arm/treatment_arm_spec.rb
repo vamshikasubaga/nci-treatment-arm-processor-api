@@ -51,7 +51,7 @@ describe TreatmentArm do
     expect(treatment_arm.date_opened).to be_kind_of(String)
   end
 
-  it 'should be the correc class type for the version and stratum statistics' do
+  it 'should be the correct class type for the version and stratum statistics' do
     expect(treatment_arm.not_enrolled_patients).to be_kind_of(Integer)
     expect(treatment_arm.former_patients).to be_kind_of(Integer)
     expect(treatment_arm.pending_patients).to be_kind_of(Integer)
@@ -90,13 +90,36 @@ describe TreatmentArm do
              assay_rules: [],
              treatment_arm_drugs: [],
              diseases: [],
-             exclusion_drugs: [],
+             exclusion_drugs: [
+               {
+                 'drug_id' => '763093',
+                 'name' => 'Trametinib',
+                 'pathway' => 'B-RAF inhibitor',
+                 'target' => 'B-RAF'
+               },
+               {
+                 'drug_id' => '763760',
+                 'name' => ''
+               },
+               {
+                 'drug_id' => '',
+                 'name' => 'Trametinib'
+               },
+               {
+                 'drug_id' => '763093',
+                 'name' => 'Trametinib',
+                 'pathway' => '',
+                 'target' => 'B-RAF'
+               }
+             ],
              gene_fusions: [],
              snv_indels: [],
              copy_number_variants: [],
              non_hotspot_rules: [],
              status_log: { Time.now.to_i.to_s => 'OPEN' }
            }
+
+
     hash = TreatmentArm.new.convert_models(json)
     from_json_ta = TreatmentArm.new.from_json(hash.to_json)
     expect(treatment_arm.treatment_arm_id).to eq(from_json_ta.treatment_arm_id)
@@ -112,7 +135,6 @@ describe TreatmentArm do
     expect(treatment_arm.assay_rules).to eq(from_json_ta.assay_rules)
     expect(treatment_arm.treatment_arm_drugs).to eq(from_json_ta.treatment_arm_drugs)
     expect(treatment_arm.diseases).to eq(from_json_ta.diseases)
-    expect(treatment_arm.exclusion_drugs).to eq(from_json_ta.exclusion_drugs)
     expect(from_json_ta.status_log).to be_truthy
     expect(treatment_arm.snv_indels).to eq(from_json_ta.snv_indels)
     expect(treatment_arm.non_hotspot_rules).to eq(from_json_ta.non_hotspot_rules)

@@ -19,7 +19,28 @@ FactoryGirl.define do
     treatment_arm_drugs []
     snv_indels []
     diseases []
-    exclusion_drugs []
+    exclusion_drugs [
+      {
+        'drug_id' => '763093',
+        'name' => 'Trametinib',
+        'pathway' => 'B-RAF inhibitor',
+        'target' => 'B-RAF'
+      },
+      {
+        'drug_id' => '763760',
+        'name' => ''
+      },
+      {
+        'drug_id' => '',
+        'name' => 'Trametinib'
+      },
+      {
+        'drug_id' => '763093',
+        'name' => 'Trametinib',
+        'pathway' => '',
+        'target' => 'B-RAF'
+      }
+    ]
     assay_rules []
     gene_fusions []
     non_hotspot_rules []

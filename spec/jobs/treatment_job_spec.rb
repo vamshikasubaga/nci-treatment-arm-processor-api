@@ -16,45 +16,7 @@ describe TreatmentJob do
     }.to_json
   end
 
-  let(:treatment_arm) do
-    ba = TreatmentArm.new
-    ba.active = true
-    ba.name = 'TestData'
-    ba.version = 'EAY13102'
-    ba.description = 'testDescription'
-    ba.target_id = 'gene'
-    ba.target_name = 'otherGene'
-    ba.gene = 'FGHS'
-    ba.treatment_arm_status = 'OPEN'
-    ba.study_id = 'EAY131'
-    ba.num_patients_assigned = 4
-    ba.date_created = '2014-02-30'
-    ba.treatment_arm_drugs = []
-    ba.exclusion_drugs = [
-            {
-              'drug_id' => '763093',
-              'name' => 'Trametinib',
-              'pathway' => 'B-RAF inhibitor',
-              'target' => 'B-RAF'
-            },
-            {
-              'drug_id' => '763760',
-              'name' => ''
-            },
-            {
-              'drug_id' => '',
-              'name' => 'Trametinib'
-            },
-            {
-              'drug_id' => '763093',
-              'name' => 'Trametinib',
-              'pathway' => '',
-              'target' => 'B-RAF'
-            }
-    ]
-    ba.status_log = {}
-    ba
-  end
+  treatment_arm = FactoryGirl.build(:treatment_arm)
 
   describe '#perform' do
     subject { TreatmentJob.new }

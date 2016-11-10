@@ -13,26 +13,10 @@ describe TreatmentArmAssignmentEvent do
     client
   end
 
-  let(:treatment_arm_assignment) do
-    ba = TreatmentArmAssignmentEvent.new
-    ba.assignment_date = '2012-02-20'
-    ba.date_on_arm = '2016-05-27'
-    ba.date_off_arm = '2013-01-19'
-    ba.patient_id = '200re'
-    ba.treatment_arm_id = 'EAC123'
-    ba.stratum_id = 'EAY131'
-    ba.patient_status = 'PENDING'
-    ba.assignment_reason = ''
-    ba.diseases = [{ 'drug_id' => '1234' }]
-    ba.version = '2012-02-20'
-    ba.step_number = '0'
-    ba.analysis_id = '1'
-    ba.molecular_id = '2'
-    ba.surgical_event_id = '3'
-    ba.variant_report = {}
-    ba.assignment_report = {}
-    ba.event = 'EVENT_INIT'
-    ba
+  treatment_arm_assignment = FactoryGirl.build(:treatment_arm_assignment_event)
+
+  it 'has a valid factory' do
+    expect(treatment_arm_assignment).to be_truthy
   end
 
   it 'should be the correct class type for the variables' do
@@ -50,8 +34,6 @@ describe TreatmentArmAssignmentEvent do
     expect(treatment_arm_assignment.step_number).to be_kind_of(String)
     expect(treatment_arm_assignment.diseases).to be_kind_of(Array)
     expect(treatment_arm_assignment.assignment_reason).to be_kind_of(String)
-    expect(treatment_arm_assignment.variant_report).to be_kind_of(Hash)
-    expect(treatment_arm_assignment.assignment_report).to be_kind_of(Hash)
     expect(treatment_arm_assignment.patient_status).to be_kind_of(String)
   end
 
