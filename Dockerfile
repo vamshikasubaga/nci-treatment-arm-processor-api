@@ -10,6 +10,8 @@ ENV INSTALL_PATH /usr/app
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
+ENV RAILS_ENV test
+
 # Install gems 
 COPY Gemfile $INSTALL_PATH/
 RUN gem install bundler
@@ -18,8 +20,6 @@ RUN bundle install
 COPY . . 
 RUN ruby -v; rails -v; bundler -v; gem -v
 RUN pwd;ls -alt $INSTALL_PATH
-
-ENV RAILS_ENV test
 
 #Insert script to change localhost to docker-compose names
 ADD https://raw.githubusercontent.com/CBIIT/match-docker/master/docker-compose-env.sh .
