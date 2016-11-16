@@ -7,7 +7,6 @@ services:
   - docker
 language: ruby
 rvm:
-  # - 2.2.5
   - 2.3.1
 script:
   - RAILS_ENV=test bundle exec rspec spec/
@@ -24,8 +23,7 @@ after_success:
   #Trigger Travis bdd tests
   - curl -s -X POST -H "Content-Type:application/json" -H "Accept:application/json" -H "Travis-API-Version:3" -H "Authorization:token $TRAVIS_TOKEN" -d "{\"request\":{\"message\":\"Triggered by nci-treatment-arm-processor-api $TRAVIS_COMMIT\", \"branch\":\"master\", \"config\":{\"env\":{\"matrix\":[\"TRIGGER_REPO=nci-treatment-arm-processor-api;CUC_TAG=@treatment_arm\"]}}}}" https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests
 notifications:
-  slack:
-    secure: YC185gYAkbEklgq2WhVn7F8As/ydZnB6FRD7y4iM7+M6O4zbIY2YI4tS0LqAsBZmJQ0voBo/+qN/sgM4BmskzxItY97qmJ0GAdQrlCdMSACsH7JCtEBJNT3OkyEAGiT98050+gWosfxRMrAXx0e2+sIY8VMiYMPAAIi7TAVPFJGDeD6uu1v/fzotL+2UuF90yG+R9QzXVUUqz0OuEXPcmErT4DvhnMe1R4tUQvHe9qUz7ExHsulH05X/UG4k2nU/Mm+7MzSbkh6QDkmT/CEoXFMNxJXHwIobexWETJLZrOnzl7uHwz/09fyREtMG30FptjIFOcqNMrZ/VGxH8QYTfIfU1TFhdGLHEoyFLUOvCMpRWiIvSKl6F8JU6zSHf6Hjk3ffrGwSmIZV01DbS2cGVB1JhrzsPiV53WtYcDtXBztlWEDeMPg3d7wrWbYhRECfWxS9mkJiNFm+B+/zPWaxTN5XsPFhiL1MySDrmE3p69orX0bcNkrKQ9YOZjer7KdE4Qkv/yw4DccXRb1bP/CkMS5J1BZk6KeW0Vttup60rALEcZqn8ko6Xo2/afWzTW0uhtaaYhtq0wFNyiDNCnUYEv2kgaYuyfOn0i1+JDfOThGA4BX/qwBzY0Y+oQtljWZGEIr0CSNJVlIph8LNqLaktSrDXgOEk2fYGF/Gqb2rml4=
+  slack: clinicalbiomed:gRp5LqKElNOjUUMPLlq4qC1j
 addons:
   code_climate:
         repo_token: 55a2dc7851ea13b067e7d2ef6d86e1068da4634edc063a013b9af2a48c6d791a
