@@ -14,6 +14,24 @@ describe TreatmentArm do
     client
   end
 
+  let(:record) do
+    Class.new do
+      include(Aws::Record)
+      set_table_name('treatment_arm')
+      string_attr(:treatment_arm_id, hash_key: true)
+      string_attr(:date_created, range_key: true)
+      string_attr(:description)
+      string_attr(:stratum_id)
+      string_attr(:version)
+      string_attr(:name)
+      list_attr(:treatment_arm_drugs, default_value: [])
+      list_attr(:snv_indels, persist_nil: true)
+      list_attr(:copy_number_variants)
+      map_attr(:status_log, default_value: {})
+      boolean_attr(:active, database_attribute_name: 'is_active_flag')
+    end
+  end
+
   treatment_arm = FactoryGirl.build(:treatment_arm)
 
   it 'has a valid factory' do
@@ -146,7 +164,7 @@ describe TreatmentArm do
     expect{treatment_arm.treatment_arm_id}.to_not raise_error
   end
 
-  it "should be valid when an instance is created" do
+  it 'should be valid when an instance is created' do
     expect(TreatmentArm.new).to be_truthy
   end
 
@@ -158,6 +176,31 @@ describe TreatmentArm do
   it 'should be of the correct instance' do
     treatment_arm = TreatmentArm.new()
     expect(treatment_arm).to be_an_instance_of(TreatmentArm)
+  end
+
+  it 'raises an error when you try to save! without setting keys' do
+    record.configure_client(client: stub_client)
+    no_keys = record.new
+    expect { no_keys.save! }.to raise_error(Aws::Record::Errors::KeyMissing, 'Missing required keys: treatment_arm_id, date_created')
+    no_hash = record.new
+    no_hash.date_created = '2015-12-15'
+    expect { no_hash.save! }.to raise_error(Aws::Record::Errors::KeyMissing, 'Missing required keys: treatment_arm_id')
+    no_range = record.new
+    no_range.treatment_arm_id = 5
+    expect { no_range.save! }.to raise_error(Aws::Record::Errors::KeyMissing, 'Missing required keys: date_created')
+    expect(api_requests).to eq([])
+  end
+
+  it 'enforces that the required keys are present' do
+    record.configure_client(client: stub_client)
+    find_opts = { treatment_arm_id: 'APEC1621-A' }
+    expect { record.find(find_opts) }.to raise_error(Aws::Record::Errors::KeyMissing)
+  end
+
+  it 'raises if any key attributes are missing' do
+    record.configure_client(client: stub_client)
+    update_opts = { treatment_arm_id: 'APEC1621-A', description: 'This is sample description' }
+    expect { record.update(update_opts) }.to raise_error(Aws::Record::Errors::KeyMissing)
   end
 
   describe 'Attributes' do
@@ -224,7 +267,7 @@ describe TreatmentArm do
       end
 
       it 'should reject non-symbolized attribute names' do
-        expect { record.integer_attr("integer") }.to raise_error(ArgumentError)
+        expect { record.integer_attr('integer') }.to raise_error(ArgumentError)
       end
 
       it 'rejects collisions of db storage names with existing attr names' do
