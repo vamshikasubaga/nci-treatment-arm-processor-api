@@ -13,7 +13,7 @@ describe TreatmentJob do
       'treatment_arm_id' => 'EAY131-A',
       'stratumId' => '3',
       'version' => '2016-02-20'
-    }.to_json
+    }
   end
 
   treatment_arm = FactoryGirl.build(:treatment_arm)
@@ -50,23 +50,23 @@ describe TreatmentJob do
 
     it 'should remove empty strings from json' do
       expected_results = [
-              {
-                'drug_id' => '763093',
-                'name' => 'Trametinib',
-                'pathway' => 'B-RAF inhibitor',
-                'target' => 'B-RAF'
-              },
-              {
-                'drug_id' => '763760',
-              },
-              {
-                'name' => 'Trametinib'
-              },
-              {
-                'drug_id' => '763093',
-                'name' => 'Trametinib',
-                'target' => 'B-RAF'
-              }
+        {
+          "drug_id"=>"763093",
+          "name"=>"Trametinib",
+           "pathway"=>"B-RAF inhibitor",
+           "target"=>"B-RAF"
+        },
+        {
+          "drug_id"=>"763760"
+        },
+        {
+          "name"=>"Trametinib"
+        },
+        {
+          "drug_id"=>"763093",
+          "name"=>"Trametinib",
+          "target"=>"B-RAF"
+        }
       ]
       expect(subject.remove_blank_document(treatment_arm.to_h)[:exclusion_drugs]).to eq(expected_results)
     end
