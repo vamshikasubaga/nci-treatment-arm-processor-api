@@ -34,7 +34,66 @@ describe PatientJob do
       allow(new_patient_assignment).to receive(:save).and_return(true)
       expect(subject.insert(new_patient_assignment.to_h)).to be_truthy
     end
+
+    it 'should convert json to the given model' do
+      expect(TreatmentArmAssignmentEvent.new.convert_model({})).to be_truthy
+      expect(TreatmentArmAssignmentEvent.new.convert_model({ treatment_arm_id: 'EAY131-A',
+                                                             version: 'testVersion',
+                                                             stratum_id: '100',
+                                                             patient_id: '3366'
+                                                           })).to include({ treatment_arm_id: 'EAY131-A', version: 'testVersion', stratum_id: '100', patient_id: '3366' })
+    end
   end
+
+  describe 'testing event' do
+    it 'should identify the event correctly' do
+      treatment_arm_assignment = TreatmentArmAssignmentEvent.new
+      event = 'EVENT_INIT'
+      next_state = 'PENDING_APPROVAL'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('PENDING_PATIENT')
+
+      event = 'PENDING_PATIENT'
+      next_state = 'OFF_STUDY'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('NOT_ENROLLED')
+
+      event = 'PENDING_PATIENT'
+      next_state = 'ON_TREATMENT_ARM'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('CURRENT_PATIENT')
+
+      event = 'CURRENT_PATIENT'
+      next_state = 'OFF_STUDY'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('FORMER_PATIENT')
+
+      event = 'CURRENT_PATIENT'
+      next_state = 'REQUEST_ASSIGNMENT'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('FORMER_PATIENT')
+
+      event = 'CURRENT_PATIENT'
+      next_state = 'REQUEST_NO_ASSIGNMENT'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('FORMER_PATIENT')
+
+      event = 'CURRENT_PATIENT'
+      next_state = 'OFF_STUDY_BIOPSY_EXPIRED'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('FORMER_PATIENT')
+
+      event = 'PENDING_PATIENT'
+      next_state = 'OFF_STUDY_BIOPSY_EXPIRED'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('NOT_ENROLLED')
+
+      event = 'PENDING_PATIENT'
+      next_state = 'OFF_STUDY'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('NOT_ENROLLED')
+
+      event = 'PENDING_PATIENT'
+      next_state = 'REQUEST_ASSIGNMENT'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('NOT_ENROLLED')
+
+      event = 'PENDING_PATIENT'
+      next_state = 'REQUEST_NO_ASSIGNMENT'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('NOT_ENROLLED')
+    end
+  end
+
 
   # describe 'Assess Patient Status' do
   #   it 'should identify the event and the status correctly' do
