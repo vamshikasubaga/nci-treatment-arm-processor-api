@@ -76,4 +76,26 @@ FactoryGirl.define do
     assignment_report {}
     event 'EVENT_INIT'
   end
+
+  factory :updated_treatment_arm_assignment_event, :class => TreatmentArmAssignmentEvent do
+    assignment_date '2012-02-20'
+    date_on_arm '2016-05-27'
+    date_off_arm '2013-01-19'
+    patient_id '200re'
+    treatment_arm_id 'EAC123'
+    stratum_id 'EAY131'
+    patient_status 'PENDING_APPROVAL'
+    assignment_reason ''
+    diseases [
+      { 'drug_id': '1234' }
+    ]
+    version '2012-02-20'
+    step_number '0'
+    analysis_id '1'
+    molecular_id '2'
+    surgical_event_id '3'
+    variant_report {}
+    assignment_report {}
+    event 'EVENT_INIT'
+  end
 end
