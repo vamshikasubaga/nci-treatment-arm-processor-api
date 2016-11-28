@@ -10,7 +10,6 @@ class TreatmentJob
       elsif treatment_arm[:treatment_arm_id].present? && treatment_arm[:stratum_id].present? && treatment_arm[:version].present?
         clone(treatment_arm)
       end
-      CogTreatmentJob.new.perform
       BasicTreatmentArmJob.new.perform
     rescue => error
       Shoryuken.logger.error("TreatmentArm Worker when uploading TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}' & stratum_id '#{treatment_arm[:stratum_id]}' failed with the error #{error}::#{error.backtrace}")
