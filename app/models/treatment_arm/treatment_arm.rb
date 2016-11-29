@@ -77,7 +77,7 @@ class TreatmentArm
              active: true,
              treatment_arm_id: treatment_arm[:treatment_arm_id],
              name: treatment_arm[:name],
-             version: treatment_arm[:new_version],
+             version: treatment_arm[:version],
              study_id: treatment_arm[:study_id],
              stratum_id: treatment_arm[:stratum_id],
              description: treatment_arm[:description],

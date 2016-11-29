@@ -4,31 +4,46 @@ class TreatmentJob
 
   def perform(treatment_arm, clone=false)
     begin
-      treatment_arm = treatment_arm.symbolize_keys!
-      if TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], treatment_arm[:version]).blank?
-        insert(treatment_arm)
-      elsif treatment_arm[:treatment_arm_id].present? && treatment_arm[:stratum_id].present? && treatment_arm[:version].present?
-        clone(treatment_arm)
+      # byebug
+      treatment_arm_hash = treatment_arm.symbolize_keys!
+      current_active_ta = find_treatment_arms(treatment_arm_hash[:treatment_arm_id], treatment_arm_hash[:stratum_id], true).first
+      if current_active_ta.nil?
+      #if TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], true).blank?
+        insert(treatment_arm_hash)
+      elsif #treatment_arm[:treatment_arm_id].present? && treatment_arm[:stratum_id].present? && treatment_arm[:version].present?
+        insert_new_version(treatment_arm_hash, current_active_ta)
       end
     rescue => error
       Shoryuken.logger.error("TreatmentArm Worker when uploading TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}' & stratum_id '#{treatment_arm[:stratum_id]}' failed with the error #{error}::#{error.backtrace}")
     end
   end
 
-  def clone(treatment_arm)
-    begin
-      new_treatment_arm_json = TreatmentArm.build_cloned(treatment_arm)
-      new_treatment_arm = TreatmentArm.new(new_treatment_arm_json)
-      deactivate(treatment_arm) if new_treatment_arm.save
-      Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{new_treatment_arm.treatment_arm_id}', stratum_id '#{new_treatment_arm.stratum_id}' & with new version '#{new_treatment_arm.version}' has been saved successfully")
-    rescue => error
-      Shoryuken.logger.error("Failed to save the new version of the TreatmentArm(treatment_arm_id: #{new_treatment_arm.treatment_arm_id}, stratum_id: #{new_treatment_arm.stratum_id}) with the error #{error}::#{error.backtrace}")
-    end
+  def insert_new_version(treatment_arm_hash, current_active_ta)
+    # begin
+    #   new_treatment_arm_json = TreatmentArm.build_cloned(treatment_arm)
+    #   new_treatment_arm = TreatmentArm.new(new_treatment_arm_json)
+    #   deactivate(treatment_arm) if new_treatment_arm.save
+    #   Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{new_treatment_arm.treatment_arm_id}', stratum_id '#{new_treatment_arm.stratum_id}' & with new version '#{new_treatment_arm.version}' has been saved successfully")
+    # rescue => error
+    #   Shoryuken.logger.error("Failed to save the new version of the TreatmentArm(treatment_arm_id: #{new_treatment_arm.treatment_arm_id}, stratum_id: #{new_treatment_arm.stratum_id}) with the error #{error}::#{error.backtrace}")
+    # end
+    # byebug
+    new_treatment_arm = create_new_version(treatment_arm_hash)
+    deactivate(current_active_ta) if new_treatment_arm.save
+  end
+
+  def create_new_version(treatment_arm_hash)
+    # byebug
+    new_treatment_arm_hash = TreatmentArm.build_cloned(treatment_arm_hash)
+    new_treatment_arm = TreatmentArm.new(new_treatment_arm_hash)
+    Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{new_treatment_arm.treatment_arm_id}', stratum_id '#{new_treatment_arm.stratum_id}' & with new version '#{new_treatment_arm.version}' has been saved successfully")
+    new_treatment_arm
   end
 
   # Turns the old TA active flag to false if the TA gets updated with a new version
   def deactivate(treatment_arm)
-    treatment_arm = TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], treatment_arm[:version], false).first
+    # byebug
+    #treatment_arm = TreatmentArm.find_by(treatment_arm[:treatment_arm_id], treatment_arm[:stratum_id], treatment_arm[:version], false).first
     treatment_arm.active = false
     treatment_arm.save
   end
@@ -56,5 +71,13 @@ class TreatmentJob
       end
     end
     treatment_arm
+  end
+
+  def find_treatment_arms(treatment_arm_id, stradum_id, active=false)
+    query = {}
+    query.merge!('treatment_arm_id' => { comparison_operator: 'CONTAINS', attribute_value_list: [treatment_arm_id] })
+    query.merge!('stratum_id' => { comparison_operator: 'EQ', attribute_value_list: [stradum_id] })
+    query.merge!('is_active_flag' => { comparison_operator: 'EQ', attribute_value_list: [active] })
+    TreatmentArm.scan(scan_filter: query, conditional_operator: 'AND')
   end
 end
