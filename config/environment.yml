@@ -1,60 +1,45 @@
-development:
-  aws_dynamo_endpoint: "http://localhost:8000"
+common: &defaults
   aws_region: "us-east-1"
-  queue_name: <%= ENV["TA_QUEUE_NAME"] %>
-  shoryuken_delay: "5"
-  shoryuken_concurrency: "10"
   table_prefix: "ta"
   PORT: "10236"
-  cog_url: "http://localhost:3000"
+  shoryuken_delay: "5"
+  shoryuken_concurrency: "10"
   cog_treatment_arms: "/treatmentArms"
-  patient_api_url: "http://localhost:3010"
   patient_assignment: "/treatmentArmsUpdated"
+
+development:
+  <<: *defaults
+  aws_dynamo_endpoint: "http://localhost:8000"
+  queue_name: <%= ENV["TA_QUEUE_NAME"] %>
+  cog_url: "http://localhost:3000"
+  patient_api_url: "http://localhost:3010"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
 test:
+  <<: *defaults
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  aws_region: "us-east-1"
   queue_name: "treatment_arm_queue"
-  shoryuken_delay: "5"
-  shoryuken_concurrency: "10"
-  table_prefix: "ta"
-  PORT: "10236"
   cog_url: "http://pedmatch-int.nci.nih.gov:3000"
-  cog_treatment_arms: "/treatmentArms"
   patient_api_url: "https://pedmatch-int.nci.nih.gov:3010"
-  patient_assignment: "/treatmentArmsUpdated"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
 uat:
+  <<: *defaults
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  aws_region: "us-east-1"
   queue_name: "treatment_arm_queue"
-  shoryuken_delay: "5"
-  shoryuken_concurrency: "10"
-  table_prefix: "ta"
-  PORT: "10236"
   cog_url: ""
   mock_cog_url: "http://pedmatch-uat.nci.nih.gov:3000"
-  cog_treatment_arms: "/treatmentArms"
   patient_api_url: "https://pedmatch-uat.nci.nih.gov:3010"
-  patient_assignment: "/treatmentArmsUpdated"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
 production:
+  <<: *defaults
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  aws_region: "us-east-1"
   queue_name: "treatment_arm_queue"
-  shoryuken_delay: "5"
-  shoryuken_concurrency: "10"
-  table_prefix: "ta"
-  PORT: "10236"
-  cog_url: " "
-  cog_treatment_arms: "/treatmentArms"
+  cog_url: ""
   patient_api_url: "https://pedmatch.nci.nih.gov:3010"
-  patient_assignment: "/treatmentArmsUpdated"
   read_capacity_units: "30"
   write_capacity_units: "30"
