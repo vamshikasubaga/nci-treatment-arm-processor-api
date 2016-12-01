@@ -70,5 +70,23 @@ describe TreatmentJob do
       ]
       expect(subject.remove_blank_document(treatment_arm.to_h)[:exclusion_drugs]).to eq(expected_results)
     end
+
+    it 'should set active to false' do
+      old_treatment_arm = FactoryGirl.build(:treatment_arm)
+      allow(TreatmentArm).to receive(:new).and_return(old_treatment_arm)
+      allow(old_treatment_arm).to receive(:save).and_return(true)
+      subject.deactivate(old_treatment_arm)
+      expect(old_treatment_arm.active).to eq(false)
+    end
+
+    it 'should clone treatment arm hash' do
+      new_treatment_arm_hash = TreatmentArm.build_cloned(treatment_arm.to_h)
+      matching_keys = [:active, :treatment_arm_id, :name, :version]
+      missingkeys =[:former_patients, :not_enrolled_patients, :pending_patients, :version_current_patients,
+                    :version_former_patients, :version_not_enrolled_patients, :version_pending_patients ]
+      expect(new_treatment_arm_hash.slice(matching_keys)).to eq(treatment_arm.to_h.slice(matching_keys))
+      expect(new_treatment_arm_hash.slice(missingkeys)).to be_empty
+    end
+
   end
 end
