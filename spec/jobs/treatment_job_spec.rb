@@ -17,6 +17,8 @@ describe TreatmentJob do
   end
 
   treatment_arm = FactoryGirl.build(:treatment_arm)
+  old_treatment_arm = FactoryGirl.build(:treatment_arm)
+  new_treatment_arm_hash = TreatmentArm.build_cloned(treatment_arm.to_h)
 
   describe '#perform' do
     subject { TreatmentJob.new }
@@ -30,6 +32,12 @@ describe TreatmentJob do
       allow(TreatmentArm).to receive(:new).and_return(treatment_arm)
       allow(treatment_arm).to receive(:save).and_return(true)
       expect(subject.insert(treatment_arm.to_h)).to be_truthy
+    end
+
+    it 'should insert a new version of the TreatmentArm' do
+      allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
+      allow(treatment_arm).to receive(:save).and_return(true)
+      expect(subject.insert_new_version(new_treatment_arm_hash, treatment_arm)).to be_truthy
     end
 
     it 'should try to insert a new TreatmentArm' do
@@ -72,7 +80,7 @@ describe TreatmentJob do
     end
 
     it 'should set active to false' do
-      old_treatment_arm = FactoryGirl.build(:treatment_arm)
+     # old_treatment_arm = FactoryGirl.build(:treatment_arm)
       allow(TreatmentArm).to receive(:new).and_return(old_treatment_arm)
       allow(old_treatment_arm).to receive(:save).and_return(true)
       subject.deactivate(old_treatment_arm)
@@ -80,7 +88,7 @@ describe TreatmentJob do
     end
 
     it 'should clone treatment arm hash' do
-      new_treatment_arm_hash = TreatmentArm.build_cloned(treatment_arm.to_h)
+      #new_treatment_arm_hash = TreatmentArm.build_cloned(treatment_arm.to_h)
       matching_keys = [:active, :treatment_arm_id, :name, :version]
       missingkeys =[:former_patients, :not_enrolled_patients, :pending_patients, :version_current_patients,
                     :version_former_patients, :version_not_enrolled_patients, :version_pending_patients ]
