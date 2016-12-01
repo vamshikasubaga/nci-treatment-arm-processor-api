@@ -1,7 +1,7 @@
 # TreatmentArm and TreatmentArmAssignmentEvent Factories
 
 FactoryGirl.define do
-  factory :treatment_arm, :class => TreatmentArm do
+  factory :treatment_arm, class: TreatmentArm do
     name 'EAY131-test'
     treatment_arm_id 'APEC1621-A'
     version '2016-20-02'
@@ -55,7 +55,7 @@ FactoryGirl.define do
     version_current_patients 1
   end
 
-  factory :treatment_arm_assignment_event, :class => TreatmentArmAssignmentEvent do
+  factory :treatment_arm_assignment_event, class: TreatmentArmAssignmentEvent do
     assignment_date '2012-02-20'
     date_on_arm '2016-05-27'
     date_off_arm '2013-01-19'
@@ -77,7 +77,7 @@ FactoryGirl.define do
     event 'EVENT_INIT'
   end
 
-  factory :updated_treatment_arm_assignment_event, :class => TreatmentArmAssignmentEvent do
+  factory :updated_treatment_arm_assignment_event, class: TreatmentArmAssignmentEvent do
     assignment_date '2012-02-20'
     date_on_arm '2016-05-27'
     date_off_arm '2013-01-19'
@@ -99,10 +99,11 @@ FactoryGirl.define do
     event 'EVENT_INIT'
   end
 
-  factory :cog_treatment_arm, :class => TreatmentArm do
+  factory :cog_treatment_arm, class: TreatmentArm do
     treatment_arm_id 'EAC123'
     stratum_id 'EAY131'
     treatment_arm_status 'SUSPENDED'
     treatment_arm_drugs []
+    status_log '1480454602': 'OPEN'
   end
 end
