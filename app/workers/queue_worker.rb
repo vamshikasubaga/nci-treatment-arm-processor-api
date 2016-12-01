@@ -9,8 +9,6 @@ class QueueWorker
       message = JSON.parse(message).symbolize_keys!
       processor_key = message.keys.first
       case processor_key
-      when :queue_treatment_arm
-        QueueTreatmentArmJob.new.perform
       when :treatment_arm
         TreatmentJob.new.perform(message[processor_key])
       when :cog_treatment_refresh
