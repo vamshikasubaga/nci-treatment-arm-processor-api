@@ -17,6 +17,12 @@ describe PatientJob do
 
     subject { PatientJob.new }
 
+    it 'should respond to a new message' do
+      allow(TreatmentArmAssignmentEvent).to receive(:find).and_return([])
+      #allow(subject).to receive(:save).and_return(true)
+      expect(subject.perform(patient_assignment)).to be_truthy
+    end
+
     it 'should try to insert a new Patient Assignment' do
       allow(TreatmentArmAssignmentEvent).to receive(:new).and_return(patient_assignment)
       allow(patient_assignment).to receive(:save).and_return(true)

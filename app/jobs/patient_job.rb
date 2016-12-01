@@ -19,6 +19,9 @@ class PatientJob
       when 'REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT', 'OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'
         Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' at state #{patient_assignment[:patient_status]}")
         store_patient(patient_assignment)
+      when 'COMPASSIONATE_CARE'
+        Shoryuken.logger.info("Recieved patient with patient_id '#{patient_assignment[:patient_id]}' at state COMPASSIONATE_CARE")
+        store_patient(patient_assignment)
       else
         Shoryuken.logger.info("Recieved patient with patient_id '#{patient_assignment[:patient_id]}' with no current recognized state")
       end
