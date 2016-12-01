@@ -14,12 +14,10 @@ describe PatientJob do
   new_patient_assignment = FactoryGirl.build(:updated_treatment_arm_assignment_event)
 
   describe '#perform' do
-
     subject { PatientJob.new }
 
     it 'should respond to a new message' do
       allow(TreatmentArmAssignmentEvent).to receive(:find).and_return([])
-      #allow(subject).to receive(:save).and_return(true)
       expect(subject.perform(patient_assignment)).to be_truthy
     end
 
