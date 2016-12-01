@@ -98,4 +98,11 @@ FactoryGirl.define do
     assignment_report {}
     event 'EVENT_INIT'
   end
+
+  factory :cog_treatment_arm, :class => TreatmentArm do
+    treatment_arm_id 'EAC123'
+    stratum_id 'EAY131'
+    treatment_arm_status 'SUSPENDED'
+    treatment_arm_drugs []
+  end
 end
