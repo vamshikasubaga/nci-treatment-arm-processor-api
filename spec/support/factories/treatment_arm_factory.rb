@@ -106,4 +106,24 @@ FactoryGirl.define do
     treatment_arm_drugs []
     status_log '1480454602': 'OPEN'
   end
+
+  factory :message, class: TreatmentArm do
+    '{\'treatment_arm\':{\'treatment_arm_id\':\'A\'
+    \'name\':\'APEC1621-A\'
+    \'version\':\'v1\'
+    \'stratum_id\':\'B\'
+    \'description\':\'TEST Treatment Arm used by Cucumber Tests\'
+    \'target_id\':\'113\'
+    \'target_name\':\'Crizotinib\'
+    \'gene\':\'ALK\'
+    \'study_id\':\'APEC1621\'
+    \'assay_rules\':[]
+    \'treatment_arm_drugs\':[]
+    \'snv_indels\':[]
+    \'non_hotspot_rules\':[]
+    \'copy_number_variants\':[]
+    \'gene_fusions\':[]
+    \'diseases\':[]
+    \'exclusion_drugs\':[]'
+  end
 end
