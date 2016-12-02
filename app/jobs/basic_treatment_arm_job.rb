@@ -10,12 +10,6 @@ class BasicTreatmentArmJob
     end
   end
 
-  # sorted_status_log = !treatment_arm[:status_log].blank? ? treatment_arm[:status_log].sort_hash_descending  : {}
-  # basic_treatment_arm.date_created = !treatment_arm[:date_created].blank? ? treatment_arm[:date_created].to_time : nil
-  # basic_treatment_arm.date_opened = !sorted_status_log.key('OPEN').blank? ? Time.strptime(sorted_status_log.key('OPEN'), '%Q') : nil
-  # basic_treatment_arm.date_closed = !sorted_status_log.key('CLOSED').blank? ? Time.strptime(sorted_status_log.key('CLOSED'), '%Q') : nil
-  # basic_treatment_arm.date_suspended = !sorted_status_log.key('SUSPENDED').blank? ? Time.strptime(sorted_status_log.key('SUSPENDED'), '%Q') : nil
-
   def update(treatment_arm)
     treatment_arm.version_former_patients = find_patient_count_by_event(treatment_arm, 'FORMER_PATIENT')
     treatment_arm.version_current_patients = find_patient_count_for_status(treatment_arm, ['ON_TREATMENT_ARM'])
