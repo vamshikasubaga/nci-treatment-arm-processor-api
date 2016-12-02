@@ -4,7 +4,7 @@ common: &defaults
   PORT: "10236"
   shoryuken_delay: "5"
   shoryuken_concurrency: "10"
-  cog_treatment_arms: "/treatmentArms"
+  cog_treatment_arms: "/treatmentarms"
   patient_assignment: "/treatmentArmsUpdated"
 
 development:

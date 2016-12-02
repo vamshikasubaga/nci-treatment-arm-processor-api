@@ -1,3 +1,4 @@
+# TreatmentArmAssignmentEvent Data Model
 class TreatmentArmAssignmentEvent
   include Aws::Record
   include Aws::Record::RecordClassMethods
