@@ -4,7 +4,8 @@ class CogTreatmentJob
 
   def perform
     begin
-      results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
+      auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
+      results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
       cog_arms_status = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys!
       cog_arms_status[:treatment_arms].each do |treatment_arm|
         update_status(treatment_arm)
