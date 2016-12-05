@@ -23,7 +23,7 @@ gem 'puma'
 gem 'aws-sdk', '~>2'
 gem 'aws-sdk-rails'
 gem 'aws-record'
-gem 'shoryuken'
+gem 'shoryuken', '2.0.11'
 
 gem 'httparty'
 gem 'nci_match_patient_models', :git => 'git://github.com/CBIIT/nci-match-lib.git', :branch => 'master'
