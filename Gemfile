@@ -20,13 +20,13 @@ gem 'puma'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'aws-sdk', '~>2'
-gem 'aws-sdk-rails'
+gem 'aws-sdk', '2.6.34'
+gem 'aws-sdk-rails', '1.0.1'
 gem 'aws-record'
 gem 'shoryuken', '2.0.11'
 
-gem 'httparty'
-gem 'nci_match_patient_models', :git => 'git://github.com/CBIIT/nci-match-lib.git', :branch => 'master'
+gem 'httparty', '0.14.0'
+gem 'nci_match_patient_models', git: 'git://github.com/CBIIT/nci-match-lib.git', branch: 'master'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -37,10 +37,10 @@ group :development, :test do
 end
 
 group :development do
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '3.1.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen', '2.0.1'
 
   gem 'simplecov-rcov'
 end
