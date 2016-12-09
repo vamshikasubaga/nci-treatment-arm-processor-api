@@ -49,6 +49,7 @@ class PatientJob
       patient_ta.date_on_arm = patient_assignment[:date_on_arm]
       patient_ta.date_off_arm = patient_assignment[:date_off_arm]
       patient_ta.save(force: true)
+      Shoryuken.logger.info("Patient '#{patient_model.patient_id}' was successfully updated for assignment to the TreatmentArm with treatment_arm_id '#{patient_model.treatment_arm_id}' & stratum_id '#{patient_model.stratum_id}'")
     rescue => error
       Shoryuken.logger.error("Failed to update Patient Assignment with error: #{error}::#{error.backtrace}")
     end
