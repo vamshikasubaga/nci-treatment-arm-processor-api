@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <ul>
+      <li style="list-style-type: none;"><strong>version:</strong> <%= @version %></li>
+      <li style="list-style-type: none;"><strong>rails version:</strong> <%= @rails_version %></li>
+      <li style="list-style-type: none;"><strong>ruby version:</strong> <%= @ruby_version %></li>
+      <li style="list-style-type: none;"><strong>running on:</strong><a href="https://github.com/CBIIT/nci-treatment-arm-processor-api/commit/<%= @running_on %>"><%= @running_on %></a></li>
+      <li style="list-style-type: none;"><strong>author:</strong> <%= @author %></li>
+      <li style="list-style-type: none;"><strong>travis build#:</strong> <%= @travisbuild %></li>
+      <li style="list-style-type: none;"><strong>travis job#:</strong><a href="https://travis-ci.org/CBIIT/nci-treatment-arm-processor-api/builds/<%= @travisjob %>"><%= @travisjob %></a></li>
+      <li style="list-style-type: none;"><strong>docker instance:</strong> <%= @dockerinstance %></li>
+      <li style="list-style-type: none;"><strong>build time:</strong> <%= @buildtime %></li>
+      <li style="list-style-type: none;"><strong>environment:</strong> <%= @environment %></li>
+    </ul>
+  </body>
+</html>
