@@ -31,7 +31,8 @@ class PatientJob
   end
 
   def store_patient(patient_assignment)
-    if TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id]).blank?
+    patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id], treatment_arm_id: patient_assignment[:treatment_arm_id]).sort_by{ |pa_ta| pa_ta.assignment_date }.reverse.first
+    if patient_ta.blank?
       insert(patient_assignment)
     else
       update(patient_assignment)
@@ -49,7 +50,6 @@ class PatientJob
       patient_ta.date_on_arm = patient_assignment[:date_on_arm]
       patient_ta.date_off_arm = patient_assignment[:date_off_arm]
       patient_ta.save(force: true)
-      Shoryuken.logger.info("Patient '#{patient_model.patient_id}' was successfully updated for assignment to the TreatmentArm with treatment_arm_id '#{patient_model.treatment_arm_id}' & stratum_id '#{patient_model.stratum_id}'")
     rescue => error
       Shoryuken.logger.error("Failed to update Patient Assignment with error: #{error}::#{error.backtrace}")
     end
