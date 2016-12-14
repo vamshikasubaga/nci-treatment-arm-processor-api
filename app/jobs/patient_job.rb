@@ -35,14 +35,13 @@ class PatientJob
     if patient_ta.blank?
       insert(patient_assignment)
     else
-      update(patient_assignment)
+      update(patient_ta, patient_assignment)
     end
     BasicTreatmentArmJob.new.perform
   end
 
-  def update(patient_assignment)
+  def update(patient_ta, patient_assignment)
     begin
-      patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id]).sort_by{ |pa_ta| pa_ta.assignment_date }.reverse.first
       next_event = patient_ta.next_event(patient_ta.event, patient_assignment[:patient_status])
       patient_ta.event = next_event
       patient_ta.patient_status = assess_patient_status(next_event, patient_assignment[:patient_status])

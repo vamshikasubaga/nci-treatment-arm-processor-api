@@ -36,7 +36,7 @@ describe PatientJob do
     it 'should try to update an existing Patient Assignment' do
       allow(TreatmentArmAssignmentEvent).to receive(:scan).and_return(patient_assignment)
       allow(new_patient_assignment).to receive(:save).and_return(true)
-      expect(subject.update(new_patient_assignment.to_h)).to be_truthy
+      expect(subject.update(patient_assignment, new_patient_assignment.to_h)).to be_truthy
     end
 
     it 'should convert json to the given model' do
