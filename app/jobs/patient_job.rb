@@ -4,6 +4,7 @@ class PatientJob
 
   def perform(patient_assignment)
     begin
+      Shoryuken.logger.info("***** Received a Patient Assignment *****")
       patient_assignment.symbolize_keys!
       # fail_safe(patient_assignment)
       case patient_assignment[:patient_status]
@@ -42,6 +43,7 @@ class PatientJob
 
   def update(patient_ta, patient_assignment)
     begin
+      Shoryuken.logger.info("***** Updating Patient Assignment *****")
       next_event = patient_ta.next_event(patient_ta.event, patient_assignment[:patient_status])
       patient_ta.event = next_event
       patient_ta.patient_status = assess_patient_status(next_event, patient_assignment[:patient_status])
@@ -57,6 +59,7 @@ class PatientJob
 
   def insert(patient_assignment)
     begin
+      Shoryuken.logger.info("***** Inserting Patient Assignment *****")
       patient_model = TreatmentArmAssignmentEvent.new
       json = patient_model.convert_model(patient_assignment).to_json
       patient_model.from_json(json)
