@@ -15,9 +15,9 @@ describe CogTreatmentJob do
 
   describe '#perform' do
     subject { CogTreatmentJob.new }
-    # it 'should respond to a new message' do
-    #   expect(subject.perform()).to be_truthy
-    # end
+    it 'should respond to a new message' do
+      expect(subject.perform()).to be_truthy
+    end
 
     it 'should update the treatment_arm_status from COG' do
       allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)

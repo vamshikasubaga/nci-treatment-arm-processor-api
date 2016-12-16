@@ -15,9 +15,9 @@ describe BasicTreatmentArmJob do
   describe '#perform' do
     subject { BasicTreatmentArmJob.new }
 
-    # it 'should respond to a new message' do
-    #   expect(subject.perform()).to be_nil
-    # end
+    it 'should respond to a new message' do
+      expect(subject.perform()).to be_nil
+    end
 
     it 'should update the Version & Stratum statistics' do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
