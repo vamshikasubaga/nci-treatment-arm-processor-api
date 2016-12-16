@@ -4,6 +4,7 @@ class CogTreatmentJob
 
   def perform
     begin
+      Shoryuken.logger.info("***** Calling COG at #{Rails.configuration.environment.fetch('cog_url')} *****")
       auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
       results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
       cog_arms_status = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys!
