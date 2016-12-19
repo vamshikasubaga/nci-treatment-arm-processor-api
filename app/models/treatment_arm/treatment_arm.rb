@@ -44,7 +44,7 @@ class TreatmentArm
   def self.find_by(id=nil, stratum_id=nil, version=nil, to_hash=true)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
-    if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?)
+    if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?  )
       query.merge!(conditional_operator: 'AND')
     end
     if to_hash
