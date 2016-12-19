@@ -76,6 +76,8 @@ class TreatmentArmAssignmentEvent
   def next_event(event, next_state)
     if event == EVENT_INIT && next_state == 'PENDING_APPROVAL'
       event = PENDING_PATIENT
+    elsif event == EVENT_INIT && next_state == 'OFF_STUDY'
+      event = NOT_ENROLLED
     elsif event == PENDING_PATIENT && next_state == 'OFF_STUDY'
       event = NOT_ENROLLED
     elsif event == PENDING_PATIENT && next_state == 'ON_TREATMENT_ARM'
