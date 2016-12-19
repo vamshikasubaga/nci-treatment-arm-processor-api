@@ -26,7 +26,7 @@ describe CogTreatmentJob do
 
     it 'should rewrite the status log' do
       expected_result = {
-        '1480454602': 'OPEN'
+        :'1480454602' => 'OPEN'
       }
       actual_result = subject.rewrite_status_log(cog_treatment_arm.to_h[:status_log])
       expect(expected_result).to eq(actual_result)

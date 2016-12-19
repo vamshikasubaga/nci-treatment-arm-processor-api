@@ -27,11 +27,11 @@ class TreatmentArmAssignmentEvent
   map_attr :variant_report
   map_attr :assignment_report
 
-  EVENT_INIT = 'EVENT_INIT'
-  PENDING_PATIENT = 'PENDING_PATIENT'
-  CURRENT_PATIENT = 'CURRENT_PATIENT'
-  NOT_ENROLLED = 'NOT_ENROLLED'
-  FORMER_PATIENT = 'FORMER_PATIENT'
+  EVENT_INIT = 'EVENT_INIT'.freeze
+  PENDING_PATIENT = 'PENDING_PATIENT'.freeze
+  CURRENT_PATIENT = 'CURRENT_PATIENT'.freeze
+  NOT_ENROLLED = 'NOT_ENROLLED'.freeze
+  FORMER_PATIENT = 'FORMER_PATIENT'.freeze
 
   def self.find_by(opts = {})
     query = {}
