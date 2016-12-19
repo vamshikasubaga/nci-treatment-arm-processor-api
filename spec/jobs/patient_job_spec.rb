@@ -56,6 +56,10 @@ describe PatientJob do
       next_state = 'PENDING_APPROVAL'
       expect(treatment_arm_assignment.next_event(event, next_state)).to eq('PENDING_PATIENT')
 
+      event = 'EVENT_INIT'
+      next_state = 'OFF_STUDY'
+      expect(treatment_arm_assignment.next_event(event, next_state)).to eq('NOT_ENROLLED')
+
       event = 'PENDING_PATIENT'
       next_state = 'OFF_STUDY'
       expect(treatment_arm_assignment.next_event(event, next_state)).to eq('NOT_ENROLLED')
