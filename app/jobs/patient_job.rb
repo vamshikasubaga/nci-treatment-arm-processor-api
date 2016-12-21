@@ -92,7 +92,7 @@ class PatientJob
       status = 'PREVIOUSLY_ON_ARM_OFF_STUDY'
     elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT'].include?(status.upcase)
       status = 'NOT_ENROLLED_ON_ARM'
-    else event == TreatmentArmAssignmentEvent::NOT_ENROLLED && ['OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(status.upcase)
+    elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && ['OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(status.upcase)
       status = 'NOT_ENROLLED_ON_ARM_OFF_STUDY'
     end
     status

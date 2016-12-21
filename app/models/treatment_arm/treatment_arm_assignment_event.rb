@@ -78,8 +78,6 @@ class TreatmentArmAssignmentEvent
       event = PENDING_PATIENT
     elsif event == EVENT_INIT && next_state == 'OFF_STUDY'
       event = NOT_ENROLLED
-    elsif event == PENDING_PATIENT && next_state == 'OFF_STUDY'
-      event = NOT_ENROLLED
     elsif event == PENDING_PATIENT && next_state == 'ON_TREATMENT_ARM'
       event = CURRENT_PATIENT
     elsif event == CURRENT_PATIENT && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT', 'OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(next_state)
