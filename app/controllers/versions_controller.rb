@@ -11,12 +11,12 @@ class VersionsController < ApplicationController
       @version = NciTreatmentArmProcessorApi::Application.VERSION
       @rails_version = Rails::VERSION::STRING
       @ruby_version = RUBY_VERSION
-      @running_on = hash['Commit'].present? ? hash['Commit'].tr('\n', '') : ''
-      @author = hash['Author'].present? ? hash['Author'].tr('\n', '') : ''
-      @travisbuild = hash['TravisBuild'].present? ? hash['TravisBuild'].tr('\n', '') : ''
-      @travisjob = hash['TravisBuildID'].present? ? hash['TravisBuildID'].tr('\n', '') : ''
-      @dockerinstance = hash['Docker'].present? ? hash['Docker'].tr('\n', '') : ''
-      @buildtime = hash['BuildTime'].present? ? hash['BuildTime'].tr('\n', '') : ''
+      @running_on = hash['Commit'].present? ? hash['Commit'] : ''
+      @author = hash['Author'].present? ? hash['Author'] : ''
+      @travisbuild = hash['TravisBuild'].present? ? hash['TravisBuild'] : ''
+      @travisjob = hash['TravisBuildID'].present? ? hash['TravisBuildID'] : ''
+      @dockerinstance = hash['Docker'].present? ? hash['Docker'] : ''
+      @buildtime = hash['BuildTime'].present? ? hash['BuildTime'] : ''
       @environment = Rails.env
     rescue => error
       standard_error_message(error)
