@@ -4,10 +4,11 @@ module Shoryuken
     @options = {
         concurrency: Rails.configuration.environment.fetch('shoryuken_concurrency').to_i,
         queues: [Rails.configuration.environment.fetch('queue_name')],
-        aws: {access_key_id: Rails.application.secrets.aws_access_key_id,
-              secret_access_key: Rails.application.secrets.aws_secret_access_key,
-              region: Rails.configuration.environment.fetch('aws_region')
-        },
+        aws: {
+               access_key_id: Rails.application.secrets.aws_access_key_id,
+               secret_access_key: Rails.application.secrets.aws_secret_access_key,
+               region: Rails.configuration.environment.fetch('aws_region')
+             },
         delay: Rails.configuration.environment.fetch('shoryuken_delay').to_i,
         timeout: 8,
         lifecycle_events: {
@@ -17,18 +18,9 @@ module Shoryuken
         }
     }
   end
-
-  # module Logging
-  #   def self.initialize_logger(log_target = STDOUT)
-  #     @logger = Logger.new(log_target, 50, 1.megabyte)
-  #     @logger.level = Logger::INFO
-  #     @logger.formatter = Pretty.new
-  #     @logger
-  #   end
-  # end
 end
 
-Shoryuken.configure_server do | config |
+Shoryuken.configure_server do | _config |
   Shoryuken.logger.info "====== Configuring SQS connection ======"
 
   region = Rails.configuration.environment.fetch('aws_region')
@@ -48,7 +40,7 @@ Shoryuken.configure_server do | config |
   @client ||= Aws::SQS::Client.new(endpoint: end_point, region: region, credentials: creds)
 
   begin
-    queue = Shoryuken::Queue.new(@client, @queue_name)
+    _queue = Shoryuken::Queue.new(@client, @queue_name)
     Shoryuken.logger.info "====== Queue [#{@queue_name}] Connection test was successful ======"
   rescue Aws::SQS::Errors::NonExistentQueue => e
     Shoryuken.logger.info "====== SQS queue [#{@queue_name}] doesn't exist. Error: #{e.message} ======"

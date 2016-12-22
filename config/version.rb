@@ -1,9 +1,9 @@
 module NciTreatmentArmProcessorApi
   class Application < Rails::Application
-    attr_reader :VERSION
+    attr_reader :version
 
-    def VERSION
-      @VERSION ||= "1.0.0"
+    def version
+      @version ||= '1.0.0'
     end
   end
 end
