@@ -85,6 +85,6 @@ class TreatmentArmAssignmentEvent
     elsif event == PENDING_PATIENT && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT', 'OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(next_state)
       event = NOT_ENROLLED
     end
-  event
+    event
   end
 end

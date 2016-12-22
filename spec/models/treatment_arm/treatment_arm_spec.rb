@@ -314,30 +314,24 @@ describe TreatmentArm do
 
       it 'should reject storage name collisions' do
         record.string_attr(:active, database_attribute_name: 'is_active_flag')
-        expect {
-          record.string_attr(:is_active_flag)
-          }.to raise_error(Aws::Record::Errors::NameCollision)
-          expect(record.attributes.present?(:is_active_flag)).to be_falsy
+        expect { record.string_attr(:is_active_flag) }.to raise_error(Aws::Record::Errors::NameCollision)
+        expect(record.attributes.present?(:is_active_flag)).to be_falsy
       end
 
       it 'should enforce uniqueness of storage names' do
         record.string_attr(:active, database_attribute_name: 'is_active_flag')
-        expect {
-          record.string_attr(:treatment_arm_id, database_attribute_name: 'is_active_flag')
-          }.to raise_error(Aws::Record::Errors::NameCollision)
+        expect { record.string_attr(:treatment_arm_id, database_attribute_name: 'is_active_flag') }.to raise_error(Aws::Record::Errors::NameCollision)
       end
 
       it 'should not allow collisions with reserved names' do
-        expect {
-          record.string_attr(:to_h)
-          }.to raise_error(Aws::Record::Errors::ReservedName)
+        expect { record.string_attr(:to_h) }.to raise_error(Aws::Record::Errors::ReservedName)
       end
 
       it 'should allow reserved names to be used as custom storage names' do
         record.string_attr(:active, database_attribute_name: 'is_active_flag')
         item = record.new
         item.active = true
-        expect(item.to_h).to eq({ active: true })
+        expect(item.to_h).to eq(active: true)
       end
     end
   end

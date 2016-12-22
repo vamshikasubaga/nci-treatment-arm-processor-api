@@ -2,12 +2,12 @@ class VersionsController < ApplicationController
   def version
     begin
       document = File.open('build_number.html', 'r')
-        hash = Hash.new
-        document.each_line do |line|
-          str = line.to_s
-          arr = str.split('=', 2)
-          hash.store(arr[0], arr[1])
-        end
+      hash = Hash.new
+      document.each_line do |line|
+        str = line.to_s
+        arr = str.split('=', 2)
+        hash.store(arr[0], arr[1])
+      end
       @version = NciTreatmentArmProcessorApi::Application.VERSION
       @rails_version = Rails::VERSION::STRING
       @ruby_version = RUBY_VERSION

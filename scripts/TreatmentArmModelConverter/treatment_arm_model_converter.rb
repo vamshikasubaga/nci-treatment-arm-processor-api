@@ -35,8 +35,8 @@ class TreatmentArmModelConverter
             :patient_assignments => [],
             :concordance => ""
         }
-        if !patient_assignment[:treatment_arm].blank?
-          if !patient_assignment[:patient_assignment_messages].blank?
+        unless patient_assignment[:treatment_arm].blank?
+          unless patient_assignment[:patient_assignment_messages].blank?
             patient_assignment_message = patient_assignment[:patient_assignment_messages].first
             patient_data[:patient_sequence_number] = patient_assignment_message[:patient_sequence_number]
             patient_data[:treatment_arm_id] = patient_assignment_message[:treatment_arm_id]

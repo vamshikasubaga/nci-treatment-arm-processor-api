@@ -2,7 +2,7 @@
 class TreatmentJob
   include HTTParty
 
-  def perform(treatment_arm, clone=false)
+  def perform(treatment_arm, _clone=false)
     begin
       Shoryuken.logger.info("***** Received TreatmentArm with treatment_arm_id '#{treatment_arm['treatment_arm_id']}', stratum_id '#{treatment_arm['stratum_id']}' & version '#{treatment_arm['version']}' *****")
       treatment_arm_hash = treatment_arm.symbolize_keys!
@@ -50,7 +50,7 @@ class TreatmentJob
   end
 
   def remove_blank_document(treatment_arm)
-    hash_proc = Proc.new { |k, v| v.kind_of?(Hash) ? (v.delete_if(&hash_proc); nil) : v.to_s.blank? }
+    hash_proc = Proc.new { |_k, v| v.kind_of?(Hash) ? (v.delete_if(&hash_proc); nil) : v.to_s.blank? }
     treatment_arm.delete_if(&hash_proc)
     unless treatment_arm[:exclusion_drugs].blank?
       treatment_arm[:exclusion_drugs].each do |drugs|

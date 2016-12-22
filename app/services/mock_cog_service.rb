@@ -6,9 +6,9 @@ class MockCogService
     Shoryuken.logger.info("Mock COG service is Triggered to get the Latest TreatmentArm status")
     results = HTTParty.get(Rails.configuration.environment.fetch('mock_cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
     cog_arms_status = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys!
-      cog_arms_status[:treatment_arms].each do |treatment_arm|
-        status_update(treatment_arm)
-      end
+    cog_arms_status[:treatment_arms].each do |treatment_arm|
+      status_update(treatment_arm)
+    end
     cog_arms_status[:treatment_arms]
   end
 

@@ -30,7 +30,7 @@ module NciTreatmentArmProcessorApi
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'treatment_arm', 'variants', '{*/}')]
 
     config.logger = Logger.new(STDOUT)
-    config.logger.formatter = Proc.new { |severity, datetime, progname, msg| "[#{datetime.strftime("%B %d %H:%M:%S")}] [#{$$}] [#{severity}] [#{Rails.application.class.parent_name}], #{msg}\n"}
+    config.logger.formatter = Proc.new { |severity, datetime, _progname, msg| "[#{datetime.strftime("%B %d %H:%M:%S")}] [#{$$}] [#{severity}] [#{Rails.application.class.parent_name}], #{msg}\n"}
 
     config.environment = Rails.application.config_for(:environment)
 
