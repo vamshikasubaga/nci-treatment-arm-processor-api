@@ -6,7 +6,7 @@ class PatientJob
     begin
       Shoryuken.logger.info("***** Received a Patient Assignment *****")
       patient_assignment.symbolize_keys!
-      # fail_safe(patient_assignment)
+      fail_safe(patient_assignment)
       case patient_assignment[:patient_status]
       when 'PENDING_CONFIRMATION'
         Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' at state PENDING_CONFIRMATION")
