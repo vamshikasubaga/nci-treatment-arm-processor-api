@@ -4,20 +4,18 @@ require 'bunny'
 require 'rails'
 
 class TreatmentArmModelConverter
-
   def initialize
-    @client = Mongo::Client.new([ 'localhost:27017' ], :database => 'match')
+    @client = Mongo::Client.new([ 'localhost:27017' ], database: 'match')
     # @conn = Bunny.new
-    @conn = Bunny.new(:host => "localhost", :vhost => "/", :user => "guest", :password => "guest")
+    @conn = Bunny.new(host: 'localhost', vhost: '/', user: 'guest', password: 'guest')
     @conn.start
   end
 
-
   def runner
     @ch = @conn.create_channel
-    @treatment_arm_queue = @ch.queue("treatment_arm", :durable => true)
-    @patient_queue = @ch.queue("patient", :durable => true)
-    patients = @client[:patient].find(:currentPatientStatus => {"$nin" => ['REGISTRATION']})
+    @treatment_arm_queue = @ch.queue('treatment_arm', durable: true)
+    @patient_queue = @ch.queue('patient', durable: true)
+    patients = @client[:patient].find(currentPatientStatus: { '$nin' => ['REGISTRATION'] })
     treatment_arm_history_load()
     treatment_arm_load()
     count = 1
@@ -25,15 +23,15 @@ class TreatmentArmModelConverter
       patient.deep_transform_keys!(&:underscore).symbolize_keys
       patient[:patient_assignments].each do | patient_assignment |
         patient_data = {
-            :treatment_arm_id => "",
-            :treatment_arm_version => "",
-            :patient_sequence_number => "",
-            :variant_report => [],
-            :diseases => [],
-            :current_step_number => "",
-            :current_patient_status => "",
-            :patient_assignments => [],
-            :concordance => ""
+            treatment_arm_id: '',
+            treatment_arm_version: '',
+            patient_sequence_number: '',
+            variant_report: [],
+            diseases: [],
+            current_step_number: '',
+            current_patient_status: '',
+            patient_assignments: [],
+            concordance: ''
         }
         unless patient_assignment[:treatment_arm].blank?
           unless patient_assignment[:patient_assignment_messages].blank?
@@ -55,7 +53,7 @@ class TreatmentArmModelConverter
             patient_data[:concordance] = patient[:concordance]
             patient_data[:diseases] = patient[:diseases]
           end
-          @patient_queue.publish(patient_data.to_json, :routing_key => @patient_queue.name, :persistent => true)
+          @patient_queue.publish(patient_data.to_json, routing_key: @patient_queue.name, persistent: true)
           count += 1
         end
       end
@@ -64,17 +62,17 @@ class TreatmentArmModelConverter
     @conn.close
   end
 
-  def transform_patient_data(patient)
+  def transform_patient_data(_patient)
     patient_date = {
-        :treatment_arm_id => "",
-        :patient_sequence_number => "",
-        :variant_report => [],
-        :diseases => [],
-        :current_step_number => "",
-        :current_patient_status => "",
-        :patient_assignments => [],
-        :concordance => "",
-        :registration_date => ""
+        treatment_arm_id: '',
+        patient_sequence_number: '',
+        variant_report: [],
+        diseases: [],
+        current_step_number: '',
+        current_patient_status: '',
+        patient_assignments: [],
+        concordance: '',
+        registration_date: ''
     }
   end
 
@@ -82,10 +80,10 @@ class TreatmentArmModelConverter
     treatment_arms_archived = @client[:treatmentArmHistory].find
     treatment_arms_archived.each do |treatment_arm_old |
       treatment_arm_old.deep_transform_keys!(&:underscore)
-      treatment_arm = treatment_arm_old["treatment_arm"]
-      treatment_arm.store("treatment_arm_id", treatment_arm["_id"])
-      treatment_arm.delete("_id")
-      @treatment_arm_queue.publish(treatment_arm.to_json, :routing_key => @treatment_arm_queue.name, :persistent => true)
+      treatment_arm = treatment_arm_old['treatment_arm']
+      treatment_arm.store('treatment_arm_id', treatment_arm['_id'])
+      treatment_arm.delete('_id')
+      @treatment_arm_queue.publish(treatment_arm.to_json, routing_key: @treatment_arm_queue.name, persistent: true)
     end
   end
 
@@ -93,14 +91,12 @@ class TreatmentArmModelConverter
     treatment_arms = @client[:treatmentArm].find
     treatment_arms.each do | treatment_arm |
       treatment_arm.deep_transform_keys!(&:underscore)
-      treatment_arm.delete("_class")
-      treatment_arm.store("treatment_arm_id", treatment_arm["_id"])
-      treatment_arm.delete("_id")
-      @treatment_arm_queue.publish(treatment_arm.to_json, :routing_key => @treatment_arm_queue.name, :persistent => true)
+      treatment_arm.delete('_class')
+      treatment_arm.store('treatment_arm_id', treatment_arm['_id'])
+      treatment_arm.delete('_id')
+      @treatment_arm_queue.publish(treatment_arm.to_json, routing_key: @treatment_arm_queue.name, persistent: true)
     end
   end
 
   self.new.runner
-
-
 end
