@@ -1,49 +1,43 @@
 common: &defaults
-  aws_region: "us-east-1"
-  table_prefix: "ta"
-  PORT: "10236"
-  shoryuken_delay: "5"
-  shoryuken_concurrency: "10"
-  cog_treatment_arms: "/treatmentarms"
-  patient_assignment: "/treatmentArmsUpdated"
+  aws_region: 'us-east-1'
+  table_prefix: 'ta'
+  PORT: '10236'
+  shoryuken_delay: '5'
+  shoryuken_concurrency: '10'
+  cog_treatment_arms: '/treatmentarms'
+  patient_assignment: '/treatmentArmsUpdated'
+  read_capacity_units: '30'
+  write_capacity_units: '30'
 
 development:
   <<: *defaults
-  aws_dynamo_endpoint: "http://localhost:8000"
-  queue_name: <%= ENV["TA_QUEUE_NAME"] %>
-  cog_url: "http://localhost:3000"
-  patient_api_url: "http://localhost:3010"
-  read_capacity_units: "30"
-  write_capacity_units: "30"
+  aws_dynamo_endpoint: 'http://localhost:8000'
+  queue_name: <%= ENV['TA_QUEUE_NAME'] %>
+  cog_url: 'http://localhost:3000'
+  patient_api_url: 'http://localhost:3010'
 
 test:
   <<: *defaults
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  queue_name: "treatment_arm_queue"
-  cog_url: "http://pedmatch-int.nci.nih.gov:3000"
-  patient_api_url: "https://pedmatch-int.nci.nih.gov:3010"
-  read_capacity_units: "30"
-  write_capacity_units: "30"
+  aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
+  queue_name: 'treatment_arm_queue'
+  cog_url: 'http://pedmatch-int.nci.nih.gov:3000'
+  patient_api_url: 'https://pedmatch-int.nci.nih.gov:3010'
 
 uat:
   <<: *defaults
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  queue_name: "treatment_arm_queue"
-  cog_url: "https://qa-cogws.cogmembers.org/pmws"
-  mock_cog_url: "http://pedmatch-uat.nci.nih.gov:3000"
-  patient_api_url: "https://pedmatch-uat.nci.nih.gov:3010"
-  read_capacity_units: "30"
-  write_capacity_units: "30"
-  cog_user_name: <%= ENV["COG_USERNAME"] %>
-  cog_pwd: <%= ENV["COG_PWD"] %>
+  aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
+  queue_name: 'treatment_arm_queue'
+  cog_url: 'https://qa-cogws.cogmembers.org/pmws'
+  mock_cog_url: 'http://pedmatch-uat.nci.nih.gov:3000'
+  patient_api_url: 'https://pedmatch-uat.nci.nih.gov:3010'
+  cog_user_name: <%= ENV['COG_USERNAME'] %>
+  cog_pwd: <%= ENV['COG_PWD'] %>
 
 production:
   <<: *defaults
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  queue_name: "treatment_arm_queue"
-  cog_url: ""
-  patient_api_url: "https://pedmatch.nci.nih.gov:3010"
-  read_capacity_units: "30"
-  write_capacity_units: "30"
-  cog_user_name: <%= ENV["COG_USERNAME"] %>
-  cog_pwd: <%= ENV["COG_PWD"] %>
+  aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
+  queue_name: 'treatment_arm_queue'
+  cog_url: ''
+  patient_api_url: 'https://pedmatch.nci.nih.gov:3010'
+  cog_user_name: <%= ENV['COG_USERNAME'] %>
+  cog_pwd: <%= ENV['COG_PWD'] %>
