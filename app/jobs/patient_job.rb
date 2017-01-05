@@ -4,30 +4,30 @@ class PatientJob
 
   def perform(patient_assignment)
     begin
-      Shoryuken.logger.info("***** Received a Patient Assignment *****")
+      Shoryuken.logger.info("#{self.class.name}| ***** Received a Patient Assignment *****")
       patient_assignment.symbolize_keys!
       fail_safe(patient_assignment)
       case patient_assignment[:patient_status]
       when 'PENDING_CONFIRMATION'
-        Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' at state PENDING_CONFIRMATION")
+        Shoryuken.logger.info("#{self.class.name} | Recieved patient '#{patient_assignment[:patient_id]}' at state PENDING_CONFIRMATION")
         store_patient(patient_assignment)
       when 'PENDING_APPROVAL'
-        Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' at state PENDING_APPROVAL")
+        Shoryuken.logger.info("#{self.class.name} | Recieved patient '#{patient_assignment[:patient_id]}' at state PENDING_APPROVAL")
         store_patient(patient_assignment)
       when 'ON_TREATMENT_ARM'
-        Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' at state ON_TREATMENT_ARM")
+        Shoryuken.logger.info("#{self.class.name} | Recieved patient '#{patient_assignment[:patient_id]}' at state ON_TREATMENT_ARM")
         store_patient(patient_assignment)
       when 'REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT', 'OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'
-        Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' at state #{patient_assignment[:patient_status]}")
+        Shoryuken.logger.info("#{self.class.name} | Recieved patient '#{patient_assignment[:patient_id]}' at state #{patient_assignment[:patient_status]}")
         store_patient(patient_assignment)
       when 'COMPASSIONATE_CARE'
-        Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' at state COMPASSIONATE_CARE")
+        Shoryuken.logger.info("#{self.class.name} | Recieved patient '#{patient_assignment[:patient_id]}' at state COMPASSIONATE_CARE")
         store_patient(patient_assignment)
       else
-        Shoryuken.logger.info("Recieved patient '#{patient_assignment[:patient_id]}' with no current recognized state")
+        Shoryuken.logger.info("#{self.class.name} | Recieved patient '#{patient_assignment[:patient_id]}' with no current recognized state")
       end
     rescue => error
-      Shoryuken.logger.error("Failed to process Patient Assignment with error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("#{self.class.name} | Failed to process Patient Assignment with error #{error}::#{error.backtrace}")
     end
   end
 
@@ -43,7 +43,7 @@ class PatientJob
 
   def update(patient_ta, patient_assignment)
     begin
-      Shoryuken.logger.info("***** Updating Patient Assignment *****")
+      Shoryuken.logger.info("#{self.class.name} | ***** Updating Patient Assignment *****")
       next_event = patient_ta.next_event(patient_ta.event, patient_assignment[:patient_status])
       patient_ta.event = next_event
       patient_ta.patient_status = assess_patient_status(next_event, patient_assignment[:patient_status])
@@ -51,22 +51,22 @@ class PatientJob
       patient_ta.date_on_arm = patient_assignment[:date_on_arm]
       patient_ta.date_off_arm = patient_assignment[:date_off_arm]
       patient_ta.save(force: true)
-      Shoryuken.logger.info("Patient '#{patient_assignment[:patient_id]}' was updated to '#{patient_assignment[:patient_status]}' for TreatmentArm with treatment_arm_id '#{patient_assignment[:treatment_arm_id]}' & stratum_id '#{patient_assignment[:stratum_id]}'")
+      Shoryuken.logger.info("#{self.class.name} | Patient '#{patient_assignment[:patient_id]}' was updated to '#{patient_assignment[:patient_status]}' for TreatmentArm with treatment_arm_id '#{patient_assignment[:treatment_arm_id]}' & stratum_id '#{patient_assignment[:stratum_id]}'")
     rescue => error
-      Shoryuken.logger.error("Failed to update Patient Assignment with error: #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("#{self.class.name} | Failed to update Patient Assignment with error: #{error}::#{error.backtrace}")
     end
   end
 
   def insert(patient_assignment)
     begin
-      Shoryuken.logger.info("***** Inserting Patient Assignment *****")
+      Shoryuken.logger.info("#{self.class.name} | ***** Inserting Patient Assignment *****")
       patient_model = TreatmentArmAssignmentEvent.new
       json = patient_model.convert_model(patient_assignment).to_json
       patient_model.from_json(json)
       patient_model.save
-      Shoryuken.logger.info("Patient '#{patient_model.patient_id}' was successfully saved for Assignment to the TreatmentArm with treatment_arm_id '#{patient_model.treatment_arm_id}' & stratum_id '#{patient_model.stratum_id}'")
+      Shoryuken.logger.info("#{self.class.name} | Patient '#{patient_model.patient_id}' was successfully saved for Assignment to the TreatmentArm with treatment_arm_id '#{patient_model.treatment_arm_id}' & stratum_id '#{patient_model.stratum_id}'")
     rescue => error
-      Shoryuken.logger.error("Failed to insert Patient Assignment with error: #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("#{self.class.name} | Failed to insert Patient Assignment with error: #{error}::#{error.backtrace}")
     end
   end
 

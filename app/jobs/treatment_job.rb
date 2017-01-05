@@ -4,7 +4,7 @@ class TreatmentJob
 
   def perform(treatment_arm, _clone=false)
     begin
-      Shoryuken.logger.info("***** Received TreatmentArm with treatment_arm_id '#{treatment_arm['treatment_arm_id']}', stratum_id '#{treatment_arm['stratum_id']}' & version '#{treatment_arm['version']}' *****")
+      Shoryuken.logger.info("#{self.class.name} | ***** Received TreatmentArm with treatment_arm_id '#{treatment_arm['treatment_arm_id']}', stratum_id '#{treatment_arm['stratum_id']}' & version '#{treatment_arm['version']}' *****")
       treatment_arm_hash = treatment_arm.symbolize_keys!
       current_active_ta = find_treatment_arm(treatment_arm_hash[:treatment_arm_id], treatment_arm_hash[:stratum_id], true).first
       if current_active_ta.nil?
@@ -13,7 +13,7 @@ class TreatmentJob
         insert_new_version(treatment_arm_hash, current_active_ta)
       end
     rescue => error
-      Shoryuken.logger.error("TreatmentArm Worker when uploading TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}' & stratum_id '#{treatment_arm[:stratum_id]}' failed with the error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("#{self.class.name} | TreatmentArm Worker when uploading TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}' & stratum_id '#{treatment_arm[:stratum_id]}' failed with the error #{error}::#{error.backtrace}")
     end
   end
 
@@ -25,7 +25,7 @@ class TreatmentJob
   def create_new_version(treatment_arm_hash)
     new_treatment_arm_hash = TreatmentArm.build_cloned(treatment_arm_hash)
     new_treatment_arm = TreatmentArm.new(new_treatment_arm_hash)
-    Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{new_treatment_arm.treatment_arm_id}', stratum_id '#{new_treatment_arm.stratum_id}' & with new version '#{new_treatment_arm.version}' has been saved successfully")
+    Shoryuken.logger.info("#{self.class.name} | TreatmentArm with treatment_arm_id '#{new_treatment_arm.treatment_arm_id}', stratum_id '#{new_treatment_arm.stratum_id}' & with new version '#{new_treatment_arm.version}' has been saved successfully")
     new_treatment_arm
   end
 
@@ -43,9 +43,9 @@ class TreatmentJob
       json = treatment_arm_model.convert_models(json).to_json
       treatment_arm_model.from_json(json)
       treatment_arm_model.save
-      Shoryuken.logger.info("TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}', stratum_id '#{treatment_arm[:stratum_id]}' & version '#{treatment_arm[:version]}' has been saved successfully")
+      Shoryuken.logger.info("#{self.class.name} | TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}', stratum_id '#{treatment_arm[:stratum_id]}' & version '#{treatment_arm[:version]}' has been saved successfully")
     rescue => error
-      Shoryuken.logger.error("Failed to save TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}', stratum_id '#{treatment_arm[:stratum_id]}' & version '#{treatment_arm[:version]}' with the error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("#{self.class.name} | Failed to save TreatmentArm with treatment_arm_id '#{treatment_arm[:treatment_arm_id]}', stratum_id '#{treatment_arm[:stratum_id]}' & version '#{treatment_arm[:version]}' with the error #{error}::#{error.backtrace}")
     end
   end
 
