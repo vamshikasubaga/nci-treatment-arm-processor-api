@@ -37,7 +37,10 @@ after_success:
     --cluster PedMatch-IntTest-Backend --service-name PedMatch-nci-treatment-arm-processor-api-INTTEST 
     -i $DOCKER_IMAGE:$DATE
   #Trigger Travis bdd tests
-  - curl -s -X POST -H "Content-Type:application/json" -H "Accept:application/json" -H "Travis-API-Version:3" -H "Authorization:token $TRAVIS_TOKEN" -d "{\"request\":{\"message\":\"Triggered by nci-treatment-arm-processor-api $TRAVIS_COMMIT\", \"branch\":\"master\", \"config\":{\"env\":{\"matrix\":[\"TRIGGER_REPO=nci-treatment-arm-processor-api;TRIGGER_VER=$DATE;CUC_TAG=@treatment_arm\"]}}}}" https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests
+  - curl -s -X POST -H "Content-Type:application/json" -H "Accept:application/json" 
+    -H "Travis-API-Version:3" -H "Authorization:token $TRAVIS_TOKEN" 
+    -d "{\"request\":{\"message\":\"Triggered by nci-treatment-arm-processor-api $TRAVIS_COMMIT\", \"branch\":\"master\", \"config\":{\"env\":{\"matrix\":[\"TRIGGER_REPO=nci-treatment-arm-processor-api;TRIGGER_VER=$DATE;CUC_TAG=@treatment_arm;AUTHOR=$AUTHOR\"]}}}}" 
+    https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests
 notifications:
   slack: clinicalbiomed:gRp5LqKElNOjUUMPLlq4qC1j
 addons:
