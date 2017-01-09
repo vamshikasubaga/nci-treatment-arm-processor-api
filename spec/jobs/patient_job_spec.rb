@@ -21,6 +21,12 @@ describe PatientJob do
       expect(subject.perform(patient_assignment)).to be_truthy
     end
 
+    it 'should try to store a Patient Assignment' do
+      allow(TreatmentArmAssignmentEvent).to receive(:new).and_return([])
+      allow(patient_assignment).to receive(:save).and_return(true)
+      expect(subject.store_patient(patient_assignment.to_h)).to be_truthy
+    end
+
     it 'should try to insert a new Patient Assignment' do
       allow(TreatmentArmAssignmentEvent).to receive(:new).and_return(patient_assignment)
       allow(patient_assignment).to receive(:save).and_return(true)
