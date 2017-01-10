@@ -1,9 +1,8 @@
 source 'https://rubygems.org'
 
-
+gem 'newrelic_rpm'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '5.0.0.1'
-gem 'newrelic_rpm'
 
 # Use Puma as the app server
 gem 'puma'
@@ -20,35 +19,33 @@ gem 'puma'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+gem 'aws-record'
 gem 'aws-sdk', '2.6.34'
 gem 'aws-sdk-rails', '1.0.1'
-gem 'aws-record'
 gem 'shoryuken', '2.0.11'
 
 gem 'httparty', '0.14.0'
 gem 'nci_match_patient_models', git: 'git://github.com/CBIIT/nci-match-lib.git', branch: 'master'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-
-  gem 'rspec-rails'
   gem 'factory_girl_rails'
-
+  gem 'rspec-rails'
 end
 
 group :development do
   gem 'listen', '3.1.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'simplecov-rcov'
   gem 'spring'
   gem 'spring-watcher-listen', '2.0.1'
-
-  gem 'simplecov-rcov'
 end
 
 group :test do
-  gem 'simplecov'
+  gem 'codacy-coverage', require: false
   gem 'codeclimate-test-reporter', '~> 1.0.0'
-  gem 'codacy-coverage',  require: false
+  gem 'simplecov'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
