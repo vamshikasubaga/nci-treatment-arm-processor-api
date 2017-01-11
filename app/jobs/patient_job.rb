@@ -6,7 +6,6 @@ class PatientJob
     begin
       Shoryuken.logger.info("#{self.class.name}| ***** Received a Patient Assignment *****")
       patient_assignment.symbolize_keys!
-      fail_safe(patient_assignment)
       Shoryuken.logger.info("#{self.class.name} | Recieved patient '#{patient_assignment[:patient_id]}' at state '#{patient_assignment[:patient_status]}'")
       store_patient(patient_assignment)
     rescue => error
@@ -51,19 +50,6 @@ class PatientJob
       Shoryuken.logger.info("#{self.class.name} | Patient '#{patient_model.patient_id}' was successfully saved for Assignment to the TreatmentArm with treatment_arm_id '#{patient_model.treatment_arm_id}' & stratum_id '#{patient_model.stratum_id}'")
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | Failed to insert Patient Assignment with error: #{error}::#{error.backtrace}")
-    end
-  end
-
-  def fail_safe(patient_assignment)
-    unless TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id],
-                                               assignment_date: patient_assignment[:assignment_date]).blank?
-      raise ArgumentError, "Patient #{patient_assignment[:patient_id]} with assignment date #{patient_assignment[:assignment_date]}is already in database...ignoring"
-    end
-    patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id]).sort_by{ |patient_ta| patient_ta.assignment_date }.reverse.first
-    unless patient_ta.blank?
-      if patient_ta.assignment_date > Date.parse(patient_assignment[:assignment_date])
-        raise ArgumentError, "Patient #{patient_assignment[:patient_id]} assignment is out of order. Current: #{patient_ta.to_h} Received: #{patient_assignment}"
-      end
     end
   end
 
