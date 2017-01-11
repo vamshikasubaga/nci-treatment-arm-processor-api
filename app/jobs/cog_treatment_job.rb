@@ -14,11 +14,6 @@ class CogTreatmentJob
       cog_arms_status[:treatment_arms]
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | Failed to connect to COG with error #{error}")
-      if Rails.env.uat?
-        Shoryuken.logger.info("#{self.class.name} | Switching to use mock COG for UAT...")
-        Shoryuken.logger.info("#{self.class.name} | Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}")
-        MockCogService.perform
-      end
     end
   end
 
