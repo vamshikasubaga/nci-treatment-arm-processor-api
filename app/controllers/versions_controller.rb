@@ -8,6 +8,7 @@ class VersionsController < ApplicationController
         arr = str.split('=', 2)
         hash.store(arr[0], arr[1])
       end
+      document.close
       @version = NciTreatmentArmProcessorApi::Application.version
       @rails_version = Rails::VERSION::STRING
       @ruby_version = RUBY_VERSION
