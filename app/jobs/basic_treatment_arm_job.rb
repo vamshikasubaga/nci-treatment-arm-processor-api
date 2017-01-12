@@ -1,10 +1,8 @@
 class BasicTreatmentArmJob
-  def perform
+  def perform(treatment_arm_id, stratum_id, version)
     begin
-      treatment_arm_list = TreatmentArm.scan({})
-      treatment_arm_list.each do |ta|
-        update(ta)
-      end
+      treatment_arm = TreatmentArm.find_by(treatment_arm_id, stratum_id, version, false).first
+      update(treatment_arm)
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | BasicTreatmentArmJob failed with error #{error}::#{error.backtrace}")
     end

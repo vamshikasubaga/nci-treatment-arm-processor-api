@@ -16,7 +16,10 @@ describe BasicTreatmentArmJob do
     subject { BasicTreatmentArmJob.new }
 
     it 'should respond to a new message' do
-      expect(subject.perform()).to be_nil
+      treatment_arm_id = treatment_arm.treatment_arm_id
+      stratum_id = treatment_arm.stratum_id
+      version = treatment_arm.version
+      expect(subject.perform(treatment_arm_id, stratum_id, version)).to be_truthy
     end
 
     it 'should update the Version & Stratum statistics' do
