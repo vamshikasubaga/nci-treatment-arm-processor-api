@@ -1,5 +1,5 @@
 # PatientAssignment Insert/Update Job
-class PatientJob
+class PatientAssignmentJob
   attr_accessor :patient_assignment_message
 
   def perform(patient_assignment)

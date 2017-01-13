@@ -16,7 +16,7 @@ class QueueWorker
       when :clone_treatment_arm
         TreatmentJob.new.perform(message[processor_key], true)
       when :assignment_event
-        PatientJob.new.perform(message[processor_key])
+        PatientAssignmentJob.new.perform(message[processor_key])
       else
         Shoryuken.logger.warn("Message was not recognized. Please verify it is valid and resend. Message: #{message}")
       end

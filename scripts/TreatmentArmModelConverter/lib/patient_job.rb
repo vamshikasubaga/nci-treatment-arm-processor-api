@@ -1,4 +1,4 @@
-class PatientJob
+class PatientAssignmentJob
   @queue = :patient
 
 end

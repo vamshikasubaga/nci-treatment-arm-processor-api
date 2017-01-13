@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PatientJob do
+describe PatientAssignmentJob do
 
   let(:sqs_message) do
     {
@@ -14,7 +14,7 @@ describe PatientJob do
   new_patient_assignment = FactoryGirl.build(:updated_treatment_arm_assignment_event)
 
   describe '#perform' do
-    subject { PatientJob.new }
+    subject { PatientAssignmentJob.new }
 
     it 'should respond to a new message' do
       allow(TreatmentArmAssignmentEvent).to receive(:find).and_return([])
