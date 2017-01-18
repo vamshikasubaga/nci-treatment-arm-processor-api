@@ -16,7 +16,6 @@ class PatientAssignmentJob
   def store_patient(patient_assignment)
     treatment_arm_id = patient_assignment[:treatment_arm_id]
     stratum_id = patient_assignment[:stratum_id]
-    version = patient_assignment[:version]
     patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id], treatment_arm_id: patient_assignment[:treatment_arm_id]).sort_by{ |pa_ta| pa_ta.assignment_date }.reverse.first
     Shoryuken.logger.info("#{self.class.name} | ***** Processing Patient Assignment *****")
     if patient_ta.blank?
@@ -24,7 +23,7 @@ class PatientAssignmentJob
     else
       update(patient_ta, patient_assignment)
     end
-    BasicTreatmentArmJob.new.perform(treatment_arm_id, stratum_id, version)
+    BasicTreatmentArmJob.new.perform(treatment_arm_id, stratum_id)
   end
 
   def update(patient_ta, patient_assignment)
