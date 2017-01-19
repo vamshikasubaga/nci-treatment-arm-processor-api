@@ -21,7 +21,6 @@ class PatientAssignmentJob
     elsif patient_ta.treatment_arm_id == patient_assignment[:treatment_arm_id] && patient_ta.stratum_id == patient_assignment[:stratum_id]
       update(patient_ta, patient_assignment)
     end
-    BasicTreatmentArmJob.new.perform(patient_assignment[:treatment_arm_id], patient_assignment[:stratum_id])
   end
 
   def update(patient_ta, patient_assignment)
@@ -35,6 +34,7 @@ class PatientAssignmentJob
       patient_ta.date_off_arm = patient_assignment[:date_off_arm]
       patient_ta.save(force: true)
       Shoryuken.logger.info("#{self.class.name} | Patient '#{patient_assignment[:patient_id]}' was updated to '#{patient_assignment[:patient_status]}' for TreatmentArm with treatment_arm_id '#{patient_assignment[:treatment_arm_id]}' & stratum_id '#{patient_assignment[:stratum_id]}'")
+      BasicTreatmentArmJob.new.perform(patient_assignment[:treatment_arm_id], patient_assignment[:stratum_id], patient_ta.patient_status)
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | Failed to update Patient Assignment with error: #{error}::#{error.backtrace}")
     end
@@ -48,6 +48,7 @@ class PatientAssignmentJob
       patient_model.from_json(json)
       patient_model.save
       Shoryuken.logger.info("#{self.class.name} | Patient '#{patient_model.patient_id}' was successfully saved for Assignment to the TreatmentArm with treatment_arm_id '#{patient_model.treatment_arm_id}' & stratum_id '#{patient_model.stratum_id}'")
+      BasicTreatmentArmJob.new.perform(patient_assignment[:treatment_arm_id], patient_assignment[:stratum_id], patient_model.patient_status)
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | Failed to insert Patient Assignment with error: #{error}::#{error.backtrace}")
     end
