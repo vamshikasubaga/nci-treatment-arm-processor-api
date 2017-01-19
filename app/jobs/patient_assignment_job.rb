@@ -14,16 +14,14 @@ class PatientAssignmentJob
   end
 
   def store_patient(patient_assignment)
-    treatment_arm_id = patient_assignment[:treatment_arm_id]
-    stratum_id = patient_assignment[:stratum_id]
-    patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_assignment[:patient_id], treatment_arm_id: patient_assignment[:treatment_arm_id]).sort_by{ |pa_ta| pa_ta.assignment_date }.reverse.first
+    patient_ta = TreatmentArmAssignmentEvent.find_patient(patient_assignment[:patient_id])
     Shoryuken.logger.info("#{self.class.name} | ***** Processing Patient Assignment *****")
-    if patient_ta.blank?
+    if patient_ta.blank? || (patient_ta.treatment_arm_id != patient_assignment[:treatment_arm_id] && patient_ta.stratum_id != patient_assignment[:stratum_id])
       insert(patient_assignment)
-    else
+    elsif patient_ta.treatment_arm_id == patient_assignment[:treatment_arm_id] && patient_ta.stratum_id == patient_assignment[:stratum_id]
       update(patient_ta, patient_assignment)
     end
-    BasicTreatmentArmJob.new.perform(treatment_arm_id, stratum_id)
+    BasicTreatmentArmJob.new.perform(patient_assignment[:treatment_arm_id], patient_assignment[:stratum_id])
   end
 
   def update(patient_ta, patient_assignment)
@@ -58,13 +56,13 @@ class PatientAssignmentJob
   private
 
   def assess_patient_status(event, status)
-    if event == TreatmentArmAssignmentEvent::FORMER_PATIENT && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT'].include?(status.upcase)
+    if event == TreatmentArmAssignmentEvent::FORMER_PATIENT && %w(REQUEST_ASSIGNMENT REQUEST_NO_ASSIGNMENT).include?(status.upcase)
       status = 'PREVIOUSLY_ON_ARM'
-    elsif event == TreatmentArmAssignmentEvent::FORMER_PATIENT && ['OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(status.upcase)
+    elsif event == TreatmentArmAssignmentEvent::FORMER_PATIENT && %w(OFF_STUDY OFF_STUDY_BIOPSY_EXPIRED).include?(status.upcase)
       status = 'PREVIOUSLY_ON_ARM_OFF_STUDY'
-    elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT'].include?(status.upcase)
+    elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && %w(REQUEST_ASSIGNMENT REQUEST_NO_ASSIGNMENT).include?(status.upcase)
       status = 'NOT_ENROLLED_ON_ARM'
-    elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && ['OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(status.upcase)
+    elsif event == TreatmentArmAssignmentEvent::NOT_ENROLLED && %w(OFF_STUDY OFF_STUDY_BIOPSY_EXPIRED).include?(status.upcase)
       status = 'NOT_ENROLLED_ON_ARM_OFF_STUDY'
     end
     status

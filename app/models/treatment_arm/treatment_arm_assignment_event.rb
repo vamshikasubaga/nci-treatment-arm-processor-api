@@ -52,23 +52,23 @@ class TreatmentArmAssignmentEvent
 
   def convert_model(patient_assignment)
     return {
-        assignment_date: patient_assignment[:assignment_date],
-        treatment_arm_id: patient_assignment[:treatment_arm_id],
-        version: patient_assignment[:version],
-        stratum_id: patient_assignment[:stratum_id],
-        patient_id: patient_assignment[:patient_id],
-        date_on_arm: patient_assignment[:date_on_arm],
-        date_off_arm: patient_assignment[:date_off_arm],
-        patient_status: patient_assignment[:patient_status],
-        assignment_reason: patient_assignment[:assignment_reason],
-        diseases: patient_assignment[:diseases],
-        step_number: patient_assignment[:step_number],
-        surgical_event_id: patient_assignment[:surgical_event_id],
-        molecular_id: patient_assignment[:molecular_id],
-        analysis_id: patient_assignment[:analysis_id],
-        variant_report: patient_assignment[:variant_report],
-        assignment_report: patient_assignment[:assignment_report],
-        event: EVENT_INIT
+      assignment_date: patient_assignment[:assignment_date],
+      treatment_arm_id: patient_assignment[:treatment_arm_id],
+      version: patient_assignment[:version],
+      stratum_id: patient_assignment[:stratum_id],
+      patient_id: patient_assignment[:patient_id],
+      date_on_arm: patient_assignment[:date_on_arm],
+      date_off_arm: patient_assignment[:date_off_arm],
+      patient_status: patient_assignment[:patient_status],
+      assignment_reason: patient_assignment[:assignment_reason],
+      diseases: patient_assignment[:diseases],
+      step_number: patient_assignment[:step_number],
+      surgical_event_id: patient_assignment[:surgical_event_id],
+      molecular_id: patient_assignment[:molecular_id],
+      analysis_id: patient_assignment[:analysis_id],
+      variant_report: patient_assignment[:variant_report],
+      assignment_report: patient_assignment[:assignment_report],
+      event: EVENT_INIT
     }
   end
 
@@ -80,11 +80,24 @@ class TreatmentArmAssignmentEvent
       event = NOT_ENROLLED
     elsif event == PENDING_PATIENT && next_state == 'ON_TREATMENT_ARM'
       event = CURRENT_PATIENT
-    elsif event == CURRENT_PATIENT && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT', 'OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(next_state)
+    elsif event == CURRENT_PATIENT && %w(REQUEST_ASSIGNMENT REQUEST_NO_ASSIGNMENT OFF_STUDY OFF_STUDY_BIOPSY_EXPIRED).include?(next_state)
       event = FORMER_PATIENT
-    elsif event == PENDING_PATIENT && ['REQUEST_ASSIGNMENT', 'REQUEST_NO_ASSIGNMENT', 'OFF_STUDY', 'OFF_STUDY_BIOPSY_EXPIRED'].include?(next_state)
+    elsif event == PENDING_PATIENT && %w(REQUEST_ASSIGNMENT REQUEST_NO_ASSIGNMENT OFF_STUDY OFF_STUDY_BIOPSY_EXPIRED).include?(next_state)
       event = NOT_ENROLLED
     end
     event
+  end
+
+  def self.find_patient(patient_id)
+    assignments = self.query(
+        key_condition_expression: '#P = :p',
+        expression_attribute_names: { '#P' => 'patient_id' },
+        scan_index_forward: 'false',
+        expression_attribute_values: { ':p' => patient_id }
+    )
+
+    assignments.each do |assignment|
+      return assignment
+    end
   end
 end
