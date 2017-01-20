@@ -87,17 +87,4 @@ class TreatmentArmAssignmentEvent
     end
     event
   end
-
-  def self.find_patient(patient_id)
-    assignments = self.query(
-        key_condition_expression: '#P = :p',
-        expression_attribute_names: { '#P' => 'patient_id' },
-        scan_index_forward: 'false',
-        expression_attribute_values: { ':p' => patient_id }
-    )
-
-    assignments.each do |assignment|
-      return assignment
-    end
-  end
 end
