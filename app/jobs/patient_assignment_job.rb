@@ -33,7 +33,7 @@ class PatientAssignmentJob
       patient_ta.date_on_arm = patient_assignment[:date_on_arm]
       patient_ta.date_off_arm = patient_assignment[:date_off_arm]
       patient_ta.save(force: true)
-      Shoryuken.logger.info("#{self.class.name} | ===== Patient '#{patient_assignment[:patient_id]}' was updated to '#{patient_assignment[:patient_status]}' for TreatmentArm with treatment_arm_id '#{patient_assignment[:treatment_arm_id]}' & stratum_id '#{patient_assignment[:stratum_id]}' =====")
+      Shoryuken.logger.info("#{self.class.name} | ===== Patient '#{patient_assignment[:patient_id]}' was updated to '#{patient_assignment[:patient_status]}' for TreatmentArm('#{patient_assignment[:treatment_arm_id]}'/'#{patient_assignment[:stratum_id]}'/'#{patient_assignment[:version]}') =====")
       BasicTreatmentArmJob.new.perform(patient_assignment[:treatment_arm_id], patient_assignment[:stratum_id], patient_ta.patient_status)
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | Failed to update Patient Assignment with error: #{error}::#{error.backtrace}")

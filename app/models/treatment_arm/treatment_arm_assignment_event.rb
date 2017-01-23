@@ -11,9 +11,9 @@ class TreatmentArmAssignmentEvent
 
   string_attr :patient_id, hash_key: true
   string_attr :treatment_arm_id, range_key: true
-  date_attr :date_on_arm
-  date_attr :date_off_arm
-  date_attr :assignment_date
+  datetime_attr :date_on_arm
+  datetime_attr :date_off_arm
+  datetime_attr :assignment_date
   string_attr :stratum_id
   string_attr :version
   string_attr :patient_status
