@@ -4,7 +4,7 @@ class TreatmentJob
 
   def perform(treatment_arm, _clone=false)
     begin
-      Shoryuken.logger.info("#{self.class.name} | ===== Received TreatmentArm('#{treatment_arm['treatment_arm_id']}'/'#{treatment_arm['stratum_id']}'/'#{treatment_arm['version']}'') =====")
+      Shoryuken.logger.info("#{self.class.name} | ===== Received TreatmentArm('#{treatment_arm['treatment_arm_id']}'/'#{treatment_arm['stratum_id']}'/'#{treatment_arm['version']}') =====")
       treatment_arm_hash = treatment_arm.symbolize_keys!
       current_active_ta = find_treatment_arm(treatment_arm_hash[:treatment_arm_id], treatment_arm_hash[:stratum_id], true).first
       if current_active_ta.nil?
