@@ -3,15 +3,16 @@ require 'spec_helper'
 RSpec.describe 'Shoryuken::Worker' do
   let(:sqs_queue) { double 'SQS Queue' }
   let(:queue)     { 'treatment_arm_queue' }
-  let(:sqs)         { Aws::SQS::Client.new(stub_responses: true, credentials: credentials) }
+  let(:sqs)       { Aws::SQS::Client.new(stub_responses: true, credentials: credentials) }
   let(:credentials) { Aws::Credentials.new(Rails.application.secrets.aws_access_key_id, Rails.application.secrets.aws_secret_access_key) }
   let(:_sqs_message) do
     {
       id: 'fc754df7-9cc2-4c41-96ca-5996a44b771e',
-      body: "message",
+      body: 'message',
       delete: nil
     }
   end
+
   message = FactoryGirl.build(:message)
 
   before do
@@ -29,8 +30,8 @@ RSpec.describe 'Shoryuken::Worker' do
           }
         },
         message_body: 'message',
-        delay_seconds: 60)
-
+        delay_seconds: 60
+      )
       QueueWorker.perform_in(60, 'message')
     end
 

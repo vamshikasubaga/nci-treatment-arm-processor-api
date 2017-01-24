@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe TreatmentArm do
-
   let(:api_requests) { [] }
 
   let(:stub_client) do
@@ -39,11 +38,7 @@ describe TreatmentArm do
   end
 
   it 'should be the correct class type for the variables' do
-    stub_client.stub_responses(:describe_table,
-                                {
-                                  table: { table_status: 'ACTIVE' }
-                                }
-                              )
+    stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm.configure_client(client: stub_client)
     expect(treatment_arm.name).to be_kind_of(String)
     expect(treatment_arm.treatment_arm_id).to be_kind_of(String)
@@ -87,11 +82,7 @@ describe TreatmentArm do
   end
 
   it 'should return the correct values' do
-    stub_client.stub_responses(:describe_table,
-                                {
-                                  table: { table_status: 'ACTIVE' }
-                                }
-                              )
+    stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm.configure_client(client: stub_client)
     json = {
              treatment_arm_id: 'APEC1621-A',
@@ -135,8 +126,7 @@ describe TreatmentArm do
              copy_number_variants: [],
              non_hotspot_rules: [],
              status_log: { Time.now.to_i.to_s => 'OPEN' }
-           }
-
+          }
 
     hash = TreatmentArm.new.convert_models(json)
     from_json_ta = TreatmentArm.new.from_json(hash.to_json)
@@ -161,7 +151,7 @@ describe TreatmentArm do
   end
 
   it 'automatically declares treatment_arm_id' do
-    expect{treatment_arm.treatment_arm_id}.to_not raise_error
+    expect { treatment_arm.treatment_arm_id }.to_not raise_error
   end
 
   it 'should be valid when an instance is created' do
@@ -174,7 +164,7 @@ describe TreatmentArm do
   end
 
   it 'should be of the correct instance' do
-    treatment_arm = TreatmentArm.new()
+    treatment_arm = TreatmentArm.new
     expect(treatment_arm).to be_an_instance_of(TreatmentArm)
   end
 
@@ -204,7 +194,6 @@ describe TreatmentArm do
   end
 
   describe 'Attributes' do
-
     let(:record) do
       Class.new do
         include(Aws::Record)
@@ -212,7 +201,6 @@ describe TreatmentArm do
     end
 
     describe '#initialize' do
-
       let(:model) do
         Class.new do
           include(Aws::Record)
@@ -237,7 +225,6 @@ describe TreatmentArm do
     end
 
     describe 'Keys' do
-
       it 'should be able to assign a hash key' do
         record.string_attr(:treatment_arm_id, hash_key: true)
         expect(record.hash_key).to eq(:treatment_arm_id)
@@ -251,14 +238,11 @@ describe TreatmentArm do
       end
 
       it 'should reject assigning the same attribute as hash and range key' do
-        expect {
-          record.string_attr(:treatment_arm_id, hash_key: true, range_key: true)
-          }.to raise_error(ArgumentError)
+        expect { record.string_attr(:treatment_arm_id, hash_key: true, range_key: true) }.to raise_error(ArgumentError)
       end
     end
 
     describe 'Attributes' do
-
       it 'should create dynamic methods around attributes' do
         record.string_attr(:description)
         x = record.new
@@ -272,23 +256,17 @@ describe TreatmentArm do
 
       it 'rejects collisions of db storage names with existing attr names' do
         record.boolean_attr(:active, database_attribute_name: 'is_active_flag')
-        expect {
-          record.boolean_attr(:fail, database_attribute_name: 'active')
-          }.to raise_error(Aws::Record::Errors::NameCollision)
+        expect { record.boolean_attr(:fail, database_attribute_name: 'active') }.to raise_error(Aws::Record::Errors::NameCollision)
       end
 
       it 'rejects collisions of attr names with existing db storage names' do
         record.boolean_attr(:active, database_attribute_name: 'is_active_flag')
-        expect {
-          record.boolean_attr(:is_active_flag, database_attribute_name: 'fail')
-          }.to raise_error(Aws::Record::Errors::NameCollision)
+        expect { record.boolean_attr(:is_active_flag, database_attribute_name: 'fail') }.to raise_error(Aws::Record::Errors::NameCollision)
       end
 
       it 'should not allow duplicate assignment of the same attr name' do
         record.string_attr(:target_name)
-        expect { record.datetime_attr(:target_name) }.to raise_error(
-          Aws::Record::Errors::NameCollision
-          )
+        expect { record.datetime_attr(:target_name) }.to raise_error(Aws::Record::Errors::NameCollision)
       end
 
       it 'should typecast an integer attribute' do
@@ -302,7 +280,7 @@ describe TreatmentArm do
         record.string_attr(:status_log)
         x = record.new
         x.status_log = '{"1479236708": "OPEN"}'
-        expect(x.to_h).to eq({ status_log: '{"1479236708": "OPEN"}' })
+        expect(x.to_h).to eq(status_log: '{"1479236708": "OPEN"}')
       end
 
       it 'should allow specification of a separate storage attribute name' do

@@ -53,27 +53,27 @@ describe TreatmentJob do
                                                description: 'testDiscription',
                                                target_id: '',
                                                target_name: 'GENE'
-                                             })).to include( { treatment_arm_id: 'EAY131-A', version: 'testVersion', description: 'testDiscription', target_name: 'GENE'} )
+                                             })).to include({ treatment_arm_id: 'EAY131-A', version: 'testVersion', description: 'testDiscription', target_name: 'GENE' })
     end
 
     it 'should remove empty strings from json' do
       expected_results = [
         {
-          "drug_id"=>"763093",
-          "name"=>"Trametinib",
-           "pathway"=>"B-RAF inhibitor",
-           "target"=>"B-RAF"
+          'drug_id' => '763093',
+          'name' => 'Trametinib',
+          'pathway' => 'B-RAF inhibitor',
+          'target' => 'B-RAF'
         },
         {
-          "drug_id"=>"763760"
+          'drug_id' => '763760'
         },
         {
-          "name"=>"Trametinib"
+          'name' => 'Trametinib'
         },
         {
-          "drug_id"=>"763093",
-          "name"=>"Trametinib",
-          "target"=>"B-RAF"
+          'drug_id' => '763093',
+          'name' => 'Trametinib',
+          'target' => 'B-RAF'
         }
       ]
       expect(subject.remove_blank_document(treatment_arm.to_h)[:exclusion_drugs]).to eq(expected_results)
@@ -88,11 +88,10 @@ describe TreatmentJob do
 
     it 'should clone treatment arm hash' do
       matching_keys = [:active, :treatment_arm_id, :name, :version]
-      missingkeys =[:former_patients, :not_enrolled_patients, :pending_patients, :version_current_patients,
-                    :version_former_patients, :version_not_enrolled_patients, :version_pending_patients ]
+      missingkeys = [:former_patients, :not_enrolled_patients, :pending_patients, :version_current_patients,
+                     :version_former_patients, :version_not_enrolled_patients, :version_pending_patients]
       expect(new_treatment_arm_hash.slice(matching_keys)).to eq(treatment_arm.to_h.slice(matching_keys))
       expect(new_treatment_arm_hash.slice(missingkeys)).to be_empty
     end
-
   end
 end

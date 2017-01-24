@@ -55,15 +55,15 @@ describe TreatmentArmAssignmentEvent do
   end
 
   it 'should be of the correct instance' do
-    treatment_arm_assignment = TreatmentArmAssignmentEvent.new()
+    treatment_arm_assignment = TreatmentArmAssignmentEvent.new
     expect(treatment_arm_assignment).to be_an_instance_of(TreatmentArmAssignmentEvent)
   end
 
   it 'automatically declares patient_id' do
-    expect{treatment_arm_assignment.patient_id}.to_not raise_error
+    expect { treatment_arm_assignment.patient_id }.to_not raise_error
   end
 
-  it "should be valid when an instance is created" do
+  it 'should be valid when an instance is created' do
     expect(TreatmentArmAssignmentEvent.new).to be_truthy
   end
 
