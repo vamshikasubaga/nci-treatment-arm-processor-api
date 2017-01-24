@@ -43,7 +43,7 @@ class TreatmentJob
       json = treatment_arm_model.convert_models(json).to_json
       treatment_arm_model.from_json(json)
       treatment_arm_model.save
-      Shoryuken.logger.info("#{self.class.name} | ===== TreatmentArm('#{treatment_arm[:treatment_arm_id]}'/'#{treatment_arm[:stratum_id]}'/'#{treatment_arm[:version]}'') has been saved successfully to the DataBase =====")
+      Shoryuken.logger.info("#{self.class.name} | ===== TreatmentArm('#{treatment_arm[:treatment_arm_id]}'/'#{treatment_arm[:stratum_id]}'/'#{treatment_arm[:version]}') has been saved successfully to the DataBase =====")
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | Failed to save TreatmentArm('#{treatment_arm[:treatment_arm_id]}'/'#{treatment_arm[:stratum_id]}'/'#{treatment_arm[:version]}'') with the error #{error}::#{error.backtrace}")
     end
