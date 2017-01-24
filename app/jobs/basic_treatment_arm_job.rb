@@ -3,6 +3,7 @@ class BasicTreatmentArmJob
     begin
       treatment_arms = TreatmentArm.find_by(treatment_arm_id, stratum_id, nil, false)
       treatment_arms.each do | treatment_arm |
+        Shoryuken.logger.info("#{self.class.name} | ===== Updating the Version & Stratum Statistics for TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') =====")
         update(treatment_arm, status)
       end
     rescue => error
@@ -20,7 +21,7 @@ class BasicTreatmentArmJob
     treatment_arm.not_enrolled_patients = find_patient_count_by_event(treatment_arm, 'NOT_ENROLLED', true) if check_status(status)
     treatment_arm.pending_patients = find_patient_count_for_status(treatment_arm, ['PENDING_APPROVAL'], true) if check_status(status)
     treatment_arm.save
-    Shoryuken.logger.info("#{self.class.name} | BasicTreatmentArm info for TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') has been successfully updated")
+    Shoryuken.logger.info("#{self.class.name} | ===== Version & Stratum Statistics for TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') has been successfully updated =====")
   end
 
   def check_status(status)
