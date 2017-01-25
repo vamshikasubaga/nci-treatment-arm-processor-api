@@ -12,6 +12,7 @@ class TreatmentArmAssignmentEvent
   string_attr :patient_id, hash_key: true
   datetime_attr :assignment_date, range_key: true
   string_attr :treatment_arm_id
+  string_attr :treatment_arm_status
   datetime_attr :date_on_arm
   datetime_attr :date_off_arm
   string_attr :stratum_id
@@ -32,6 +33,7 @@ class TreatmentArmAssignmentEvent
   CURRENT_PATIENT = 'CURRENT_PATIENT'.freeze
   NOT_ENROLLED = 'NOT_ENROLLED'.freeze
   FORMER_PATIENT = 'FORMER_PATIENT'.freeze
+  COMPASSIONATE_CARE = 'COMPASSIONATE_CARE'.freeze
 
   def self.find_by(opts = {})
     query = {}
@@ -54,6 +56,7 @@ class TreatmentArmAssignmentEvent
     return {
       assignment_date: patient_assignment[:assignment_date],
       treatment_arm_id: patient_assignment[:treatment_arm_id],
+      treatment_arm_status: patient_assignment[:treatment_arm_status],
       version: patient_assignment[:version],
       stratum_id: patient_assignment[:stratum_id],
       patient_id: patient_assignment[:patient_id],
@@ -76,6 +79,10 @@ class TreatmentArmAssignmentEvent
   def next_event(event, next_state)
     if event == EVENT_INIT && next_state == 'PENDING_APPROVAL'
       event = PENDING_PATIENT
+    elsif event == EVENT_INIT && next_state == 'COMPASSIONATE_CARE'
+      event = COMPASSIONATE_CARE
+    elsif event == COMPASSIONATE_CARE && next_state == 'REQUEST_ASSIGNMENT'
+      event = NOT_ENROLLED
     elsif event == EVENT_INIT && next_state == 'OFF_STUDY'
       event = NOT_ENROLLED
     elsif event == PENDING_PATIENT && next_state == 'ON_TREATMENT_ARM'
