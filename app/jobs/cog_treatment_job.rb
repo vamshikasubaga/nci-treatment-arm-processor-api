@@ -4,7 +4,7 @@ class CogTreatmentJob
 
   def perform
     begin
-      Shoryuken.logger.info("#{self.class.name} | ***** Calling COG at #{Rails.configuration.environment.fetch('cog_url')} *****")
+      Shoryuken.logger.info("#{self.class.name} | ===== Calling COG at #{Rails.configuration.environment.fetch('cog_url')} =====")
       auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
       results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
       cog_arms_status = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys!
@@ -25,11 +25,11 @@ class CogTreatmentJob
         unless match_treatment_arm.blank?
           if match_treatment_arm.treatment_arm_status != 'CLOSED' && match_treatment_arm.treatment_arm_status != cog_treatment_arm[:status]
             match_treatment_arm.treatment_arm_status = cog_treatment_arm[:status]
-            match_treatment_arm.status_log = rewrite_status_log(match_treatment_arm.status_log, {cog_treatment_arm[:status_date] => cog_treatment_arm[:status]})
+            match_treatment_arm.status_log = rewrite_status_log(match_treatment_arm.status_log, { cog_treatment_arm[:status_date] => cog_treatment_arm[:status] })
             match_treatment_arm.save
-            Shoryuken.logger.info("#{self.class.name} | The status for the TreatmentArm with treatment_arm_id '#{cog_treatment_arm[:treatment_arm_id]}' & stratum_id '#{cog_treatment_arm[:stratum_id]}' has been successfully updated")
+            Shoryuken.logger.info("#{self.class.name} | ===== The status for the TreatmentArm with treatment_arm_id '#{cog_treatment_arm[:treatment_arm_id]}' & stratum_id '#{cog_treatment_arm[:stratum_id]}' has been successfully updated =====")
           else
-            Shoryuken.logger.info("#{self.class.name} | TreatmentArm with treatment_arm_id '#{cog_treatment_arm[:treatment_arm_id]}' & stratum_id '#{cog_treatment_arm[:stratum_id]}' is currently CLOSED or already in the correct state")
+            Shoryuken.logger.info("#{self.class.name} | ===== TreatmentArm with treatment_arm_id '#{cog_treatment_arm[:treatment_arm_id]}' & stratum_id '#{cog_treatment_arm[:stratum_id]}' is currently CLOSED or already in the correct state =====")
           end
         end
       end
@@ -39,7 +39,7 @@ class CogTreatmentJob
     end
   end
 
-  def rewrite_status_log(status_log, append_hash={})
+  def rewrite_status_log(status_log, append_hash = {})
     new_log = {}
     new_log.merge!(status_log)
     new_log.merge!(append_hash)
