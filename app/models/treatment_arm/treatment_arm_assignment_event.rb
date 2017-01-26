@@ -3,7 +3,6 @@ class TreatmentArmAssignmentEvent
   include Aws::Record
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
-
   include ActiveModel::Serializers::JSON
   include ModelSerializer
 
@@ -54,18 +53,18 @@ class TreatmentArmAssignmentEvent
   end
 
   def convert_model(patient_assignment)
-    return {
+    {
       assignment_date: patient_assignment[:assignment_date],
       treatment_arm_id: patient_assignment[:treatment_arm_id],
       treatment_arm_status: patient_assignment[:treatment_arm_status],
-      patient_status_reason: patient_assignment[:patient_status_reason] || [],
+      patient_status_reason: patient_assignment[:patient_status_reason],
       version: patient_assignment[:version],
       stratum_id: patient_assignment[:stratum_id],
       patient_id: patient_assignment[:patient_id],
-      date_on_arm: patient_assignment[:date_on_arm] || [],
-      date_off_arm: patient_assignment[:date_off_arm] || [],
+      date_on_arm: patient_assignment[:date_on_arm],
+      date_off_arm: patient_assignment[:date_off_arm],
       patient_status: patient_assignment[:patient_status],
-      assignment_reason: patient_assignment[:assignment_reason] || [],
+      assignment_reason: patient_assignment[:assignment_reason],
       diseases: patient_assignment[:diseases],
       step_number: patient_assignment[:step_number],
       surgical_event_id: patient_assignment[:surgical_event_id],
