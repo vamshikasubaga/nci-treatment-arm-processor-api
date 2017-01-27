@@ -11,7 +11,7 @@ namespace :setup do
     puts list_tables
   end
 
-  table_names = %W(assignment event patient shipment variant variant_report specimen treatment_arm treatment_arm_assignment_event)
+  table_names = %w(treatment_arm treatment_arm_assignment_event)
 
   desc 'Deletes a table'
   task :delete_table => :before do
@@ -21,9 +21,6 @@ namespace :setup do
     if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
       puts "Deleting #{table_name} table..."
       delete_table(table_name.camelize.constantize)
-    else
-      puts "Deleting #{table_name} table..."
-      delete_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
     end
   end
 
@@ -35,9 +32,6 @@ namespace :setup do
     if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
       puts "Wiping off #{table_name} table..."
       clear_table(table_name.camelize.constantize)
-    else
-      puts "Wiping off #{table_name} table..."
-      clear_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
     end
   end
 
@@ -48,8 +42,6 @@ namespace :setup do
       puts "#{table_name} table is missing. Creating it..."
       if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
         create_table(table_name.camelize.constantize)
-      else
-        create_table("NciMatchPatientModels::#{table_name.camelize}".constantize)
       end
     end
   end
