@@ -25,7 +25,7 @@ gem 'aws-sdk-rails', '1.0.1'
 gem 'shoryuken', '2.0.11'
 
 gem 'httparty', '0.14.0'
-gem 'nci_match_patient_models', git: 'git://github.com/CBIIT/nci-match-lib.git', branch: 'master'
+gem 'nci_match_patient_models', git: 'git://github.com/CBIIT/nci-match-lib.git', tag: 'v1.1.8'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
