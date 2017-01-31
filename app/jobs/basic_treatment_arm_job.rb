@@ -7,7 +7,7 @@ class BasicTreatmentArmJob
         update(treatment_arm, status)
       end
     rescue => error
-      Shoryuken.logger.error("#{self.class.name} | BasicTreatmentArmJob failed with error #{error}::#{error.backtrace}")
+      Shoryuken.logger.error("#{self.class.name} | BasicTreatmentArmJob for TreatmentArm('#{treatment_arm_id}'/'#{stratum_id}') failed with error #{error}::#{error.backtrace}")
     end
   end
 
@@ -28,7 +28,7 @@ class BasicTreatmentArmJob
     true if status != 'PENDING_CONFIRMATION'
   end
 
-  def find_patient_count_for_status(treatment_arm=nil, status_list=[], ignore_version=false)
+  def find_patient_count_for_status(treatment_arm = nil, status_list = [], ignore_version = false)
     query = {}
     query.merge!('treatment_arm_id' => { comparison_operator: 'CONTAINS', attribute_value_list: [treatment_arm.treatment_arm_id] })
     query.merge!('stratum_id' => { comparison_operator: 'EQ', attribute_value_list: [treatment_arm.stratum_id] })
@@ -37,7 +37,7 @@ class BasicTreatmentArmJob
     TreatmentArmAssignmentEvent.scan(scan_filter: query, conditional_operator: 'AND').count
   end
 
-  def find_patient_count_by_event(treatment_arm=nil, event=nil, ignore_version=false)
+  def find_patient_count_by_event(treatment_arm = nil, event = nil, ignore_version = false)
     query = {}
     query.merge!('treatment_arm_id' => { comparison_operator: 'CONTAINS', attribute_value_list: [treatment_arm.treatment_arm_id] })
     query.merge!('stratum_id' => { comparison_operator: 'EQ', attribute_value_list: [treatment_arm.stratum_id] })
