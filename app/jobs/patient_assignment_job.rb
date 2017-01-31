@@ -5,7 +5,7 @@ class PatientAssignmentJob
   def perform(patient_assignment)
     begin
       Shoryuken.logger.info("#{self.class.name} | ===== Received a Patient Assignment(#{patient_assignment['patient_id']}) for TreatmentArm('#{patient_assignment['treatment_arm_id']}'/'#{patient_assignment['stratum_id']}'/'#{patient_assignment['version']}') =====")
-      patient_assignment.ymbolize_keys!
+      patient_assignment.symbolize_keys!
       Shoryuken.logger.info("#{self.class.name} | ===== Recieved patient '#{patient_assignment[:patient_id]}' at state '#{patient_assignment[:patient_status]}' for TreatmentArm('#{patient_assignment[:treatment_arm_id]}'/'#{patient_assignment[:stratum_id]}'/'#{patient_assignment[:version]}') =====")
       store_patient(patient_assignment)
     rescue => error
