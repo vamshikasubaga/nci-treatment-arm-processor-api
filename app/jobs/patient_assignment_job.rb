@@ -47,10 +47,10 @@ class PatientAssignmentJob
       next_event = patient_ta.next_event(patient_ta.event, patient_assignment[:patient_status])
       patient_ta.event = next_event
       patient_ta.patient_status = assess_patient_status(next_event, patient_assignment[:patient_status])
-      patient_ta.step_number = patient_assignment[:step_number] if !patient_assignment[:step_number].nil?
-      patient_ta.date_on_arm = patient_assignment[:date_on_arm] if !patient_assignment[:date_on_arm].nil?
-      patient_ta.date_off_arm = patient_assignment[:date_off_arm] if !patient_assignment[:date_off_arm].nil?
-      patient_ta.patient_status_reason = patient_assignment[:patient_status_reason] if !patient_assignment[:patient_status_reason].nil?
+      patient_ta.step_number = patient_assignment[:step_number] unless patient_assignment[:step_number].nil?
+      patient_ta.date_on_arm = patient_assignment[:date_on_arm] unless patient_assignment[:date_on_arm].nil?
+      patient_ta.date_off_arm = patient_assignment[:date_off_arm] unless patient_assignment[:date_off_arm].nil?
+      patient_ta.patient_status_reason = patient_assignment[:patient_status_reason] unless patient_assignment[:patient_status_reason].nil?
       patient_ta.save(force: true)
       Shoryuken.logger.info("#{self.class.name} | ===== Patient '#{patient_assignment[:patient_id]}' was updated to '#{patient_assignment[:patient_status]}' for TreatmentArm('#{patient_assignment[:treatment_arm_id]}'/'#{patient_assignment[:stratum_id]}'/'#{patient_assignment[:version]}') =====")
       BasicTreatmentArmJob.new.perform(patient_assignment[:treatment_arm_id], patient_assignment[:stratum_id], patient_ta.patient_status)
