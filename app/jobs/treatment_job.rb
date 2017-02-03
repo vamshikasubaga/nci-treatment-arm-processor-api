@@ -29,7 +29,7 @@ class TreatmentJob
     new_treatment_arm
   end
 
-  # Turns the old TA active flag to false if the TA gets updated with a new version
+  # Turns the old TreatmentArm active flag to false if the TreatmentArm gets updated with a new version
   def deactivate(treatment_arm)
     treatment_arm.active = false
     treatment_arm.save
