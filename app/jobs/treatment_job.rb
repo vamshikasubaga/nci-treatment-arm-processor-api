@@ -20,6 +20,7 @@ class TreatmentJob
   def insert_new_version(treatment_arm_hash, current_active_ta)
     new_treatment_arm = create_new_version(treatment_arm_hash)
     deactivate(current_active_ta) if new_treatment_arm.save
+    BasicTreatmentArmJob.new.perform(treatment_arm_hash[:treatment_arm_id], treatment_arm_hash[:stratum_id], nil)
   end
 
   def create_new_version(treatment_arm_hash)
