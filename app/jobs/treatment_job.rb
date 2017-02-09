@@ -20,7 +20,11 @@ class TreatmentJob
   def insert_new_version(treatment_arm_hash, current_active_ta)
     new_treatment_arm = create_new_version(treatment_arm_hash)
     deactivate(current_active_ta) if new_treatment_arm.save
-    BasicTreatmentArmJob.new.perform(treatment_arm_hash[:treatment_arm_id], treatment_arm_hash[:stratum_id], nil)
+    BasicTreatmentArmJob.new.perform(treatment_arm_hash[:treatment_arm_id], treatment_arm_hash[:stratum_id], nil) if check_condition(current_active_ta)
+  end
+
+  def check_condition(treatment_arm)
+    true if treatment_arm.current_patients.present? || treatment_arm.former_patients.present? || treatment_arm.not_enrolled_patients.present? || treatment_arm.pending_patients.present?
   end
 
   def create_new_version(treatment_arm_hash)
