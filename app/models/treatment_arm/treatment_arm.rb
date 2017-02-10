@@ -44,9 +44,7 @@ class TreatmentArm
   def self.find_by(id = nil, stratum_id = nil, version = nil, to_hash = true)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
-    if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?)
-      query[:conditional_operator] = 'AND'
-    end
+    query[:conditional_operator] = 'AND'
     if to_hash
       scan(query).collect(&:to_h)
     else
@@ -66,10 +64,6 @@ class TreatmentArm
       query[:scan_filter]['version'] = { comparison_operator: 'EQ', attribute_value_list: [version] }
     end
     query
-  end
-
-  def self.append_and?(a = false, b = false, c = false)
-    (a && (b || c)) || (b && (c || a)) || (c && (a || b))
   end
 
   def self.build_cloned(treatment_arm)
