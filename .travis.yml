@@ -28,7 +28,6 @@ script:
   # - docker run -it --rm -e "RAILS_ENV=test" $DOCKER_IMAGE:$DATE 
   #     bundle exec rspec spec/
 after_success:
-  - bundle exec codeclimate-test-reporter
   - docker images
   - docker push $DOCKER_IMAGE # Pushes both date and latest
   #Deploy to AWS IntTest
@@ -44,5 +43,3 @@ after_success:
 notifications:
   slack: clinicalbiomed:gRp5LqKElNOjUUMPLlq4qC1j
 addons:
-  code_climate:
-        repo_token: 55a2dc7851ea13b067e7d2ef6d86e1068da4634edc063a013b9af2a48c6d791a
