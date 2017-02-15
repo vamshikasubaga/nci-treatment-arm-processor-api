@@ -37,7 +37,7 @@ describe TreatmentJob do
     it 'should insert a new version of the TreatmentArm' do
       allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
       allow(treatment_arm).to receive(:save).and_return(true)
-      expect(subject.insert_new_version(new_treatment_arm_hash, treatment_arm)).to be_truthy
+      expect{ (subject.insert_new_version(new_treatment_arm_hash, treatment_arm)) }.to_not raise_error
     end
 
     it 'should try to insert a new TreatmentArm' do
