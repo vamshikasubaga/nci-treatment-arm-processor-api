@@ -8,8 +8,9 @@ class TreatmentArmAssignmentEvent
 
   set_table_name "#{self.name.underscore}"
 
-  string_attr :patient_id, hash_key: true
+  string_attr :treatment_arm_id_stratum_id, hash_key: true
   datetime_attr :assignment_date, range_key: true
+  string_attr :patient_id
   string_attr :treatment_arm_id
   string_attr :treatment_arm_status
   string_attr :patient_status_reason
