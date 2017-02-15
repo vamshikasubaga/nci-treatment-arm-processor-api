@@ -14,11 +14,8 @@ class PatientAssignmentJob
   end
 
   def store_patient(patient_assignment)
-    patient_id = patient_assignment[:patient_id]
-    treatment_arm_id = patient_assignment[:treatment_arm_id]
-    stratum_id = patient_assignment[:stratum_id]
-    treatment_arm_status = patient_assignment[:treatment_arm_status]
-    patient_ta = TreatmentArmAssignmentEvent.find_by(patient_id: patient_id, treatment_arm_id: treatment_arm_id, stratum_id: stratum_id, treatment_arm_status: treatment_arm_status).sort_by{ |pa_ta| pa_ta.assignment_date }.reverse.first
+    treatment_arm_id_stratum_id = patient_assignment[:treatment_arm_id] + '_' + patient_assignment[:stratum_id]
+    patient_ta = TreatmentArmAssignmentEvent.get_patient_assignments(treatment_arm_id_stratum_id, patient_assignment[:patient_id])
     Shoryuken.logger.info("#{self.class.name} | ===== Processing Patient Assignment(#{patient_assignment[:patient_id]}) for TreatmentArm('#{patient_assignment[:treatment_arm_id]}'/'#{patient_assignment[:stratum_id]}'/'#{patient_assignment[:version]}') =====")
     if patient_ta.blank?
       insert(patient_assignment)
