@@ -22,6 +22,7 @@ before_install:
   - cat ./build_number.html
 script:
   - RAILS_ENV=test bundle exec rspec spec/
+  - ls -la
     #Build Docker image
   - docker build -t $DOCKER_IMAGE:$DATE -t $DOCKER_IMAGE:latest .
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
