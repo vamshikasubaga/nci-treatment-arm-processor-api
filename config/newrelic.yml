@@ -20,6 +20,7 @@ common: &default_settings
 
   # To disable the agent regardless of other settings, uncomment the following:
   # agent_enabled: false
+  agent_enabled: true
 
   # Logging level for log/newrelic_agent.log
   log_level: info
@@ -42,13 +43,16 @@ test:
   app_name: TreatmentArm Processor (Test)
   # It doesn't make sense to report to New Relic from automated test runs.
   monitor_mode: true
+  RAILS_ENV: test
 
 uat:
   <<: *default_settings
   app_name: TreatmentArm Processor (UAT)
   monitor_mode: true
+  RAILS_ENV: uat
 
 production:
   <<: *default_settings
   app_name: TreatmentArm Processor (Production)
   monitor_mode: true
+  RAILS_ENV: prod
