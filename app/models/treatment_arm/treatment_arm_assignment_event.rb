@@ -8,8 +8,9 @@ class TreatmentArmAssignmentEvent
 
   set_table_name "#{self.name.underscore}"
 
-  string_attr :patient_id, hash_key: true
+  string_attr :treatment_arm_id_stratum_id, hash_key: true
   datetime_attr :assignment_date, range_key: true
+  string_attr :patient_id
   string_attr :treatment_arm_id
   string_attr :treatment_arm_status
   string_attr :patient_status_reason
@@ -54,16 +55,17 @@ class TreatmentArmAssignmentEvent
 
   def convert_model(patient_assignment)
     {
-      assignment_date: patient_assignment[:assignment_date],
+      treatment_arm_id_stratum_id: merge(patient_assignment[:treatment_arm_id], patient_assignment[:stratum_id]),
       treatment_arm_id: patient_assignment[:treatment_arm_id],
-      treatment_arm_status: patient_assignment[:treatment_arm_status],
-      patient_status_reason: patient_assignment[:patient_status_reason],
-      version: patient_assignment[:version],
       stratum_id: patient_assignment[:stratum_id],
+      version: patient_assignment[:version],
+      treatment_arm_status: patient_assignment[:treatment_arm_status],
       patient_id: patient_assignment[:patient_id],
+      assignment_date: patient_assignment[:assignment_date],
+      patient_status: patient_assignment[:patient_status],
+      patient_status_reason: patient_assignment[:patient_status_reason],
       date_on_arm: patient_assignment[:date_on_arm],
       date_off_arm: patient_assignment[:date_off_arm],
-      patient_status: patient_assignment[:patient_status],
       assignment_reason: patient_assignment[:assignment_reason],
       diseases: patient_assignment[:diseases],
       step_number: patient_assignment[:step_number],
@@ -94,5 +96,25 @@ class TreatmentArmAssignmentEvent
       event = NOT_ENROLLED
     end
     event
+  end
+
+  def merge(treatment_arm_id, stratum_id)
+    treatment_arm_id + '_' + stratum_id if !treatment_arm_id.nil? && !stratum_id.nil?
+  end
+
+  def self.get_patient_assignments(treatment_arm_id_stratum_id, patient_id)
+    assignments = self.query(
+      key_condition_expression: "#T = :t",
+      expression_attribute_names: {
+        "#T" => "treatment_arm_id_stratum_id"
+      },
+      expression_attribute_values: {
+        ":t" => treatment_arm_id_stratum_id
+      }
+    )
+    assignments.each do |assignment|
+      return assignment if assignment.patient_id == patient_id
+    end
+    nil
   end
 end

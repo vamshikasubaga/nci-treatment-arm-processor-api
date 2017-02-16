@@ -1,7 +1,7 @@
 class BasicTreatmentArmJob
   def perform(treatment_arm_id, stratum_id)
     begin
-      treatment_arms = TreatmentArm.find_by(treatment_arm_id, stratum_id, nil, false)
+      treatment_arms = TreatmentArm.find_treatment_arms(treatment_arm_id, stratum_id)
       treatment_arms.each do | treatment_arm |
         Shoryuken.logger.info("#{self.class.name} | ===== Updating the Version & Stratum Statistics for TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') =====")
         update(treatment_arm)

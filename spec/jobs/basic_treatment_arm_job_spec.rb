@@ -18,7 +18,7 @@ describe BasicTreatmentArmJob do
     it 'should respond to a new message' do
       treatment_arm_id = treatment_arm.treatment_arm_id
       stratum_id = treatment_arm.stratum_id
-      expect(subject.perform(treatment_arm_id, stratum_id)).to be_truthy
+      expect{ (subject.perform(treatment_arm_id, stratum_id)) }.to_not raise_error
     end
 
     it 'should update the Version & Stratum statistics' do

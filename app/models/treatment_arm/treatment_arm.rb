@@ -81,7 +81,7 @@ class TreatmentArm
       assay_rules: treatment_arm[:assay_rules],
       treatment_arm_status: treatment_arm[:treatment_arm_status],
       date_created: treatment_arm[:date_created],
-      date_opened: treatment_arm[:date_opened].blank? ? DateTime.current.getutc.to_s : treatment_arm[:date_opened],
+      date_opened: DateTime.current.to_formatted_s(:iso8601),
       num_patients_assigned: treatment_arm[:num_patients_assigned],
       treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
       diseases: treatment_arm[:diseases],
@@ -109,7 +109,7 @@ class TreatmentArm
       assay_rules: treatment_arm[:assay_rules],
       treatment_arm_status: attributes_present(treatment_arm),
       date_created: treatment_arm[:date_created],
-      date_opened: treatment_arm[:date_opened].blank? ? DateTime.current.getutc.to_s : treatment_arm[:date_opened],
+      date_opened: DateTime.current.to_formatted_s(:iso8601),
       num_patients_assigned: treatment_arm[:num_patients_assigned],
       treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
       diseases: treatment_arm[:diseases],
@@ -120,6 +120,22 @@ class TreatmentArm
       gene_fusions: treatment_arm[:gene_fusions],
       status_log: treatment_arm[:status_log].blank? ? { Time.now.to_i.to_s => 'OPEN' } : treatment_arm[:status_log]
     }
+  end
+
+  def self.find_treatment_arms(treatment_arm_id, stratum_id)
+    treatment_arms = self.query(
+      key_condition_expression: "#T = :t",
+      filter_expression: "contains(#S, :s)",
+      expression_attribute_names: {
+        "#T" => "treatment_arm_id",
+        "#S" => "stratum_id"
+      },
+      expression_attribute_values: {
+        ":t" => treatment_arm_id,
+        ":s" => stratum_id
+      }
+    )
+    treatment_arms
   end
 
   private
