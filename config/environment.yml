@@ -27,8 +27,7 @@ uat:
   <<: *defaults
   aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
   queue_name: 'treatment_arm_queue'
-#  cog_url: 'https://qa-cogws.cogmembers.org/pmws'
-  cog_url: 'http://pedmatch-uat.nci.nih.gov:3000'
+  cog_url: 'https://qa-cogws.cogmembers.org/pmws'
   mock_cog_url: 'http://pedmatch-uat.nci.nih.gov:3000'
   patient_api_url: 'https://pedmatch-uat.nci.nih.gov:3010'
   cog_user_name: <%= ENV['COG_USERNAME'] %>
