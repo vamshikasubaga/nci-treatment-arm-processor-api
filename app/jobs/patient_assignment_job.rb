@@ -4,23 +4,18 @@ class PatientAssignmentJob
 
   def perform(patient_assignment)
     begin
-      Shoryuken.logger.info("#{self.class.name} | ===== Received a Patient Assignment(#{patient_assignment['patient_id']}) for TreatmentArm('#{patient_assignment['treatment_arm_id']}'/'#{patient_assignment['stratum_id']}'/'#{patient_assignment['version']}') =====")
+      Shoryuken.logger.info("#{self.class.name} | ===== Received a Patient Assignment(#{patient_assignment['patient_id']}) at state '#{patient_assignment['patient_status']}' for TreatmentArm('#{patient_assignment['treatment_arm_id']}'/'#{patient_assignment['stratum_id']}'/'#{patient_assignment['version']}') =====")
       patient_assignment.symbolize_keys!
-      Shoryuken.logger.info("#{self.class.name} | ===== Recieved patient '#{patient_assignment[:patient_id]}' at state '#{patient_assignment[:patient_status]}' for TreatmentArm('#{patient_assignment[:treatment_arm_id]}'/'#{patient_assignment[:stratum_id]}'/'#{patient_assignment[:version]}') =====")
-      store_patient(patient_assignment)
+      treatment_arm_id_stratum_id = patient_assignment[:treatment_arm_id] + '_' + patient_assignment[:stratum_id]
+      patient_ta = TreatmentArmAssignmentEvent.get_patient_assignments(treatment_arm_id_stratum_id, patient_assignment[:patient_id])
+      Shoryuken.logger.info("#{self.class.name} | ===== Processing Patient Assignment(#{patient_assignment[:patient_id]}) for TreatmentArm('#{patient_assignment[:treatment_arm_id]}'/'#{patient_assignment[:stratum_id]}'/'#{patient_assignment[:version]}') =====")
+      if patient_ta.blank?
+        insert(patient_assignment)
+      else
+        update(patient_ta, patient_assignment)
+      end
     rescue => error
       Shoryuken.logger.error("#{self.class.name} | Failed to process Patient Assignment with error #{error}::#{error.backtrace}")
-    end
-  end
-
-  def store_patient(patient_assignment)
-    treatment_arm_id_stratum_id = patient_assignment[:treatment_arm_id] + '_' + patient_assignment[:stratum_id]
-    patient_ta = TreatmentArmAssignmentEvent.get_patient_assignments(treatment_arm_id_stratum_id, patient_assignment[:patient_id])
-    Shoryuken.logger.info("#{self.class.name} | ===== Processing Patient Assignment(#{patient_assignment[:patient_id]}) for TreatmentArm('#{patient_assignment[:treatment_arm_id]}'/'#{patient_assignment[:stratum_id]}'/'#{patient_assignment[:version]}') =====")
-    if patient_ta.blank?
-      insert(patient_assignment)
-    else
-      update(patient_ta, patient_assignment)
     end
   end
 
