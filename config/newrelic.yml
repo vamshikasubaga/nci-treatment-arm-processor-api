@@ -49,6 +49,8 @@ test:
   # It doesn't make sense to report to New Relic from automated test runs.
   monitor_mode: true
   RAILS_ENV: test
+  NEW_RELIC_HIGH_SECURITY: true
+  high_security: true
 
 uat:
   <<: *default_settings
