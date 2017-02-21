@@ -57,9 +57,13 @@ uat:
   app_name: TreatmentArm Processor (UAT)
   monitor_mode: true
   RAILS_ENV: uat
+  NEW_RELIC_HIGH_SECURITY: true
+  high_security: true
 
 production:
   <<: *default_settings
   app_name: TreatmentArm Processor (Production)
   monitor_mode: true
   RAILS_ENV: prod
+  NEW_RELIC_HIGH_SECURITY: true
+  high_security: true
