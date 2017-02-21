@@ -64,6 +64,6 @@ production:
   <<: *default_settings
   app_name: TreatmentArm Processor (Production)
   monitor_mode: true
-  RAILS_ENV: prod
+  RAILS_ENV: production
   NEW_RELIC_HIGH_SECURITY: true
   high_security: true
