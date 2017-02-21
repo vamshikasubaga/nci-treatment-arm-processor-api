@@ -46,7 +46,7 @@ common: &default_settings
 test:
   <<: *default_settings
   app_name: TreatmentArm Processor (Test)
-  agent_enabled: false
+  agent_enabled: true
   # It doesn't make sense to report to New Relic from automated test runs.
   monitor_mode: false
 #  RAILS_ENV: test
