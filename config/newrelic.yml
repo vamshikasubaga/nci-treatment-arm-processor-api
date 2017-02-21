@@ -16,15 +16,15 @@ common: &default_settings
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: TreatmentArm Processor
+#  app_name: TreatmentArm Processor
 
   # To disable the agent regardless of other settings, uncomment the following:
   # agent_enabled: false
-  agent_enabled: true
-  NEW_RELIC_AGENT_ENABLED: true
+#  agent_enabled: true
+#  NEW_RELIC_AGENT_ENABLED: true
 
   # Logging level for log/newrelic_agent.log
-  log_level: info
+  log_level: debug
   
 
   NEW_RELIC_HIGH_SECURITY: true
