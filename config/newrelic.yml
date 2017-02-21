@@ -43,15 +43,15 @@ common: &default_settings
 #  monitor_mode: true
 #  NEW_RELIC_MONITOR_MODE: true
 
-#test:
-#  <<: *default_settings
-#  app_name: TreatmentArm Processor (Test)
-#  agent_enabled: true
-#  # It doesn't make sense to report to New Relic from automated test runs.
-#  monitor_mode: true
-#  RAILS_ENV: test
-#  NEW_RELIC_HIGH_SECURITY: true
-#  high_security: true
+test:
+  <<: *default_settings
+  app_name: TreatmentArm Processor (Test)
+  agent_enabled: false
+  # It doesn't make sense to report to New Relic from automated test runs.
+  monitor_mode: false
+  RAILS_ENV: test
+  NEW_RELIC_HIGH_SECURITY: true
+  high_security: true
 
 uat:
   <<: *default_settings
