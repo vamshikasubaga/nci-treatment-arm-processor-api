@@ -33,15 +33,15 @@ common: &default_settings
 # Environment-specific settings are in this section.
 # RAILS_ENV or RACK_ENV (as appropriate) is used to determine the environment.
 # If your application has other named environments, configure them here.
-development:
-  <<: *default_settings
-  app_name: TreatmentArm Processor (Development)
-
-  # NOTE: There is substantial overhead when running in developer mode.
-  # Do not use for production or load testing.
-  developer_mode: false
-  monitor_mode: true
-  NEW_RELIC_MONITOR_MODE: true
+#development:
+#  <<: *default_settings
+#  app_name: TreatmentArm Processor (Development)
+#
+#  # NOTE: There is substantial overhead when running in developer mode.
+#  # Do not use for production or load testing.
+#  developer_mode: false
+#  monitor_mode: true
+#  NEW_RELIC_MONITOR_MODE: true
 
 test:
   <<: *default_settings
@@ -54,13 +54,12 @@ test:
 
 uat:
   <<: *default_settings
+  NEW_RELIC_AGENT_ENABLED: true
   app_name: TreatmentArm Processor (UAT)
   monitor_mode: true
   RAILS_ENV: uat
   NEW_RELIC_HIGH_SECURITY: true
   high_security: true
-  agent_enabled: true
-  NEW_RELIC_AGENT_ENABLED: true
 
 production:
   <<: *default_settings
