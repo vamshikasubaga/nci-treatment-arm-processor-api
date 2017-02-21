@@ -16,7 +16,7 @@ common: &default_settings
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-#  app_name: TreatmentArm Processor
+  app_name: TreatmentArm Processor
 
   # To disable the agent regardless of other settings, uncomment the following:
   # agent_enabled: false
@@ -26,9 +26,7 @@ common: &default_settings
   # Logging level for log/newrelic_agent.log
   log_level: info
   
-
   NEW_RELIC_HIGH_SECURITY: true
-
 
 # Environment-specific settings are in this section.
 # RAILS_ENV or RACK_ENV (as appropriate) is used to determine the environment.
@@ -50,18 +48,13 @@ test:
   # It doesn't make sense to report to New Relic from automated test runs.
   monitor_mode: true
   RAILS_ENV: test
-#  NEW_RELIC_HIGH_SECURITY: true
-#  high_security: true
 
 uat:
   <<: *default_settings
   app_name: TreatmentArm Processor (UAT)
   agent_enabled: true
-  NEW_RELIC_AGENT_ENABLED: true
   monitor_mode: true
   RAILS_ENV: uat
-  NEW_RELIC_HIGH_SECURITY: true
-  high_security: true
 
 production:
   <<: *default_settings
