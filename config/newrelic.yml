@@ -59,6 +59,8 @@ uat:
   RAILS_ENV: uat
   NEW_RELIC_HIGH_SECURITY: true
   high_security: true
+  agent_enabled: true
+  NEW_RELIC_AGENT_ENABLED: true
 
 production:
   <<: *default_settings
