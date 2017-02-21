@@ -24,7 +24,7 @@ common: &default_settings
 #  NEW_RELIC_AGENT_ENABLED: true
 
   # Logging level for log/newrelic_agent.log
-  log_level: debug
+  log_level: info
   
 
   NEW_RELIC_HIGH_SECURITY: true
