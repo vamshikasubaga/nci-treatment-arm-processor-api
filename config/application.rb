@@ -32,6 +32,10 @@ module NciTreatmentArmProcessorApi
     config.logger = Logger.new(STDOUT)
     config.logger.formatter = Proc.new { |severity, datetime, _progname, msg| "[#{datetime.strftime("%B %d %H:%M:%S")}] [#{$$}] [#{severity}] [#{Rails.application.class.parent_name}], #{msg}\n"}
 
+    config.after_initialize do
+      config.logger.extend ActiveSupport::Logger.broadcast(SlackLogger.logger)
+    end
+
     config.environment = Rails.application.config_for(:environment)
 
     # config.before_configuration do

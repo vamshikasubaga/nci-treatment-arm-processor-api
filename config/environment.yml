@@ -15,6 +15,7 @@ development:
   queue_name: <%= ENV['TA_QUEUE_NAME'] %>
   cog_url: 'http://localhost:3000'
   patient_api_url: 'http://localhost:3010'
+  slack_channel: "#match-bot-dev"
 
 test:
   <<: *defaults
@@ -22,6 +23,7 @@ test:
   queue_name: 'treatment_arm_queue'
   cog_url: 'http://pedmatch-int.nci.nih.gov:3000'
   patient_api_url: 'https://pedmatch-int.nci.nih.gov:3010'
+  slack_channel: "#match-bot-int"
 
 uat:
   <<: *defaults
@@ -32,6 +34,7 @@ uat:
   patient_api_url: 'https://pedmatch-uat.nci.nih.gov:3010'
   cog_user_name: <%= ENV['COG_USERNAME'] %>
   cog_pwd: <%= ENV['COG_PWD'] %>
+  slack_channel: "#match-bot-uat"
 
 production:
   <<: *defaults
