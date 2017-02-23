@@ -16,50 +16,44 @@ common: &default_settings
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: TreatmentArm Processor
+  app_name: TreatmentArm Processor API
 
   # To disable the agent regardless of other settings, uncomment the following:
   # agent_enabled: false
   agent_enabled: true
-  NEW_RELIC_AGENT_ENABLED: true
 
   # Logging level for log/newrelic_agent.log
   log_level: info
   
-  NEW_RELIC_HIGH_SECURITY: true
+  # Level of security needs to match with newrelic account
+  high_security: true
+
+  monitor_mode: true
 
 # Environment-specific settings are in this section.
 # RAILS_ENV or RACK_ENV (as appropriate) is used to determine the environment.
 # If your application has other named environments, configure them here.
-#development:
-#  <<: *default_settings
-#  app_name: TreatmentArm Processor (Development)
-#
-#  # NOTE: There is substantial overhead when running in developer mode.
-#  # Do not use for production or load testing.
-#  developer_mode: false
-#  monitor_mode: true
-#  NEW_RELIC_MONITOR_MODE: true
+development:
+  <<: *default_settings
+  app_name: TreatmentArm Processor API (Development)
+
+  # NOTE: There is substantial overhead when running in developer mode.
+  # Do not use for production or load testing.
+  developer_mode: false
+  monitor_mode: false
 
 test:
   <<: *default_settings
-  app_name: TreatmentArm Processor (Test)
-  agent_enabled: true
+  app_name: TreatmentArm Processor API (Test)
   # It doesn't make sense to report to New Relic from automated test runs.
-  monitor_mode: true
   RAILS_ENV: test
 
 uat:
   <<: *default_settings
-  app_name: TreatmentArm Processor (UAT)
-  agent_enabled: true
-  monitor_mode: true
+  app_name: TreatmentArm Processor API (UAT)
   RAILS_ENV: uat
 
 production:
   <<: *default_settings
-  app_name: TreatmentArm Processor (Production)
-  monitor_mode: true
+  app_name: TreatmentArm Processor API (Production)
   RAILS_ENV: production
-  NEW_RELIC_HIGH_SECURITY: true
-  high_security: true
